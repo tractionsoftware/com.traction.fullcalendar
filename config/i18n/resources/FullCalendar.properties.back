@@ -1,0 +1,453 @@
+plugin_display_name=FullCalendar
+plugin_description=Installs <a href="https://fullcalendar.io">FullCalendar</a> to TeamPage.
+
+# View Configurations
+viewname_fullcalendar=Calendar
+viewname_mucals=Calendar
+
+# Tabs
+gwtrpc_tab_fullcalendar=fullCalendar
+gwtrpc_subtab_standard_calendar=All Users
+gwtrpc_subtab_multiple_user_calendars=Select Users
+
+# Month Names
+January=January
+February=February
+March=March
+April=April
+May=May
+June=June
+July=July
+August=August
+September=September
+October=October
+November=November
+December=December
+Jan=Jan
+Feb=Feb
+Mar=Mar
+Apr=Apr
+May=May
+Jun=Jun
+Jul=Jul
+Aug=Aug
+Sep=Sep
+Oct=Oct
+Nov=Nov
+Dec=Dec
+
+# formatString is a combination of any of the following commands:
+#
+# s - seconds
+# ss - seconds, 2 digits
+# m - minutes
+# mm - minutes, 2 digits
+# h - hours, 12-hour format
+# hh - hours, 12-hour format, 2 digits
+# H - hours, 24-hour format
+# HH - hours, 24-hour format, 2 digits
+# d - date number
+# dd - date number, 2 digits
+# ddd - date name, short
+# dddd - date name, full
+# M - month number
+# MM - month number, 2 digits
+# MMM - month name, short
+# MMMM - month name, full
+# yy - year, 2 digits
+# yyyy - year, 4 digits
+# t - 'a' or 'p'
+# tt - 'am' or 'pm'
+# T - 'A' or 'P'
+# TT - 'AM' or 'PM'
+# u - ISO8601 format
+# S - 'st', 'nd', 'rd', 'th' for the date
+# W - the ISO8601 week number
+#
+# Special Characters:
+# '...' literal text
+# '' single quote (represented by two single quotes)
+# (...) only displays format if one of the enclosed variables is non-zero
+
+# Date Format
+titleformat_year=YYYY
+titleformat_month_and_year=MMMM YYYY
+titleformat_month_and_day_and_year=MMM D YYYY
+# Don't delete the underscores. They will be replaced with the spaces when the calendar is loaded.
+titleformat_range_separator=_to_
+datetimeformat_date_time=MMM D, YYYY kk:mm
+datetimeformat_date=MMM D, YYYY
+
+# Determines the text that will be displayed on the calendar's column headings.
+# like 'Mon', for month view
+columnFormat_view_month=ddd
+# like 'Mon 9/7', for week views
+columnFormat_view_week=ddd M/D
+# like 'Monday', for day views
+columnFormat_view_day=dddd
+
+# The time-text that will be displayed on each event.
+# like '5:00', for the agenda views
+timeFormat_view_agenda=h:mm
+# like '7p', for all other views
+timeFormat_view_basic=h(:mm)t
+
+# Status Messages (displayed in the bottom of the Proteus views)
+proteus_status_message_move_event_start_end=displayname + ' ' + id + ' was moved. (Start: ' + start + ', End: ' + end + ')'
+proteus_status_message_move_event_date=displayname + ' ' + id + ' was moved. (Date: ' + start + ')'
+
+proteus_status_message_move_pm_due=displayname + ' ' + id + ' was moved. (Due: ' + start + ')'
+proteus_status_message_move_pm_start_end=displayname + ' ' + id + ' was moved. (Start: ' + start + ', End: ' + end + ')'
+proteus_status_message_resize_event_start_end=displayname + ' ' + id + ' was modified. (Start: ' + start + ', End: ' + end + ')'
+
+proteus_status_message_close_task='You closed the ' + displayname + ' ' + id + '.'
+proteus_status_message_reopen_task='You re-opened the ' + displayname + ' ' + id + '.'
+
+# Mucals Form Labels
+group_selector_label=Group:
+group_selector_optgroup_usergroupdefinition_label=User Groups
+group_selector_optgroup_project_label=Spaces
+group_selector_optgroup_goal_label=Projects
+group_selector_optgroup_follow_label=Follow
+group_selector_optgroup_other_label=Other
+group_option_All_Users_label=All Users
+
+# Mucals Button Text
+add_entry_for_all_users_label=For These Users:
+Add_Event=Add Event
+Add_Task=Add Task
+Add_Project=Add Project
+Add_Milestone=Add Milestone
+Add_PhoneNotes=Add Phone Notes
+
+# Mucals Title Tips
+sect_hd_user_avatar_title_text=Show the profile dialog of {0}.
+sect_hd_user_link_title_text=Show the monthly calendar of {0}.
+title_info_user_link_text=Scroll down to the calendar of {0}.
+
+# Settings
+setting_fullcalendar_views_display_name=Standard Calendar
+setting_fullcalendar_views_description=Indicates which views will be available and which buttons will show up in the top-left of the calendar, in [Calendar] > [All Users] page.
+setting_fullcalendar_views_tip=
+setting_fullcalendar_views_option_month_label=Basic Month
+setting_fullcalendar_views_option_basicDay_label=Basic Week
+setting_fullcalendar_views_option_basicSevenDays_label=Basic 7 Days
+setting_fullcalendar_views_option_basicWeek_label=Basic Week
+setting_fullcalendar_views_option_basicTwoWeeks_label=Basic 2 Weeks
+setting_fullcalendar_views_option_agendaDay_label=Agenda Day
+setting_fullcalendar_views_option_agendaWeek_label=Agenda Week
+setting_fullcalendar_views_option_agendaSevenDays_label=Agenda 7 Days
+setting_fullcalendar_views_option_listDay_label=List Day
+setting_fullcalendar_views_option_listWeek_label=List Week
+setting_fullcalendar_views_option_listMonth_label=List Month
+setting_fullcalendar_views_option_listYear_label=List Year
+
+setting_fullcalendar_gcal_apikey_display_name=Google Calendar API Key
+setting_fullcalendar_gcal_apikey_description=Fill-in the API key of Google Calendar you want to display on the fullCalendar.
+setting_fullcalendar_gcal_apikey_tip=
+
+setting_fullcalendar_gcal_displayname1_display_name=Display Name
+setting_fullcalendar_gcal_displayname1_description=
+setting_fullcalendar_gcal_displayname1_default=Google Calendar 1
+setting_fullcalendar_gcal_displayname2_display_name=Display Name
+setting_fullcalendar_gcal_displayname2_description=
+setting_fullcalendar_gcal_displayname2_default=Google Calendar 2
+setting_fullcalendar_gcal_displayname3_display_name=Display Name
+setting_fullcalendar_gcal_displayname3_description=
+setting_fullcalendar_gcal_displayname3_default=Google Calendar 3
+setting_fullcalendar_gcal_displayname4_display_name=Display Name
+setting_fullcalendar_gcal_displayname4_description=
+setting_fullcalendar_gcal_displayname4_default=Google Calendar 4
+
+setting_fullcalendar_gcal_source1_display_name=Calendar ID
+setting_fullcalendar_gcal_source1_description=
+setting_fullcalendar_gcal_source2_display_name=Calendar ID
+setting_fullcalendar_gcal_source2_description=
+setting_fullcalendar_gcal_source3_display_name=Calendar ID
+setting_fullcalendar_gcal_source3_description=
+setting_fullcalendar_gcal_source4_display_name=Calendar ID
+setting_fullcalendar_gcal_source4_description=
+
+setting_fullcalendar_gcal_color1_display_name=Text Color
+setting_fullcalendar_gcal_color1_description=
+setting_fullcalendar_gcal_color2_display_name=Text Color
+setting_fullcalendar_gcal_color2_description=
+setting_fullcalendar_gcal_color3_display_name=Text Color
+setting_fullcalendar_gcal_color3_description=
+setting_fullcalendar_gcal_color4_display_name=Text Color
+setting_fullcalendar_gcal_color4_description=
+
+setting_fullcalendar_gcal_bgcolor1_display_name=Background Color
+setting_fullcalendar_gcal_bgcolor1_description=
+setting_fullcalendar_gcal_bgcolor2_display_name=Background Color
+setting_fullcalendar_gcal_bgcolor2_description=
+setting_fullcalendar_gcal_bgcolor3_display_name=Background Color
+setting_fullcalendar_gcal_bgcolor3_description=
+setting_fullcalendar_gcal_bgcolor4_display_name=Background Color
+setting_fullcalendar_gcal_bgcolor4_description=
+
+setting_fullcalendar_button_text_month_display_name=Basic Month
+setting_fullcalendar_button_text_month_description=
+setting_fullcalendar_button_text_month_tip=
+setting_fullcalendar_button_text_month_default=Month
+
+setting_fullcalendar_button_text_basicDay_display_name=Basic Day
+setting_fullcalendar_button_text_basicDay_description=
+setting_fullcalendar_button_text_basicDay_tip=
+setting_fullcalendar_button_text_basicDay_default=Day
+
+setting_fullcalendar_button_text_basicSevenDays_display_name=Basic 7 Days
+setting_fullcalendar_button_text_basicSevenDays_description=
+setting_fullcalendar_button_text_basicSevenDays_tip=
+setting_fullcalendar_button_text_basicSevenDays_default=7 Days
+
+setting_fullcalendar_button_text_basicWeek_display_name=Basic Week
+setting_fullcalendar_button_text_basicWeek_description=
+setting_fullcalendar_button_text_basicWeek_tip=
+setting_fullcalendar_button_text_basicWeek_default=Week
+
+setting_fullcalendar_button_text_basicTwoWeeks_display_name=Basic 2 Weeks
+setting_fullcalendar_button_text_basicTwoWeeks_description=
+setting_fullcalendar_button_text_basicTwoWeeks_tip=
+setting_fullcalendar_button_text_basicTwoWeeks_default=2 Weeks
+
+setting_fullcalendar_button_text_agendaDay_display_name=Agenda Day
+setting_fullcalendar_button_text_agendaDay_description=
+setting_fullcalendar_button_text_agendaDay_tip=
+setting_fullcalendar_button_text_agendaDay_default=Agenda Day
+
+setting_fullcalendar_button_text_agendaWeek_display_name=Agenda Week
+setting_fullcalendar_button_text_agendaWeek_description=
+setting_fullcalendar_button_text_agendaWeek_tip=
+setting_fullcalendar_button_text_agendaWeek_default=Agenda Week
+
+setting_fullcalendar_button_text_agendaSevenDays_display_name=Agenda 7 Days
+setting_fullcalendar_button_text_agendaSevenDays_description=
+setting_fullcalendar_button_text_agendaSevenDays_tip=
+setting_fullcalendar_button_text_agendaSevenDays_default=Agenda 7 Days
+
+setting_fullcalendar_button_text_listDay_display_name=List Day
+setting_fullcalendar_button_text_listDay_description=
+setting_fullcalendar_button_text_listDay_tip=
+setting_fullcalendar_button_text_listDay_default=List Day
+
+setting_fullcalendar_button_text_listWeek_display_name=List Week
+setting_fullcalendar_button_text_listWeek_description=
+setting_fullcalendar_button_text_listWeek_tip=
+setting_fullcalendar_button_text_listWeek_default=List Week
+
+setting_fullcalendar_button_text_listMonth_display_name=List Month
+setting_fullcalendar_button_text_listMonth_description=
+setting_fullcalendar_button_text_listMonth_tip=
+setting_fullcalendar_button_text_listMonth_default=List Month
+
+setting_fullcalendar_button_text_listYear_display_name=List Year
+setting_fullcalendar_button_text_listYear_description=
+setting_fullcalendar_button_text_listYear_tip=
+setting_fullcalendar_button_text_listYear_default=List Year
+
+setting_fc_mucals_views_display_name=Select Users Calendar
+setting_fc_mucals_views_description=Indicates which views will be available and which buttons will show up in the top-left, in [Celendar] > [Select Users] page.
+setting_fc_mucals_views_tip=
+
+setting_fc_mucals_my_calendar_first_display_name=Display My Calendar First
+setting_fc_mucals_my_calendar_first_description=If yes, the current user's calendar will be displayed above the other users' calendars.
+setting_fc_mucals_my_calendar_first_tip=
+
+setting_fc_mucals_default_group_display_name=Default Group
+setting_fc_mucals_default_group_description=The group you select here will be selected in the multiple user calencars view as default, unless the view is launched from spaces, projects, and so on.
+setting_fc_mucals_default_group_tip=
+
+setting_calendaritemdetails_enable_displaying_tags_display_name=Enable Displaying Tags in Title
+setting_calendaritemdetails_enable_displaying_tags_description=If yes, the tags you specified below will be show up in the title.
+setting_calendaritemdetails_enable_displaying_tags_tip=
+
+setting_calendaritemdetails_enable_displaying_tags_loc_display_name=Insersion Position of Tags
+setting_calendaritemdetails_enable_displaying_tags_loc_description=Select the position of the inserted tags from before or after entry title.
+setting_calendaritemdetails_enable_displaying_tags_loc_tip=
+setting_calendaritemdetails_enable_displaying_tags_loc_option_before=Before Title
+setting_calendaritemdetails_enable_displaying_tags_loc_option_after=After Title
+
+setting_calendaritemdetails_tags_list_event_display_name=Event Tags List
+setting_calendaritemdetails_tags_list_event_description=If an event entry has the tags you specify here, the tags will be displayed in the title of the event item in the calendar. If empty, all tags except "color:X" (colors) will be displayed. Eash tag must be comma-separated.
+setting_calendaritemdetails_tags_list_event_tip=
+
+setting_calendaritemdetails_tags_list_task_display_name=Task Tags List
+setting_calendaritemdetails_tags_list_task_description=If a task entry has the tags you specify here, the tags will be displayed in the title of the task item in the calendar. If empty, all tags except "to do", "done", "pX" (priorities), and "color:X" (colors) will be displayed. Eash tag must be comma-separated.
+setting_calendaritemdetails_tags_list_task_tip=
+
+setting_calendaritemdetails_enable_displaying_goal_display_name=Enable Displaying Project Name in Title
+setting_calendaritemdetails_enable_displaying_goal_description=If yes and an event is relatred to a project, the name of the project will be show up in the title.
+setting_calendaritemdetails_enable_displaying_goal_tip=
+
+setting_calendaritemdetails_enable_displaying_milestone_display_name=Enable Displaying Milestone Name in Title
+setting_calendaritemdetails_enable_displaying_milestone_description=If yes and an event is relatred to a milestone, the name of the milestone will be show up in the title.
+setting_calendaritemdetails_enable_displaying_milestone_tip=
+
+setting_calendaritemdetails_enable_displaying_goal_loc_display_name=Insersion Position of Project
+setting_calendaritemdetails_enable_displaying_goal_loc_description=Select the position of the inserted project name from before or after entry title.
+setting_calendaritemdetails_enable_displaying_goal_loc_tip=
+setting_calendaritemdetails_enable_displaying_goal_loc_option_before=Before Title
+setting_calendaritemdetails_enable_displaying_goal_loc_option_after=After Title
+
+setting_calendaritemdetails_enable_displaying_milestone_loc_display_name=Insersion Position of Milestone
+setting_calendaritemdetails_enable_displaying_milestone_loc_description=Select the position of the inserted milestone name from before or after entry title.
+setting_calendaritemdetails_enable_displaying_milestone_loc_tip=
+setting_calendaritemdetails_enable_displaying_milestone_loc_option_before=Before Title
+setting_calendaritemdetails_enable_displaying_milestone_loc_option_after=After Title
+
+setting_fullcalendar_height_standard_cal_display_name=Height for Standard Calendar
+setting_fullcalendar_height_standard_cal_description=Height for the calendar displayed in the [Calendar] tab.
+setting_fullcalendar_height_standard_cal_tip=
+
+setting_fullcalendar_height_standard_basicMonth_display_name=Basic Month
+setting_fullcalendar_height_standard_basicMonth_description=
+setting_fullcalendar_height_standard_basicMonth_tip=
+
+setting_fullcalendar_height_standard_basicWeek_display_name=Basic Week and 7 Days
+setting_fullcalendar_height_standard_basicWeek_description=
+setting_fullcalendar_height_standard_basicWeek_tip=
+
+setting_fullcalendar_height_standard_basic2Weeks_display_name=Basic 2 Weeks
+setting_fullcalendar_height_standard_basic2Weeks_description=
+setting_fullcalendar_height_standard_basic2Weeks_tip=
+
+setting_fullcalendar_height_standard_agendaWeek_display_name=Agenda Week and 7 Days
+setting_fullcalendar_height_standard_agendaWeek_description=
+setting_fullcalendar_height_standard_agendaWeek_tip=
+
+setting_fullcalendar_height_standard_list_display_name=List Day, Week, Month, and Year
+setting_fullcalendar_height_standard_list_description=
+setting_fullcalendar_height_standard_list_tip=
+
+setting_fullcalendar_height_mucals_basicMonth_display_name=Basic Month
+setting_fullcalendar_height_mucals_basicMonth_description=
+setting_fullcalendar_height_mucals_basicMonth_tip=
+
+setting_fullcalendar_height_mucals_basicWeek_display_name=Basic Week and 7 Days
+setting_fullcalendar_height_mucals_basicWeek_description=
+setting_fullcalendar_height_mucals_basicWeek_tip=
+
+setting_fullcalendar_height_mucals_basic2Weeks_display_name=Basic 2 Weeks
+setting_fullcalendar_height_mucals_basic2Weeks_description=
+setting_fullcalendar_height_mucals_basic2Weeks_tip=
+
+setting_fullcalendar_height_mucals_agendaWeek_display_name=Agenda Week and 7 Days
+setting_fullcalendar_height_mucals_agendaWeek_description=
+setting_fullcalendar_height_mucals_agendaWeek_tip=
+
+setting_fullcalendar_height_mucals_list_display_name=List Day, Week, Month, and Year
+setting_fullcalendar_height_mucals_list_description=
+setting_fullcalendar_height_mucals_list_tip=
+
+setting_fullcalendar_contentHeight_auto_display_name=Auto Content Height
+setting_fullcalendar_contentHeight_auto_description=If yes, the calendar's content will assume a natural height and no scrollbars will be used. If no, it will make the content area a pixel height configured in the following settings.
+setting_fullcalendar_contentHeight_auto_tip=
+
+setting_fullcalendar_aspectRatio_display_name=Width-to-Height Aspect Ratio of Calendar
+setting_fullcalendar_aspectRatio_description=The calendar's height is determined by this ratio of width-to-height if the auto content height is set to &quot;auto&quot;.
+setting_fullcalendar_aspectRatio_tip=Larger numbers make smaller heights.
+
+setting_fullcalendar_eventLimit_display_name=Limit Number of Events
+setting_fullcalendar_eventLimit_description=Indecates to limits the number of events displayed on a day. If a number is selected, it will limit the number of events to the height of the day cell. The link will look like &quot;+2 more&quot;. If no, it will display all events as-is.
+setting_fullcalendar_eventLimit_tip=
+setting_fullcalendar_eventLimit_option_0_label=No Limit
+setting_fullcalendar_eventLimit_option_3_label=3
+setting_fullcalendar_eventLimit_option_5_label=5
+setting_fullcalendar_eventLimit_option_10_label=10
+setting_fullcalendar_eventLimit_option_15_label=15
+
+setting_fullcalendar_display_title_tip_display_name=Display Title Hover Tips
+setting_fullcalendar_display_title_tip_description=If yes, the hover tip will show up when you move your cursor on a title of an event.
+setting_fullcalendar_display_title_tip_tip=
+
+setting_fullcalendar_pagedesc_userprofile_cal_display_name=Standard Calendar in User Profile Page
+setting_fullcalendar_pagedesc_userprofile_cal_description=Fill-in the description for the calendar in the user profile page. HTML-tags supported. You can use the keyword <code>%userdisplayname%</code>.
+setting_fullcalendar_pagedesc_userprofile_cal_tip=
+
+setting_fullcalendar_pagedesc_allprojects_cal_display_name=Standard Calenar in All Spaces
+setting_fullcalendar_pagedesc_allprojects_cal_description=Fill-in the description for the calendar in the &quot;All Spaces&quot; level. HTML-tags supported.
+setting_fullcalendar_pagedesc_allprojects_cal_tip=
+
+setting_fullcalendar_pagedesc_allprojects_mucals_display_name=Select User Calendar in All Spaces
+setting_fullcalendar_pagedesc_allprojects_mucals_description=Fill-in the description for the &quot;select user&quot; calendar in the &quot;All Spaces&quot; level. HTML-tags supported.
+setting_fullcalendar_pagedesc_allprojects_mucals_tip=
+
+setting_fullcalendar_pagedesc_project_cal_display_name=Standard Celendar in Space
+setting_fullcalendar_pagedesc_project_cal_description=Fill-in the description for the calendar in this space. HTML-tags supported. You can use the keyword <code>%projectdisplayname%</code>.
+setting_fullcalendar_pagedesc_project_cal_tip=
+
+setting_fullcalendar_pagedesc_project_mucals_display_name=Select User Calendar in Space
+setting_fullcalendar_pagedesc_project_mucals_description=Fill-in the description for the &quot;select user&quot; calendar in this space. HTML-tags supported. You can use the keyword <code>%projectdisplayname%</code>.
+setting_fullcalendar_pagedesc_project_mucals_tip=
+
+setting_fullcalendar_add_tags_event_display_name=Events
+setting_fullcalendar_add_tags_event_description=The tags you fill-in here will be added to the New Event form by default. e.g. <code>+:FAQ,+:todo</code>
+setting_fullcalendar_add_tags_event_tip=
+
+setting_fullcalendar_add_tags_task_display_name=Tasks
+setting_fullcalendar_add_tags_task_description=The tags you fill-in here will be added to the New Task form by default.
+setting_fullcalendar_add_tags_task_tip=
+
+setting_fullcalendar_add_tags_phonenotes_display_name=Phone Notes
+setting_fullcalendar_add_tags_phonenotes_description=The tags you fill-in here will be added to the New Phone Notes form by default.
+setting_fullcalendar_add_tags_phonenotes_tip=
+
+# Integrated the com.traction.calendarholidaysweekends plug-in into this FullCalendar plug-in.
+setting_calendarholidaysweekends_enabled_display_name=Enable Holiday Capability
+setting_calendarholidaysweekends_enabled_description=If yes, TeamPage will try to find the entries who have the following prefix tags and provide the holiday data for FullCalendar.
+setting_calendarholidaysweekends_enabled_tip=
+
+setting_calendarholidaysweekends_tag_prefix_display_name=Tag Prefix for Holiday Definition Entries
+setting_calendarholidaysweekends_tag_prefix_description=This plug-in finds the special entry which describes the list of the holidays by using the tag which includes the prefix specified here. The format of the tag shluld be <code>PrefixName:Year</code>, e.g. &quot;holidays:2018&quot;.
+setting_calendarholidaysweekends_tag_prefix_tip=Note that the entry should be posted in a space where everyone has the read permission.
+setting_calendarholidaysweekends_tag_prefix_default=holidays
+
+setting_calendarholidaysweekends_text_color_display_name=Text Color
+setting_calendarholidaysweekends_text_color_description=The color set here will be applied to the text of the holiday items on the calendar.
+setting_calendarholidaysweekends_text_color_tip=
+
+setting_calendarholidaysweekends_bg_color_display_name=Text Color
+setting_calendarholidaysweekends_bg_color_description=The color set here will be applied to the background-color of the holiday items on the calendar.
+setting_calendarholidaysweekends_bg_color_tip=
+
+setting_calendaritemdetails_enable_displaying_project_display_name_display_name=Enable Displaying Space Display Name in Title
+setting_calendaritemdetails_enable_displaying_project_display_name_description=If yes, the display name of the space where the entry was posted in will be inserted into the title.
+setting_calendaritemdetails_enable_displaying_project_display_name_tip=
+
+setting_calendaritemdetails_enable_displaying_project_display_name_loc_display_name=Insersion Position of Space Display Name
+setting_calendaritemdetails_enable_displaying_project_display_name_loc_description=Select the position of the inserted space display name from before or after entry title.
+setting_calendaritemdetails_enable_displaying_project_display_name_loc_tip=
+
+# Setting Panels
+setting_panel_title_all_users=Standard Calendar
+setting_panel_title_mucals=Select User Calendar
+setting_panel_title_basic_views=Basic Views
+setting_panel_title_agenda_views=Agenda Views
+setting_panel_title_list_views=List Views
+setting_panel_title_google_calendar=Google Calendar
+setting_panel_title_multiple_users=Selected Users
+setting_panel_title_tag_display=Tag Display
+setting_panel_title_related_project_and_milestone=Project Management
+setting_panel_title_heights=Heights
+setting_panel_title_button_labels=Button Labels
+setting_panel_title_fc_views=Available Calendars
+setting_panel_title_others=Other Settings
+setting_panel_title_icon_display=Add Icons
+setting_panel_title_add_tags=Add Tags
+setting_panel_title_holidays=Holidays
+setting_panel_title_project_display=Spaces
+
+# Setting Groups
+setting_group_title_general=General Settings
+setting_group_title_basic_calendars=Standard Calendars
+setting_group_title_agenda_calendars=Agenda Calendars
+setting_group_title_list_calendars=List Calendars
+setting_group_title_standard_calendars=Standard Calendars
+setting_group_title_multiple_user_calendars=Select User Calendars
+setting_panel_title_pagedesc=Page Descriptions
+setting_group_title_gcal_api_key=Google Calendar API Key
+setting_group_title_gcal1=Google Calendar 1
+setting_group_title_gcal2=Google Calendar 2
+setting_group_title_gcal3=Google Calendar 3
+setting_group_title_gcal4=Google Calendar 4

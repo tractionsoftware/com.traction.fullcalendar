@@ -1,0 +1,787 @@
+{
+  "config/gwt/views": {
+    "cal": {
+      "sdl": "com.traction.sdl.gwtrpc.fullcalendar",
+      "viewname": "#{@fullcalendar#viewname_fullcalendar}",
+      "area": "main",
+      //"tab": "fullcalendar",
+      "tab": "cal",
+      "titleprovider": "com.traction.sdk.view.ConfigTitles",
+      "htmltitle": "#{@fullcalendar#viewname_fullcalendar}",
+      "sectiontitle": "#{@fullcalendar#viewname_fullcalendar}",
+      "viewname": "#{@fullcalendar#viewname_fullcalendar}",
+      "supports_syndication": "false",
+      "supports_printversion": "false",
+      "viewtype": "cal",
+      "calendar_view": "true",
+      "require_valid_project": "true"
+    },
+    "mucals": {
+      "__inherits": "cal",
+      "sdl": "com.traction.sdl.gwtrpc.multiusercals",
+      "viewname": "#{@fullcalendar#viewname_mucals}",
+      "area": "main",
+      //"tab": "fullcalendar",
+      "tab": "cal",
+      "titleprovider": "com.traction.sdk.view.ConfigTitles",
+      "htmltitle": "#{@fullcalendar#viewname_mucals}",
+      "sectiontitle": "#{@fullcalendar#viewname_mucals}",
+      "viewname": "#{@fullcalendar#viewname_mucals}",
+      "viewtype": "mucals"
+    }
+  },
+  "config/views/all": {
+    "holidays_json": {
+      "sdl": "com.traction.sdl.json.holidays_json",
+      "userurlparam": "rec",
+      "viewtype": "holidays_json",
+      "format": "text",
+      "Content-type": "application/json; charset=UTF-8"
+    },
+    "holijson": {
+      "__inherits": "holidays_json"
+    },
+    "holidays_jsonp": {
+      "sdl": "com.traction.sdl.json.holidays_jsonp",
+      "userurlparam": "rec",
+      "viewtype": "holidays_jsonp",
+      "format": "json",
+      "Content-type": "application/javascript; charset=UTF-8"
+    },
+    "holijsonp": {
+      "__inherits": "holidays_jsonp"
+    }
+  },
+  "config/settings/props/journal": {
+    "fullcalendar_add_tags_event": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_add_tags_event_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_add_tags_event_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_add_tags_event_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel",
+      "size": "80",
+      "usedefault": "false",
+      "default": ""
+    },
+    "fullcalendar_add_tags_task": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_add_tags_task_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_add_tags_task_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_add_tags_task_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel",
+      "size": "80",
+      "usedefault": "false",
+      "default": ""
+    },
+    "fullcalendar_add_tags_phonenotes": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_add_tags_phonenotes_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_add_tags_phonenotes_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_add_tags_phonenotes_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel",
+      "size": "80",
+      "usedefault": "false",
+      "default": ""
+    },
+    "fullcalendar_button_text_month": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_month_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_month_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_month_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_month_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_basicDay": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_basicDay_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_basicDay_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_basicDay_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_basicDay_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_basicSevenDays": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_basicSevenDays_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_basicSevenDays_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_basicSevenDays_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_basicSevenDays_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_basicWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_basicWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_basicWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_basicWeek_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_basicWeek_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_basicTwoWeeks": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_basicTwoWeeks_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_basicTwoWeeks_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_basicTwoWeeks_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_basicTwoWeeks_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_agendaDay": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_agendaDay_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_agendaDay_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_agendaDay_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_agendaDay_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_agendaWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_agendaWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_agendaWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_agendaWeek_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_agendaWeek_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_agendaSevenDays": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_agendaSevenDays_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_agendaSevenDays_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_agendaSevenDays_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_agendaSevenDays_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_listDay": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listDay_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listDay_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listDay_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listDay_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_listWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_listMonth": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_button_text_listYear": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_tip}",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_default}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "calendaritemdetails_enable_displaying_project_display_name": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_project_display_name_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_project_display_name_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_project_display_name_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "false",
+      "usedefault": "true"
+    },
+    "calendaritemdetails_enable_displaying_project_display_name_loc": {
+      "class": "com.traction.settings.Select",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_project_display_name_loc_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_project_display_name_loc_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_project_display_name_loc_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "options": "before,after",
+      "option_before_label": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_loc_option_before}",
+      "option_after_label": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_loc_option_after}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "usedefault": "true",
+      "default": "before"
+    },
+    "calendaritemdetails_enable_displaying_tags": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "false",
+      "usedefault": "true"
+    },
+    "calendaritemdetails_enable_displaying_tags_loc": {
+      "class": "com.traction.settings.Select",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_loc_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_loc_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_loc_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "options": "before,after",
+      "option_before_label": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_loc_option_before}",
+      "option_after_label": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_tags_loc_option_after}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "usedefault": "true",
+      "default": "before"
+    },
+    "calendaritemdetails_tags_list_event": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_tags_list_event_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_tags_list_event_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_tags_list_event_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel",
+      "size": "80",
+      "usedefault": "false",
+      "default": ""
+    },
+    "calendaritemdetails_tags_list_task": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_tags_list_task_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_tags_list_task_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_tags_list_task_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel",
+      "size": "80",
+      "usedefault": "false",
+      "default": ""
+    },
+    "calendaritemdetails_enable_displaying_goal": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_goal_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_goal_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_goal_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "false",
+      "usedefault": "true"
+    },
+    "calendaritemdetails_enable_displaying_goal_loc": {
+      "class": "com.traction.settings.Select",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_goal_loc_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_goal_loc_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_goal_loc_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "options": "before,after",
+      "option_before_label": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_goal_loc_option_before}",
+      "option_after_label": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_goal_loc_option_after}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "usedefault": "true",
+      "default": "before"
+    },
+    "calendaritemdetails_enable_displaying_milestone": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_milestone_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_milestone_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_milestone_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "false",
+      "usedefault": "true"
+    },
+    "calendaritemdetails_enable_displaying_milestone_loc": {
+      "class": "com.traction.settings.Select",
+      "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_milestone_loc_display_name}",
+      "description": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_milestone_loc_description}",
+      "tip": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_milestone_loc_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "options": "before,after",
+      "option_before_label": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_milestone_loc_option_before}",
+      "option_after_label": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_milestone_loc_option_after}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "usedefault": "true",
+      "default": "before"
+    },
+    "fullcalendar_pagedesc_allprojects_cal": {
+      "display_name": "#{@fullcalendar#setting_fullcalendar_pagedesc_allprojects_cal_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_pagedesc_allprojects_cal_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_pagedesc_allprojects_cal_tip}",
+      "class": "com.traction.settings.TextInput",
+      "usedefault": "false",
+      "default": "",
+      "sdleditor": "com.traction.sdl.admin.settings#textarea_with_base64_hidden",
+      "hide": "false",
+      "transform": "none",
+      "rows": "2",
+      "cols": "100",
+      "wrap": "wrap"
+    },
+    "fullcalendar_pagedesc_allprojects_mucals": {
+      "display_name": "#{@fullcalendar#setting_fullcalendar_pagedesc_allprojects_mucals_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_pagedesc_allprojects_mucals_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_pagedesc_allprojects_mucals_tip}",
+      "class": "com.traction.settings.TextInput",
+      "usedefault": "false",
+      "default": "",
+      "sdleditor": "com.traction.sdl.admin.settings#textarea_with_base64_hidden",
+      "hide": "false",
+      "transform": "none",
+      "rows": "2",
+      "cols": "100",
+      "wrap": "wrap"
+    },
+    "calendarholidaysweekends_enabled": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_calendarholidaysweekends_enabled_display_name}",
+      "description": "#{@fullcalendar#setting_calendarholidaysweekends_enabled_description}",
+      "tip": "#{@fullcalendar#setting_calendarholidaysweekends_enabled_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "false",
+      "usedefault": "true"
+    },
+    "calendarholidaysweekends_tag_prefix": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_calendarholidaysweekends_tag_prefix_display_name}",
+      "description": "#{@fullcalendar#setting_calendarholidaysweekends_tag_prefix_description}",
+      "tip": "#{@fullcalendar#setting_calendarholidaysweekends_tag_prefix_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "usedefault": "true",
+      "default": "#{@fullcalendar#setting_calendarholidaysweekends_tag_prefix_default}"
+    },
+    "calendarholidaysweekends_text_color": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_calendarholidaysweekends_text_color_display_name}",
+      "description": "#{@fullcalendar#setting_calendarholidaysweekends_text_color_description}",
+      "tip": "#{@fullcalendar#setting_calendarholidaysweekends_text_color_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#colorinput",
+      "size": "10",
+      "usedefault": "true",
+      "default": "#fff"
+    },
+    "calendarholidaysweekends_bg_color": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_calendarholidaysweekends_bg_color_display_name}",
+      "description": "#{@fullcalendar#setting_calendarholidaysweekends_bg_color_description}",
+      "tip": "#{@fullcalendar#setting_calendarholidaysweekends_bg_color_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#colorinput",
+      "size": "10",
+      "usedefault": "true",
+      "default": "crimson"
+    }
+  },
+  "config/settings/props/project": {
+    "fullcalendar_pagedesc_project_cal": {
+      "display_name": "#{@fullcalendar#setting_fullcalendar_pagedesc_project_cal_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_pagedesc_project_cal_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_pagedesc_project_cal_tip}",
+      "class": "com.traction.settings.TextInput",
+      "usedefault": "false",
+      "default": "",
+      "sdleditor": "com.traction.sdl.admin.settings#textarea_with_base64_hidden",
+      "hide": "false",
+      "transform": "none",
+      "rows": "2",
+      "cols": "100",
+      "wrap": "wrap"
+    },
+    "fullcalendar_pagedesc_project_mucals": {
+      "display_name": "#{@fullcalendar#setting_fullcalendar_pagedesc_project_mucals_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_pagedesc_project_mucals_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_pagedesc_project_mucals_tip}",
+      "class": "com.traction.settings.TextInput",
+      "usedefault": "false",
+      "default": "",
+      "sdleditor": "com.traction.sdl.admin.settings#textarea_with_base64_hidden",
+      "hide": "false",
+      "transform": "none",
+      "rows": "2",
+      "cols": "100",
+      "wrap": "wrap"
+    }
+  },
+  "config/settings/props/user": {
+    "fullcalendar_views": {
+      "class": "com.traction.settings.Select",
+      "options": "month,basicDay,basicSevenDays,basicWeek,basicTwoWeeks,agendaDay,agendaWeek,agendaSevenDays,listDay,listWeek,listMonth,listYear",
+      "option_month_label": "#{@fullcalendar#setting_fullcalendar_views_option_month_label}",
+      "option_basicDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_basicDay_label}",
+      "option_basicSevenDays_label": "#{@fullcalendar#setting_fullcalendar_views_option_basicSevenDays_label}",
+      "option_basicWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_basicWeek_label}",
+      "option_basicTwoWeeks_label": "#{@fullcalendar#setting_fullcalendar_views_option_basicTwoWeeks_label}",
+      "option_agendaDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_agendaDay_label}",
+      "option_agendaWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_agendaWeek_label}",
+      "option_agendaSevenDays_label": "#{@fullcalendar#setting_fullcalendar_views_option_agendaSevenDays_label}",
+      "option_listDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_listDay_label}",
+      "option_listWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_listWeek_label}",
+      "option_listMonth_label": "#{@fullcalendar#setting_fullcalendar_views_option_listMonth_label}",
+      "option_listYear_label": "#{@fullcalendar#setting_fullcalendar_views_option_listYear_label}",
+      "ordered": "true",
+      "sorted": "true",
+      "selecttype": "multi",
+      "sdleditor": "com.traction.sdl.admin.settings#groupselect",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_views_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_views_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_views_tip}",
+      "usedefault": "true",
+      "default": "month,agendaWeek,agendaSevenDays,listMonth"
+    },
+    "fullcalendar_gcal_apikey": {
+      "class": "com.traction.settings.TextInput",
+      //"display_name": "#{@fullcalendar#setting_fullcalendar_gcal_apikey_display_name}",
+      "display_name": "",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_apikey_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_gcal_apikey_tip}",
+      "size": "80",
+      "usedefault": "false",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel"
+    },
+    "fullcalendar_gcal_displayname1": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_displayname1_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_displayname1_description}",
+      "size": "80",
+      "transform": "textonly",
+      "usedefault": "true",
+      "default": "#{@fullcalendar#setting_fullcalendar_gcal_displayname1_default}",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel"
+    },
+    "fullcalendar_gcal_displayname2": {
+      "__inherits": "fullcalendar_gcal_displayname1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_displayname2_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_displayname2_description}",
+      "default": "#{@fullcalendar#setting_fullcalendar_gcal_displayname2_default}"
+    },
+    "fullcalendar_gcal_displayname3": {
+      "__inherits": "fullcalendar_gcal_displayname1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_displayname3_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_displayname3_description}",
+      "default": "#{@fullcalendar#setting_fullcalendar_gcal_displayname3_default}"
+    },
+    "fullcalendar_gcal_displayname4": {
+      "__inherits": "fullcalendar_gcal_displayname1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_displayname4_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_displayname4_description}",
+      "default": "#{@fullcalendar#setting_fullcalendar_gcal_displayname4_default}"
+    },
+    "fullcalendar_gcal_source1": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_source1_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_source1_description}",
+      "size": "80",
+      "transform": "textonly",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel"
+    },
+    "fullcalendar_gcal_source2": {
+      "__inherits": "fullcalendar_gcal_source1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_source2_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_source2_description}"
+    },
+    "fullcalendar_gcal_source3": {
+      "__inherits": "fullcalendar_gcal_source1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_source3_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_source3_description}"
+    },
+    "fullcalendar_gcal_source4": {
+      "__inherits": "fullcalendar_gcal_source1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_source4_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_source4_description}"
+    },
+    "fullcalendar_gcal_color1": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_color1_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_color1_description}",
+      "sdleditor": "com.traction.sdl.admin.settings#colorinput",
+      "size": "10",
+      "usedefault": "true",
+      "default": "#fff"
+    },
+    "fullcalendar_gcal_color2": {
+      "__inherits": "fullcalendar_gcal_color1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_color2_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_color2_description}",
+      "default": "#fff"
+    },
+    "fullcalendar_gcal_color3": {
+      "__inherits": "fullcalendar_gcal_color1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_color3_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_color3_description}",
+      "default": "#fff"
+    },
+    "fullcalendar_gcal_color4": {
+      "__inherits": "fullcalendar_gcal_color1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_color4_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_color4_description}",
+      "default": "#fff"
+    },
+    "fullcalendar_gcal_bgcolor1": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_bgcolor1_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_bgcolor1_description}",
+      "sdleditor": "com.traction.sdl.admin.settings#colorinput",
+      "size": "10",
+      "usedefault": "true",
+      "default": "#f44336"
+    },
+    "fullcalendar_gcal_bgcolor2": {
+      "__inherits": "fullcalendar_gcal_bgcolor1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_bgcolor2_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_bgcolor2_description}",
+      "default": "#2196F3"
+    },
+    "fullcalendar_gcal_bgcolor3": {
+      "__inherits": "fullcalendar_gcal_bgcolor1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_bgcolor3_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_bgcolor3_description}",
+      "default": "#4CAF50"
+    },
+    "fullcalendar_gcal_bgcolor4": {
+      "__inherits": "fullcalendar_gcal_bgcolor1",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_gcal_bgcolor4_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_gcal_bgcolor4_description}",
+      "default": "#795548"
+    },
+    "fc_mucals_views": {
+      "__inherits": "fullcalendar_views",
+      "display_name": "#{@fullcalendar#setting_fc_mucals_views_display_name}",
+      "description": "#{@fullcalendar#setting_fc_mucals_views_description}",
+      "tip": "#{@fullcalendar#setting_fc_mucals_views_tip}",
+      "default": "basicSevenDays,basicTwoWeeks,agendaSevenDays,month"
+    },
+    "fullcalendar_display_title_tip": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_display_title_tip_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_display_title_tip_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_display_title_tip_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "false",
+      "usedefault": "true"
+    },
+    "fc_mucals_my_calendar_first": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_fc_mucals_my_calendar_first_display_name}",
+      "description": "#{@fullcalendar#setting_fc_mucals_my_calendar_first_description}",
+      "tip": "#{@fullcalendar#setting_fc_mucals_my_calendar_first_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "true",
+      "usedefault": "true"
+    },
+    "fc_mucals_default_group": {
+      "class": "com.traction.settings.Select",
+      "display_name": "#{@fullcalendar#setting_fc_mucals_default_group_display_name}",
+      "description": "#{@fullcalendar#setting_fc_mucals_default_group_description}",
+      "tip": "#{@fullcalendar#setting_fc_mucals_default_group_tip}",
+      "options": "following,followers,allusers,none",
+      "option_following_label": "#{following_box_default_title}",
+      "option_followers_label": "#{followers_box_default_title}",
+      "option_allusers_label": "#{@fullcalendar#group_option_All_Users_label}",
+      "option_none_label": "#{None}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "usedefault": "true",
+      "default": "following"
+    },
+    "fullcalendar_eventLimit": {
+      "class": "com.traction.settings.Select",
+      "options": "0,3,5,10,15",
+      "option_0_label": "#{@fullcalendar#setting_fullcalendar_eventLimit_option_0_label}",
+      "option_3_label": "#{@fullcalendar#setting_fullcalendar_eventLimit_option_3_label}",
+      "option_5_label": "#{@fullcalendar#setting_fullcalendar_eventLimit_option_5_label}",
+      "option_10_label": "#{@fullcalendar#setting_fullcalendar_eventLimit_option_10_label}",
+      "option_15_label": "#{@fullcalendar#setting_fullcalendar_eventLimit_option_15_label}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_eventLimit_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_eventLimit_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_eventLimit_tip}",
+      "usedefault": "true",
+      "default": "5"
+    },
+    "fullcalendar_contentHeight_auto": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_contentHeight_auto_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_contentHeight_auto_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_contentHeight_auto_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "false",
+      "usedefault": "true"
+    },
+    "fullcalendar_height_standard_cal": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_standard_cal_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_standard_cal_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_standard_cal_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "600",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel"
+    },
+    "fullcalendar_height_standard_basicMonth": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_standard_basicMonth_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_standard_basicMonth_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_standard_basicMonth_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "600",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_standard_basicWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_standard_basicWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_standard_basicWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_standard_basicWeek_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "120",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_standard_basic2Weeks": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_standard_basic2Weeks_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_standard_basic2Weeks_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_standard_basic2Weeks_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "240",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_standard_agendaWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_standard_agendaWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_standard_agendaWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_standard_agendaWeek_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "600",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_standard_list": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_standard_list_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_standard_list_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_standard_list_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "600",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_mucals_basicMonth": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_mucals_basicMonth_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_mucals_basicMonth_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_mucals_basicMonth_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "600",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_mucals_basicWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_mucals_basicWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_mucals_basicWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_mucals_basicWeek_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "120",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_mucals_basic2Weeks": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_mucals_basic2Weeks_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_mucals_basic2Weeks_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_mucals_basic2Weeks_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "240",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_mucals_agendaWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_mucals_agendaWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_mucals_agendaWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_mucals_agendaWeek_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "400",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_height_mucals_list": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_height_mucals_list_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_height_mucals_list_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_height_mucals_list_tip}",
+      "size": "8",
+      "numeric": "true",
+      "units": "px",
+      "default": "240",
+      "min": "80",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_aspectRatio": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_aspectRatio_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_aspectRatio_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_aspectRatio_tip}",
+      "size": "8",
+      "numeric": "true",
+      "default": "1.35",
+      "min": "0",
+      "max": "100",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_belowlabel"
+    },
+    "fullcalendar_pagedesc_userprofile_cal": {
+      "display_name": "#{@fullcalendar#setting_fullcalendar_pagedesc_userprofile_cal_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_pagedesc_userprofile_cal_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_pagedesc_userprofile_cal_tip}",
+      "class": "com.traction.settings.TextInput",
+      "usedefault": "false",
+      "default": "",
+      "sdleditor": "com.traction.sdl.admin.settings#textarea_with_base64_hidden",
+      "hide": "false",
+      "transform": "none",
+      "rows": "2",
+      "cols": "100",
+      "wrap": "wrap"
+    }
+  }
+}

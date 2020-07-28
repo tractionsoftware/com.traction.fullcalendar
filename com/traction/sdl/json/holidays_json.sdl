@@ -1,0 +1,99 @@
+<!---
+
+      Copyright 1996-2020 Traction Software, Inc.
+
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+
+-->
+
+<!--- PLEASE DO NOT DELETE THIS LINE - make copyright depends on it. -->
+
+<#page />
+
+<sdl.function name="page">
+  <!--- #set-holiday-dates / -->
+  <!--- #set-holiday-names / -->
+  <#set-holidays />
+  <#render />
+</sdl.function>
+
+<sdl.function name="set-holidays">
+
+  <var name="this_year" value="__calendar.sdate.date.year__" />
+  <var name="prev_year" value="<jeval>__calendar.sdate.date.year__ - 1</jeval>" />
+  <var name="next_year" value="<jeval>__calendar.sdate.date.year__ + 1</jeval>" />
+  <var name="prefix" value="<config.db.value name='calendarholidaysweekends_tag_prefix' default='hoildays' />" />
+
+  <global name="holidayDates" value="" /><!--- comma separated list -->
+  <global.init name="holidayNames" /><!--- array -->
+
+
+      <entries proj="*" type="cat" cat="::*:${prefix}:*" volume="full" edate="all">
+        <items skip="1">
+          <var.set name="i"><transform.html2plaintext withEntities="false">__item.content__</transform.html2plaintext></var.set>
+          <regex.matches regex="^[0-9]{4}-[01]?[0-9]-[0-3]?[0-9]\s.+" input="${i}" max="1">
+            <var.set name="year">
+              <regex.replace regex="^([0-9]{4})-([01]?[0-9])-([0-3]?[0-9])\s+(.+)" replace="$1">${i}</regex.replace>
+            </var.set>
+            <var.set name="month">
+              <regex.replace regex="^([0-9]{4})-([01]?[0-9])-([0-3]?[0-9])\s+(.+)" replace="$2">${i}</regex.replace>
+            </var.set>
+            <var.set name="day">
+              <regex.replace regex="^([0-9]{4})-([01]?[0-9])-([0-3]?[0-9])\s+(.+)" replace="$3">${i}</regex.replace>
+            </var.set>
+            <var.set name="date">
+              ${year}-<compare.lessthan "${month}" "10">0</compare.lessthan>${month}-<compare.lessthan "${day}" "10">0</compare.lessthan>${day}
+            </var.set>
+            <var.set name="name">
+              <regex.replace regex="^([0-9]{4}-[01]?[0-9]-[0-3]?[0-9])\s+(.+)" replace="$2">${i}</regex.replace>
+            </var.set>
+
+            <global.set name="holidayDates">
+              <join separator=",">${holidayDates}__join.separator__${date}</join>
+            </global.set>
+
+            <global.set name="holidayNames" index="${date}" value="${name}" />
+
+          </regex.matches>
+        </items>
+      </entries>
+
+</sdl.function>
+
+<sdl.function name="render">
+
+  <!--- console>holidayDates = ${holidayDates}</console>
+  <console>holidayNames = ${holidayNames}</console -->
+
+  <var.set name="data">
+    <join separator=",">
+      <foreach list="${holidayDates}">
+        {
+          "title": "<json.encode><global.value name="holidayNames" index="__foreach.current__" /></json.encode>"__join.separator__
+          "start": "__foreach.current__"__join.separator__
+          <!--- "end": "__foreach.current__"__join.separator__ -->
+
+          "end": "<date.parser parseformat="yyyy-MM-dd" parsetimezone="current" dateformat="yyyy-MM-dd" allday="false" offset="86400000">__foreach.current__</date.parser>"__join.separator__
+
+          "allDay": true__join.separator__
+          "tpAllDay": false__join.separator__
+          "className": "holiday"
+        }__join.separator__
+      </foreach>
+    </join>
+  </var.set>
+  <var.empty name="data" not>
+    [ ${data} ]
+  </var.empty>
+
+</sdl.function>

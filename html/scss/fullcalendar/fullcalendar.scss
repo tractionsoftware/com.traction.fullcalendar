@@ -1,0 +1,112 @@
+@charset "utf-8";
+
+@import "../../../../../html/sass/globals/_material-design-colors";
+
+@mixin fontawesome_basic {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+$types: "task", "event", "goal", "milestone";
+
+@mixin task_todo_icon {
+  content: "\f096";
+}
+@mixin task_done_icon {
+  content: "\f046";
+}
+@mixin event_icon {
+  content: "\f073";
+}
+@mixin goal_icon {
+  content: "\f0ae";
+}
+@mixin milestone_icon {
+  content: "\f133";
+}
+@mixin phonenotes_icon {
+  content: "\f095";
+}
+
+// Task priority colors
+$p1color: #dea29e;
+$p2color: #f0c7a0;
+$p3color: #f0f08a;
+$p4color: #ddd;
+
+// Background colors of weekends
+$bgsun: #fff8f8;
+$bgsat: #f8ffff;
+
+.fc-daygrid-day {
+  .fc-daygrid-day-top {
+    justify-content:space-between;
+    .fc-day-add-links {
+      padding: 4px;
+      a {
+        &:first-child {
+          margin-left: 2px;
+        }
+        display: inline-block;
+        margin-right: 4px;
+        i.icon {
+          @include fontawesome_basic;
+          display: none;
+          width: 1.28571429em;
+          &:before {
+            speak: none;
+          }
+        }
+        .text {
+          display: none;
+        }
+      }
+      a.event i:before {
+        @include event_icon;
+      }
+      a.task i:before {
+        @include task_done_icon;
+      }
+      a.phonenotes i:before {
+        @include phonenotes_icon;
+      }
+    }
+  }
+  &:hover .fc-day-add-links a i.icon {
+    display: inline;
+  }
+}
+
+
+// External Drag and Drop (prototype)
+.calendar-container {
+  .kanban-canvas.external-events {
+    width: 320px;
+    float: left;
+  }
+  .fc-canvas-wrapper {
+    width: calc(100% - 320px);
+    float: left;
+  }
+  &:after {
+    content: " ";
+    display: table;
+    clear: both;
+  }
+}
+
+.fc-dragbase-wrapper {
+  width: 150px;
+  float: left;
+}
+.fc-canvas-wrapper {
+  width: calc(100% - 150px);
+  float: left;
+}
+.fc-linkcolor-placeholder {
+  clear: both;
+}

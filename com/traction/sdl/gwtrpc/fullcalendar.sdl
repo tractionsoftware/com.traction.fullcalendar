@@ -1,0 +1,867 @@
+<!---
+
+      Copyright 1996-2020 Traction Software, Inc.
+
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+
+-->
+
+<!--- PLEASE DO NOT DELETE THIS LINE - make copyright depends on it. -->
+
+<view.error>
+  <shared#view-error mainclassSubtype="multi" />
+<else>
+  <#page />
+</view.error>
+
+<sdl.function name="page">
+  <#html-title />
+  <tabs#data />
+  <gwt.rpc.view name="bd">
+    <#bodycolumn />
+    <#sidecolumn />
+  </gwt.rpc.view>
+</sdl.function>
+
+<sdl.function name="html-title">
+  <!--- The title is overwritten by the JavaScript code in the eventAfterAllRender callback. -->
+  <gwt.rpc.view name="title" title="<config.view.value name='htmltitle' />"></gwt.rpc.view>
+</sdl.function>
+
+<sdl.function name="bodycolumn">
+  <gwt.rpc.view name="BodyColumn" mainclass="<shared#main-class-proj className='view-calendar' />" contentclass="gutter">
+    <#body-heading />
+    <#body-main />
+    <com.traction.metrics.sdl.metrics#update />
+  </gwt.rpc.view><!--- BodyColumn -->
+</sdl.function>
+
+<sdl.function name="body-heading">
+  <gwt.rpc.view name="BodyHeading" key="heading" itemcount="" tags="" fave="false">
+    <gwt.rpc.property.set name="title">
+      <#calendar-title />
+      <!--- description -->
+      <variable.set name="pagedesc">
+        <#page-desc />
+      </variable.set>
+      <shared#general-pagedesc-inner />
+    </gwt.rpc.property.set>
+  </gwt.rpc.view><!--- BodyHeading -->
+  <gwt.rpc.view name="FilterMenu" key="heading" />
+</sdl.function>
+
+<sdl.function name="page-desc">
+    <compare.equals "<shared#current-project-name />" "*">
+      <compare.startswith "<config.view.value name='viewtype' />" "userprofile_">
+        <!--- User Profile Page: Viewtype = "cal" only -->
+        <#regex-page-desc desc="<#base64-decode-page-desc><config.user.value name='fullcalendar_pagedesc_userprofile_cal' /></#base64-decode-page-desc>" regex="(?m)(.*)(%userdisplayname%)(.*)" replace="$1__journalrequest.user.displayname__$3" />
+      <else>
+        <!--- All Spaces -->
+        <#base64-decode-page-desc>
+          <config.db.value name='fullcalendar_pagedesc_allprojects_cal' />
+        </#base64-decode-page-desc>
+      </compare.startswith>
+    <else>
+      <!--- Single Space -->
+      <#regex-page-desc desc="<#base64-decode-page-desc><config.project.value name='fullcalendar_pagedesc_project_cal' /></#base64-decode-page-desc>" regex="(?m)(.*)(%projectdisplayname%)(.*)" replace="$1__journalrequest.project.displayname__$3" />
+    </compare.equals>
+</sdl.function>
+
+<sdl.function name="base64-decode-page-desc">
+  <base64.decode>
+    <*yield />
+  </base64.decode>
+</sdl.function>
+
+<sdl.function name="regex-page-desc">
+  <regex.replace regex="${regex}" replace="${replace}">${desc}</regex.replace>
+</sdl.function>
+
+<sdl.function name="body-main">
+  <gwt.rpc.view name="HTML">
+    <!--- #calendar-loading-status / -->
+    <shared#search-expression />
+    <div class="calendar-container">
+      <#calendar-external-dragbase-back />
+      <!--- To execlude specific types of entries, the journalrequest tag with the search= parameter was required. JPBO18017 -->
+      <journalrequest search="<#calendar-search-expression />">
+        <#calendar-entries targetUserId="" />
+      </journalrequest>
+    </div>
+    <#calendar-linkcolor-placeholder />
+    <#calendar-entry-rg-placeholder />
+  </gwt.rpc.view><!--- HTML -->
+</sdl.function>
+
+<!--- To execlude specific types of entries, the journalrequest tag with the search= parameter was required. JPBO18017 -->
+<sdl.function name="calendar-search-expression">
+  <var.set name="exp">
+    <join separator=" AND ">
+      <#calendar-search-expression-add />
+      __join.separator__
+      <journalrequest.searchactive>
+        __journalrequest.search.infixexpression__
+      </journalrequest.searchactive>
+    </join>
+  </var.set>
+  <var.empty name="exp" not>
+    (${exp})
+  </var.empty>
+</sdl.function>
+
+<sdl.function name="calendar-search-expression-add">
+  <!--- Plugin creators can override this function to set/add new conditions to apply additional filters. -->
+</sdl.function>
+
+<sdl.function name="calendar-loading-status">
+  <div id="fc-loading-status" class="on">
+    <div class="wrapper">
+      <img src="/images/loading-black.gif" />
+    </div>
+  </div>
+</sdl.function>
+
+<sdl.function name="calendar-linkcolor-placeholder">
+  <div id="fc-linkcolor-placeholder">
+    <a href="javascript:void(0);">fullCalendar</a>
+  </div>
+</sdl.function>
+
+<sdl.function name="calendar-entry-rg-placeholder">
+  <!--- The rg= parameter is required to have the Change Tags dialog pick up the entries.
+        See JPBO16438 or JPBO16439 for details. -->
+  <div id="fc-entry-rg-placeholder">
+  </div>
+</sdl.function>
+
+<!--- The calendar-search-expression,
+      which is normally used to include/exclude a specific entry index type and apply filters,
+      whould be executed outside of this function. -->
+<sdl.function name="calendar-entries">
+  <var.set name="fcCanvasId"><#fc-canvas-id /></var.set>
+  <var.set name="fcViews"><journalrequest.user><config.user.value name="fullcalendar_views" /></journalrequest.user></var.set>
+  <div class="fc-canvas-wrapper entries <config.view.value name='viewtype' />">
+    <#display-calendar />
+  </div>
+</sdl.function>
+
+<sdl.function name="display-calendar">
+  <plugin name="com.traction.jsonapi" requireenabled="true" not>
+    <div class="warning">FullCalenar requires the JSON API plug-in (com.traction.jsonapi) to be installed and enabled. Please check the plug-in in Server Settings &gt; Plugins page.</div>
+  </plugin>
+  <#draw-fullcalendar />
+</sdl.function>
+
+<sdl.function name="draw-fullcalendar">
+  <div id="<var.value name='fcCanvasId' default='fullcalendar' />" class="fc-canvas <var.value name='fcCanvasClass' default='<config.view.value name=viewtype />' />"></div>
+  <#fullcalendar-script />
+</sdl.function>
+
+<sdl.function name="fc-canvas-id">
+  fullcalendar<switch value="<config.view.value name='viewtype' />">
+    <case value="cal">-proj-<compare.equals "<shared#current-project-id />" "*">all<else><shared#current-project-id /></compare.equals></case>
+    <case value="userprofile_cal">-user-__journalrequest.user.id__</case>
+    <case value="single">
+      <switch value="__entry.customentrytype__">
+        <case value="goal">-goal-__entry.tractionid.fqid__</case>
+        <case value="milestone">-milestone-__entry.tractionid.fqid__</case>
+        <case.default>-entry-__entry.fqid__</case.default>
+      </switch>
+    </case>
+    <case value="goal_cal" value="goal_dashboard">-goal-__entry.tractionid.fqid__</case>
+    <case value="milestone_cal" value="milestone_dashboard">-milestone-__entry.tractionid.fqid__</case>
+    <case value="home">-home</case>
+    <case value="np">-np-<shared#current-project-id /></case>
+  </switch>
+</sdl.function>
+
+<sdl.function name="fullcalendar-script">
+  <script>
+    <!--- The value (0 or 1) of the &ts= parameter, which controls whether the completed items
+          are displayed on the calendar or not, is returned from Proteus.FilterControls.hasFilter
+          if the calendar_view view property is set to be "events".
+          If the view property is set to be "navigation", Proteus.FilterControls.hasFilter returns nothing.
+          In those "navigation" views such as goal_dashboard, the value of the &ts= parameter should be
+          obtained from the URL parameter.
+          Please refer to Proteus15557 for details. [July 22, 2018. Takashi] -->
+    var tpSourceURL = '/traction?type=fullcalendar_json&proj=<shared#current-project-id />' + '<scope.hasentry>&fqid=__entry.tractionid.fqid__</scope.hasentry>' + <compare.equals "<tasks#tasklist-controls-box-showcompleted-onclick />" "events">getCurrentFilterToggleState()<else>'&ts=<url.param name="ts" default="1" />'</compare.equals><var.empty name="targetUserId" not> + '&rec=<var.value name="targetUserId" default="" />&tu=${targetUserId}'</var.empty><journalrequest.searchactive> + '&find=__journalrequest.search.prefixexpression__'</journalrequest.searchactive>;
+
+
+    var locale = '<regex.replace regex="(^.+)_(.+$)" replace="$1-$2"><locales><locale.current>__locale.name__</locale.current></locales></regex.replace>';
+
+    var firstDay = <plugin name="com.traction.calendar1stdayofweek" requireenabled="true">
+      <journalrequest.user>
+        <switch value="<config.user.value name='calendar_firstdayofweek_sunmon' default='auto'>">
+          <case value="1"><!--- Sunday -->0</case>
+          <case value="2"><!--- Monday -->1</case>
+          <case.default>0</case.default>
+        </switch>
+      </journalrequest.user>
+    <else>
+      0
+    </plugin>;
+
+    var tpSourceId = 'teampage';
+    var tpDraggableId = 'external-events';
+
+    var arg = {
+      "fcCanvasId": "${fcCanvasId}",
+      "locale": locale,
+      "firstDay": firstDay,
+      "tpSourceURL": tpSourceURL,
+      "tpSourceId": tpSourceId,
+      "tpDraggableId": tpDraggableId,
+      "showAddTask": "<#newtask-show-icon />",
+      "showAddEvent": "<#newtask-show-icon />",
+      "showAddPhoneNotes": "<#newphonenotes-show-icon />",
+      "rgParamTaskPostProj": "<#newtask-target-space />",
+      "rgParamEventPostProj": "<#newevent-target-space />",
+      "rgParamPhoneNotesPostProj": "<#newphonenotes-target-space />",
+      "rgParamTaskFormName": "<var.value name='add_task_form_name' default='taskdialog' />",
+      "rgParamEventFormName": "<var.value name='add_event_form_name' default='eventdialog' />",
+      "rgParamPhoneNotesFormName": "<var.value name='add_phonenotes_form_name' default='phonenotes' />",
+      "rgParamTaskFormTitle": "<var.value name='add_task_form_title' default='#{gwtrpc_new_task}' />",
+      "rgParamEventFormTitle": "<var.value name='add_event_form_title' default='#{gwtrpc_new_event}' />",
+      "rgParamPhoneNotesFormTitle": "<var.value name='add_phonenotes_form_title' default='#{@phonenotes#addmenu_text}' />",
+      "rgParamTaskTags": "<#newevent-add-tags />",
+      "rgParamEventTags": "<#newtask-add-tags />",
+      "rgParamPhoneNotesTags": "<#newphonenotes-add-tags />",
+      "rgParamNewPmEntryDefaults": "<#form-rg-newentry-pm-defaults />"
+
+    };
+
+    fcRenderCalendar(arg);
+
+  </script>
+</sdl.function>
+
+<sdl.function name="newtask-show-icon">
+  <var.set name="showIcon">
+    <viewaction name="NewTask" forceinclude="true">
+      <var.boolean name="display_add_task_icon" default="true">
+        <config.db.boolean name="calendaraddlinks_show_task_icon">
+          true
+        </config.db.boolean>
+      </var.boolean>
+    </viewaction>
+  </var.set>
+  <var.empty name="showIcon">
+    false
+  <else>
+    ${showIcon}
+  </var.empty>
+</sdl.function>
+
+<sdl.function name="newevent-show-icon">
+  <var.set name="showIcon">
+    <viewaction name="NewEvent" forceinclude="true">
+      <var.boolean name="display_add_event_icon" default="true">
+        <config.db.boolean name="calendaraddlinks_show_event_icon">
+          true
+        </config.db.boolean>
+      </var.boolean>
+    </viewaction>
+  </var.set>
+  <var.empty name="showIcon">
+    false
+  <else>
+    ${showIcon}
+  </var.empty>
+</sdl.function>
+
+<sdl.function name="newphonenotes-show-icon">
+  <var.set name="showIcon">
+    <viewaction name="NewPhoneNotes" forceinclude="true">
+      <var.boolean name="display_add_phonenotes_icon" default="true">
+        <config.db.boolean name="calendaraddlinks_show_phonenotes_icon">
+          true
+        </config.db.boolean>
+      </var.boolean>
+    </viewaction>
+  </var.set>
+  <var.empty name="showIcon">
+    false
+  <else>
+    ${showIcon}
+  </var.empty>
+</sdl.function>
+
+<sdl.function name="google-calendar-loader-and-controller">
+  <!--- SDL designers can prevent Google Calendar items from being displayed in a particular calendar. -->
+
+  <!--- Display the checkboxes which controls showing/hiding the google calendar events. -->
+  fcDisplayGcalCheckboxes(gcal1,gcal2,gcal3,gcal4);
+  fcInitGoogleCalendarOnLoad(gcal1,gcal2,gcal3,gcal4);
+  <!--- Show and Hide the selected Google Calendar events from the FullCalendar canvas. -->
+  $('#calendar-controls .gcal-CheckBox input').off('click').on('click', function(){
+    if ($(this).is(':checked')) {
+      var chkboxId = $(this).attr('id');
+      var className = chkboxId;
+      $('.fc-canvas').each(function(){
+        var fcCanvasId = $(this).attr('id');
+        fcAddGoogleCalendar(fcCanvasId, eval(chkboxId + '[0]'), className, eval(chkboxId + '[2]'), eval(chkboxId + '[3]'));
+        <!--- Cookie name is gcal1show, gcal2show, gcal3show ... -->
+        fcSaveGcalCheckboxStatus(chkboxId + 'show', true);
+      });
+    } else {
+      var chkboxId = $(this).attr('id');
+      $('.fc-canvas').each(function(){
+        var fcCanvasId = $(this).attr('id');
+        fcRemoveGoogleCalendar(fcCanvasId, eval(chkboxId + '[0]'), chkboxId);
+        <!--- Cookie name is gcal1show, gcal2show, gcal3show ... -->
+        fcSaveGcalCheckboxStatus(chkboxId + 'show', false);
+      });
+    }
+  });
+</sdl.function>
+
+<sdl.function name="additional-add-button-html">
+  <!--- To Developers: If you want to diaplay an additional Add button(s) in your calendar, you can set its HTML code here.
+  Example:
+  <js.encode><a class="special-event" rg="a#form&form=specialevent<#newentry-target-space />&default_property_due=</js.encode>' + startdate + '<js.encode>&onsave=rv&html=Special Event" href="javascript:void(0);" title="New Special Event"><i class="icon"></i><span class="text">Add New Special Event</span></a></js.encode>
+        -->
+</sdl.function>
+
+<sdl.function name="apply-pagetitle-to-other-calendar-pages">
+  <!--- To Developers: If you want to apply the value of the "pageTitle" variable (e.g. Oct 2017) to the title of your calendar view,
+        override this function with a jQuery code that override the default page title of your calender view.
+        Example: $('.view-your-calendar-name #title-info h2 .calendar-title').html(pageTitle);
+        -->
+</sdl.function>
+
+<sdl.function name="user-event-limit">
+  <journalrequest.user>
+    <var.set name="max"><config.user.value name='fullcalendar_eventLimit' default='5' /></var.set>
+    <switch value="${max}">
+      <case value="0">false</case>
+      <case.default>${max}</case.default>
+    </switch>
+  </journalrequest.user>
+</sdl.function>
+
+<sdl.function name="pagetitle-override-htmltitle-or-calendartitle">
+  <!--- If the variable "alreadySet" is set to "true" in the other plugin(s), skip this function. -->
+  <var.boolean name="alreadySet" default="false" not>
+    <compare.equals "<config.view.value name='viewtype' />" "single" "goal_cal" "milestone_cal" "goal_dashboard" "milestone_dashboard" "home" "np" not>
+      document.title = pageTitle;
+    <else>
+      $('.fc-canvas:first .fc-center h2').text(pageTitle);
+    </compare.equals>
+  </var.boolean>
+</sdl.function>
+
+<sdl.function name="save-cookies-view-daterange">
+  <switch value="<config.view.value name='viewtype' />">
+    <case value="cal" value="userprofile_cal" value="goal_cal" value="milestone_cal">
+      <#save-cookies-view-daterange-normal />
+    </case>
+    <case value="mucals">
+      <#save-cookies-view-daterange-mucals />
+    </case>
+    <case.default></case.default>
+  </switch>
+</sdl.function>
+
+<sdl.function name="save-cookies-view-daterange-normal">
+  document.cookie = 'fcStdViewName=' + view.name;
+  document.cookie = 'fcStdViewStart=' + view.intervalStart.format('YYYY-MM-DD');
+  document.cookie = 'fcStdViewEnd=' + view.intervalStart.format('YYYY-MM-DD');
+</sdl.function>
+
+<sdl.function name="save-cookies-view-daterange-mucals">
+  document.cookie = 'fcMucalsViewName=' + view.name;
+  document.cookie = 'fcMucalsViewStart=' + view.intervalStart.format('YYYY-MM-DD');
+  document.cookie = 'fcMucalsViewEnd=' + view.intervalStart.format('YYYY-MM-DD');
+</sdl.function>
+
+<sdl.function name="showhide-checkboxes-status">
+  <compare.equals "<config.view.value name='viewtype' />" "single" "goal_dashboard" "milestone_dashboard" "np" "home" "userprofile_dashboard">
+    <!--- Since these views don't have the check boxes, I had to set "false" to these parameters. Otherwise, the FullCalendar didn't show any events. -->
+    '&he=false&hp=false&ht=false&hm=false'
+  <else>
+    '&he=' + (!$('.chkbox-fc-showhide .event').is(':checked')) + '&hp=' + (!$('.chkbox-fc-showhide .goal').is(':checked')) + '&ht=' + (!$('.chkbox-fc-showhide .task').is(':checked')) + '&hm=' + (!$('.chkbox-fc-showhide .milestone').is(':checked'))
+  </compare.equals>
+</sdl.function>
+
+<sdl.function name="newevent-target-space">
+  <#newentry-target-space />
+</sdl.function>
+
+<sdl.function name="newtask-target-space">
+  <#newentry-target-space />
+</sdl.function>
+
+<sdl.function name="newphonenotes-target-space">
+  <#newentry-target-space />
+</sdl.function>
+
+<sdl.function name="newentry-target-space">
+  <!--- The fixedPostProjectID variable is used to fix the target post space.
+        Please refer to the com.traction.setpostproject plug-in. (JPBO19668) -->
+  <var.defined name="fixedPostProjectID">
+    <var.empty name="fixedPostProjectID" not>
+      &project=${fixedPostProjectID}
+    </var.empty>
+  <else>
+    <compare.equals "<shared#current-project-name />" "*" not>
+      &default_project=<shared#current-project-id />
+    <else>
+      <var.defined name="preferredPostProjectID">
+        <var.empty name="preferredPostProjectID" not>
+          &default_project=${preferredPostProjectID}
+        </var.empty>
+      </var.defined>
+    </compare.equals>
+  </var.defined>
+</sdl.function>
+
+<sdl.function name="newevent-add-tags">
+  <#newentry-add-tags tags="<config.db.value name='fullcalendar_add_tags_event' />" />
+</sdl.function>
+
+<sdl.function name="newtask-add-tags">
+  <#newentry-add-tags tags="<config.db.value name='fullcalendar_add_tags_task' />" />
+</sdl.function>
+
+<sdl.function name="newphonenotes-add-tags">
+  <#newentry-add-tags tags="<config.db.value name='fullcalendar_add_tags_phonenotes' />" />
+</sdl.function>
+
+<sdl.function name="newentry-add-tags">
+  &default_tags=${tags}
+</sdl.function>
+
+<sdl.function name="newentry-default-assignee">
+  <compare.startswith "<config.view.value name='viewtype' />" "userprofile_">
+    &default_property_assigned=__journalrequest.targetuser.id__
+  </compare.startswith>
+</sdl.function>
+
+<sdl.function name="form-rg-newentry-pm-defaults">
+  <compare.startswith "<config.view.value name='viewtype' />" "userprofile_">
+    &default_property_assigned=__journalrequest.targetuser.id__
+  </compare.startswith>
+  <view.mainentry>
+    <switch value="__entry.customentrytype__">
+      <case value="goal">
+        &default_goal=__entry.tractionid.fqid__
+      </case>
+      <case value="milestone">
+        &default_milestone=__entry.tractionid.fqid__<milestone.goal>&default_goal=__entry.tractionid.fqid__</milestone.goal>
+      </case>
+    </switch>
+  </view.mainentry>
+</sdl.function>
+
+<sdl.function name="additional-calendar-sources">
+  <config.db.boolean name="calendarholidaysweekends_enabled">
+    <#holidays-calendar-source />
+  </config.db.boolean>
+  <!--- The show/hide status is saved as cookies.
+        Since it can not be controled in the SDL level, I made up my mind to load/hide the Google Calender events in the Proteus' load event. -->
+  <!--- #google-calendar-sources / -->
+</sdl.function>
+
+<sdl.function name="holidays-calendar-source">
+  <!--- Requires the JSON API plug-in version 0.1.4 or higher. -->
+  ,{
+    url: '/traction?type=holidays_json&proj=*',
+    dataType: 'json',
+    id: 'holidays'
+  }
+</sdl.function>
+
+<sdl.function name="google-calendar-api">
+  <journalrequest.user>
+    <compare.equals "<config.user.value name='fullcalendar_gcal_apikey' />" "" trim="true" not>
+      googleCalendarApiKey: '<config.user.value name="fullcalendar_gcal_apikey" />',
+    </compare.equals>
+  </journalrequest.user>
+</sdl.function>
+
+<sdl.function name="google-calendar-sources">
+  <compare.equals "<config.user.value name='fullcalendar_gcal_apikey' />" "" trim="true" not>
+    <var.set name="data">
+      <join separator=",">
+        <repeat times="4">
+          <#google-calendar-source setting_num="__loop.index__" />__join.separator__
+        </repeat>
+      </join>
+    </var.set>
+    <var.empty name="data" not>
+      ,${data}
+    </var.empty>
+  </compare.equals>
+</sdl.function>
+
+<sdl.function name="google-calendar-source">
+  <journalrequest.user>
+    <var.set name="id" value="<config.user.value name='fullcalendar_gcal_source${setting_num}' />" />
+    <var.empty name="id" not>
+      {
+        <join separator=",">
+          googleCalendarId: '${id}'__join.separator__
+          className: 'gcal gcal${setting_num}'__join.separator__
+          <compare.equals "<config.user.value name='fullcalendar_gcal_color${setting_num}' />" "" trim="true" not>
+            textColor: '<config.user.value name="fullcalendar_gcal_color${setting_num}" />'__join.separator__
+          </compare.equals>
+          <compare.equals "<config.user.value name='fullcalendar_gcal_bgcolor${setting_num}' />" "" trim="true" not>
+            color: '<config.user.value name="fullcalendar_gcal_bgcolor${setting_num}" />'__join.separator__
+          </compare.equals>
+        </join>
+      }
+    </var.empty>
+  </journalrequest.user>
+</sdl.function>
+
+<sdl.function name="fullcalendar-default-viewname">
+  <var.set name="viewtype"><config.view.value name='viewtype' /></var.set>
+  <switch value="${viewtype}">
+    <case value="cal" value="userprofile_cal" value="goal_cal" value="milestone_cal">
+      <journalrequest.user>
+        <compare.equals "<config.user.value name='fullcalendar_views' />" "" trim="true">
+          fcDefaultView('${viewtype}', 'month')
+        <else>
+          fcDefaultView('${viewtype}', '<foreach list="<config.user.value name='fullcalendar_views' />"><loop.first>__foreach.current__</loop.first></foreach>')
+        </compare.equals>
+      </journalrequest.user>
+    </case>
+    <case value="mucals">
+      <journalrequest.user>
+        <compare.equals "<config.user.value name='fc_mucals_views' />" "" trim="true">
+          fcDefaultView('${viewtype}', 'basicSevenDays')
+        <else>
+          fcDefaultView('${viewtype}', '<foreach list="<config.user.value name='fc_mucals_views' />"><loop.first>__foreach.current__</loop.first></foreach>')
+        </compare.equals>
+      </journalrequest.user>
+    </case>
+    <case.default>
+      <!--- Goal and milestone dashboard "single" "goal_dashboard" "milestone_dashboard" -->
+      'basicTwoWeeks'
+    </case.default>
+  </switch>
+</sdl.function>
+
+<sdl.function name="fullcalendar-header">
+  left: '${fcViews}',
+  center: 'title',
+  right: 'prev,next today'
+</sdl.function>
+
+<!---
+    Calendar View Title
+-->
+<sdl.function name="calendar-title">
+  <div class="calendar-title">
+    <config.view.value name="viewname" />
+  </div>
+</sdl.function>
+
+<sdl.function name="calendar-date-year">
+  __calendar.sdate.date.year__
+</sdl.function>
+
+<sdl.function name="calendar-date-month">
+  <calendar year="__calendar.sdate.date.year__">
+    <calendar.month month="__calendar.sdate.date.month__" offset="0">
+      <date.parser parseformat="MM yyyy" parsetimezone="current" dateformat="#{dateformat_month_and_year}">__calendar.month.number__ __calendar.sdate.date.year__</date.parser>
+    </calendar.month>
+  </calendar>
+</sdl.function>
+
+<sdl.function name="calendar-date-week">
+  <calendar year="__calendar.sdate.date.year__">
+    <calendar.month month="__calendar.sdate.date.month__" offset="0">
+      <calendar.month.weeks>
+        <calendar.month.week.selected>
+          <calendar.month.week.days>
+            <loop.first>
+              <var.set name="first_year">__calendar.sdate.date.year__</var.set>
+              <var.set name="first_date">__calendar.month.week.day.date.month.name__ __calendar.month.week.day.date.day__</var.set>
+            </loop.first>
+            <loop.last>
+              <var.set name="last_year">__calendar.sdate.date.year__</var.set>
+              <var.set name="last_date">__calendar.month.week.day.date.month.name__ __calendar.month.week.day.date.day__</var.set>
+              <compare.equals "${first_year}" "${last_year}">
+                from ${first_date} to ${last_date}
+              <else>
+                from ${first_date} ${first_year} to ${last_date} ${last_year}
+              </compare.equals>
+            </loop.last>
+          </calendar.month.week.days>
+        </calendar.month.week.selected>
+      </calendar.month.weeks>
+    </calendar.month>
+  </calendar>
+</sdl.function>
+
+<sdl.function name="cal-height-standard-dashboard">
+  $('#${fcCanvasId}').fullCalendar('option', 'contentHeight', <config.user.value name="fullcalendar_height_standard_basic2Weeks" />);
+</sdl.function>
+
+<sdl.function name="cal-height-standard-cal">
+  // $('#${fcCanvasId}').fullCalendar('option', 'contentHeight', <config.user.value name="fullcalendar_height_standard_cal" />);
+  if ( view.name === 'month' ) {
+    var height = <config.user.value name="fullcalendar_height_standard_basicMonth" />;
+  } else if ( view.name === 'basicSevenDays' || view.name === 'basicWeek' ) {
+    var height = <config.user.value name="fullcalendar_height_standard_basicWeek" />;
+  } else if (view.name === 'basicTwoWeeks') {
+    var height = <config.user.value name="fullcalendar_height_standard_basic2Weeks" />;
+  } else if (view.name === 'agendaSevenDays' || view.name === 'agendaWeek') {
+    var height = <config.user.value name="fullcalendar_height_standard_agendaWeek" />;
+  } else if (view.name === 'listDay' || view.name === 'listWeek' || view.name === 'listMonth' || view.name === 'listYear' ) {
+    var height = <config.user.value name="fullcalendar_height_standard_list" />;
+  } else {
+    var height = 600;
+  }
+  $('#${fcCanvasId}').fullCalendar('option', 'contentHeight', height);
+</sdl.function>
+
+<sdl.function name="cal-height-mucals">
+  if ( view.name === 'month' ) {
+    var height = <config.user.value name="fullcalendar_height_mucals_basicMonth" />;
+  } else if ( view.name === 'basicSevenDays' || view.name === 'basicWeek' ) {
+    var height = <config.user.value name="fullcalendar_height_mucals_basicWeek" />;
+  } else if (view.name === 'basicTwoWeeks') {
+    var height = <config.user.value name="fullcalendar_height_mucals_basic2Weeks" />;
+  } else if (view.name === 'agendaSevenDays' || view.name === 'agendaWeek') {
+    var height = <config.user.value name="fullcalendar_height_mucals_agendaWeek" />;
+  } else if (view.name === 'listDay' || view.name === 'listWeek' || view.name === 'listMonth' || view.name === 'listYear' ) {
+    var height = <config.user.value name="fullcalendar_height_mucals_list" />;
+  } else {
+    var height = 400;
+  }
+  $('#${fcCanvasId}').fullCalendar('option', 'contentHeight', height);
+</sdl.function>
+
+<sdl.function name="cal-height-default">
+  $('#${fcCanvasId}').fullCalendar('option', 'contentHeight', 600);
+</sdl.function>
+
+<sdl.function name="calendar-date-day">
+  <calendar year="__calendar.sdate.date.year__">
+    <calendar.month month="__calendar.sdate.date.month__" offset="0">
+      <calendar.month.weeks>
+        <calendar.month.week.days>
+          <calendar.month.week.day.selected>
+            __calendar.sdate.date.year__ __calendar.month.week.day.date.month.name__ __calendar.month.week.day.date.day__
+          </calendar.month.week.day.selected>
+        </calendar.month.week.days>
+      </calendar.month.weeks>
+    </calendar.month>
+  </calendar>
+</sdl.function>
+
+<sdl.function name="calendar-date-2weeks">
+  2 Weeks
+</sdl.function>
+
+<sdl.function name="sidecolumn">
+  <gwt.rpc.view name="SideColumn">
+    <shared#addmenu firstOption="event" />
+    <gwt.rpc.view name="Uploads"></gwt.rpc.view>
+    <variable.local.set name="changeTagsRg" index="pageAction" value="calendar" />
+    <tasks#tasklist-controls-box />
+    <shared#calendar-controls />
+    <calendar#calendar-rss-box />
+    <shared#view-workinprogress-sidebox-deferred />
+  </gwt.rpc.view><!--- SideColumn -->
+</sdl.function>
+
+<sdl.function name="sidebox-tasklist-controls-old">
+  <gwt.rpc.view id="sidebox-tasklist-controls" name="SideBox" title="#{sidebox_tasklist_controls_title}">
+    <span class="chkbox-fc-showcompleted">
+      <label><input type="checkbox">#{gwtctrl_task_list_show_completed_checkbox_label}</label>
+    </span>
+    <var.boolean name="display_btn_change_tags" default="true">
+      <span class="btn-change-tags">
+        <a class="change-tags button" rg="a#form&amp;form=mrecat&amp;pageaction=calendar&amp;onsave=rv" href="javascript:">#{mrecat_change_tags_field_label}</a>
+      </span>
+    </var.boolean>
+  </gwt.rpc.view>
+</sdl.function>
+
+<sdl.function name="sidebox-tasklist-controls-new">
+  <gwt.rpc.view name="TaskListControls" title="#{sidebox_tasklist_controls_title}">
+    <variable.boolean name="changeTags" default="true">
+      <gwt.rpc.property.set name="changeTagsRg" value="a#form&form=<variable.value name='changeTagsRg' index='form' default='mrecat' />&pageaction=<variable.value name='changeTagsRg' index='pageAction' default='feed' />&onsave=<variable.value name='changeTagsRg' index='onSave' default='rv' />" />
+    </variable.boolean>
+    <gwt.rpc.view key="ShowCompleted" events="<#sidebox-tasklist-controls-events-value />"></gwt.rpc.view>
+    <scope.haslist>
+      <gwt.rpc.property.set name="list-context" value="__list.name__" />
+      <gwt.rpc.property.set name="list-ordered" value="<list.ordered>t<else>f</list.ordered>" />
+    </scope.haslist>
+  </gwt.rpc.view>
+</sdl.function>
+
+<sdl.function name="sidebox-tasklist-controls-events-value">
+  <config.view.boolean name="calendar_view">
+    <!--- In the "calendar_view" enabled views, the value should be true to get the event handler work. -->
+    true
+  <else>
+    false
+  </config.view.boolean>
+</sdl.function>
+
+<sdl.function name="sidebox-calendar-controls-old">
+  <gwt.rpc.view id="calendar-controls" name="SideBox" title="#{Show}">
+    <foreach list="goal,milestone,task,event">
+      <span class="chkbox-fc-showhide">
+        <label><input type="checkbox" class="__foreach.current__" checked="checked"><i18n.msg key="index_entry_type_type_filter_display_name_<$foreach.current$>" /></label>
+      </span>
+    </foreach>
+  </gwt.rpc.view>
+</sdl.function>
+
+<sdl.function name="sidebox-calendar-controls-new">
+  <gwt.rpc.view name="CalendarControls" events="<#sidebox-calendar-controls-events-value />">
+    <gwt.rpc.view key="filters" label="#{index_entry_type_type_filter_display_name_goal}" param="hp" class="goals"></gwt.rpc.view>
+    <gwt.rpc.view key="filters" label="#{index_entry_type_type_filter_display_name_milestone}" param="hm" class="milestones"></gwt.rpc.view>
+    <gwt.rpc.view key="filters" label="#{index_entry_type_type_filter_display_name_task}" param="ht" class="tasks"></gwt.rpc.view>
+    <gwt.rpc.view key="filters" label="#{index_entry_type_type_filter_display_name_event}" param="he" class="events"></gwt.rpc.view>
+  </gwt.rpc.view>
+</sdl.function>
+
+<sdl.function name="sidebox-calendar-controls-events-value">
+  <config.view.boolean name="calendar_view">
+    <!--- In the "calendar_view" enabled views, the value should be true to get the event handler work. -->
+    true
+  <else>
+    false
+  </config.view.boolean>
+</sdl.function>
+
+<!---
+  Dashboard Calendar on Home, NP, Goal, and Milestone
+-->
+<sdl.function name="dashboard-calendar">
+  <var.set name="fcCanvasId"><#fc-canvas-id /></var.set>
+  <variable.local.default name="title" value="#{gwtrpc_tab_calendar}" />
+  <variable.local.default name="tip" value="#{gwtrpc_dashboard_calendar_tip}" />
+  <#dashboard-heading href="${calendarUrl}" />
+
+  <div class="entries <config.view.value name='viewtype' />">
+    <#display-calendar />
+  </div>
+  <!--- #fullcalendar-script / -->
+</sdl.function>
+
+<sdl.function name="dashboard-heading">
+
+  <shared#dashboard-heading-addnew-onclick />
+  <shared#dashboard-heading-addnew-action />
+  <shared#dashboard-heading-addnew-link />
+
+  <var.value name="extraButtonContent" default="" />
+
+  <div class="sect-hd">
+    <h2>
+      <variable.value name="extra" default="" />
+      <variable.defined name="href">
+        <a href="${href}">
+      </variable.defined>
+      ${title}
+      <variable.defined name="href">
+        </a>
+      </variable.defined>
+    </h2>
+  </div>
+
+  <variable.defined name="tip">
+    <div class="sect-tip">${tip}</div>
+  </variable.defined>
+
+</sdl.function>
+
+<!---
+  Side Kanban boards that support Drag and Drop
+-->
+<sdl.function name="calendar-external-dragbase-back">
+  <div id="external-events" class="fc-dragbase-wrapper">
+    <h3>ドラッグ＆ドロップ</h3>
+
+    <var.set name="sql">select * from TSI_PM_DUE inner join TSI_PM_TASK on TSI_PM_DUE.FQID = TSI_PM_TASK.TASKID where DUE > timestamp('9999-12-01 00:00:00.0')<compare.equals "<shared#current-project-id />" "*" not> and PROJID = <shared#current-project-id /></compare.equals></var.set>
+
+    <db.connect>
+      <db.entries supportschunking="false"
+                  coltype="fqid"
+                  colname="FQID"
+                  obeySearchFilter="true"
+                  entries.url="__url.urlgen.here__"
+                  sql="${sql}">
+
+        <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-tractionid="__entry.tractionid__">
+          <div class="fc-event-main">__entry.titletext__</div>
+        </div>
+      </db.entries>
+    </db.connect>
+
+    <p>
+      <input type="checkbox" id="drop-remove">
+      <label for="drop-remove">remove after drop</label>
+    </p>
+  </div>
+</sdl.function>
+
+<sdl.function name="calendar-external-dragbase-kanban">
+
+  <global.init name="kanbanIncludeLabelName" /><!--- Example: todo,phase1 -->
+  <global.init name="kanbanExcludeLabelName" /><!--- Example: done,phase2,phase3,phase4 -->
+  <global.init name="kanbanBoardDisplayName" /><!--- Example: Waiting,Phase1,...,Completed -->
+  <global.set name="kanbanBoardIndexList" value="" /><!--- Example: 1,2,3,4,5... -->
+
+  <global.set name="kanbanIncludeLabelName" index="1">
+    todo
+  </global.set>
+  <global.set name="kanbanIncludeLabelName" index="2">
+    todo,standby
+  </global.set>
+  <global.set name="kanbanExcludeLabelName" index="1">
+    standby,done
+  </global.set>
+  <global.set name="kanbanExcludeLabelName" index="2">
+    done
+  </global.set>
+  <global.set name="kanbanBoardDisplayName" index="1">Just To Do</global.set>
+  <global.set name="kanbanBoardDisplayName" index="2">Stand-By</global.set>
+  <global.set name="kanbanBoardIndexList">1,2</global.set>
+
+  <!--- The ID of the Kanban board must be "external-events" since
+        it is the required ID for the external drag-n-drop feature. -->
+  <var.set name="kanbanId" value="external-events" />
+
+  <var.set name="dataBoards">
+    <join separator=",">
+      <foreach list="${kanbanBoardIndexList}" set="boardIndex"><!--- 1,2,3,4... -->
+        <var.set name="boardDisplayName"><global.value name="kanbanBoardDisplayName" index="${boardIndex}" /></var.set>
+        <var.set name="boardIncludeLabelName"><global.value name="kanbanIncludeLabelName" index="${boardIndex}" /></var.set>
+        <var.set name="boardExcludeLabelName"><global.value name="kanbanExcludeLabelName" index="${boardIndex}" /></var.set>
+        <var.set name="sql">
+          <com.traction.kanban.sdl.gwtrpc.kanban#board-sql />
+        </var.set>
+        <!--- For external drag-n-dropping, each kanban item should have the "fc-event" class. -->
+        <com.traction.kanban.sdl.gwtrpc.kanban#board-json itemAddClass="fc-event" />__join.separator__
+      </foreach>
+    </join>
+  </var.set>
+
+  <!--- console>kanbanIncludeLabelName = ${kanbanIncludeLabelName}</console>
+  <console>kanbanExcludeLabelName = ${kanbanExcludeLabelName}</console>
+  <console>kanbanBoardIndexList = ${kanbanBoardIndexList}</console>
+  <console>dataBoards = ${dataBoards}</console -->
+
+  <com.traction.kanban.sdl.gwtrpc.kanban#kanban-canvas kanbanClass="external-events" />
+  <com.traction.kanban.sdl.gwtrpc.kanban#kanban-script />
+  <com.traction.kanban.sdl.gwtrpc.kanban#kanban-colors />
+
+</sdl.function>

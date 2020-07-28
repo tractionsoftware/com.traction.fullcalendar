@@ -1,0 +1,453 @@
+plugin_display_name=フルカレンダー (FullCalendar)
+plugin_description=高機能なカレンダー <a href="https://fullcalendar.io">FullCalendar</a> を TeamPage に組み込みます。
+
+# View Configurations
+viewname_fullcalendar=カレンダー
+viewname_mucals=カレンダー
+
+# Tabs
+gwtrpc_tab_fullcalendar=カレンダー
+gwtrpc_subtab_standard_calendar=すべてのユーザー
+gwtrpc_subtab_multiple_user_calendars=グループ選択
+
+# Month Names
+January=1月
+February=2月
+March=3月
+April=4月
+May=5月
+June=6月
+July=7月
+August=8月
+September=9月
+October=10月
+November=11月
+December=12月
+Jan=1月
+Feb=2月
+Mar=3月
+Apr=4月
+May=5月
+Jun=6月
+Jul=7月
+Aug=8月
+Sep=9月
+Oct=10月
+Nov=11月
+Dec=12月
+
+# formatString is a combination of any of the following commands:
+#
+# s - seconds
+# ss - seconds, 2 digits
+# m - minutes
+# mm - minutes, 2 digits
+# h - hours, 12-hour format
+# hh - hours, 12-hour format, 2 digits
+# H - hours, 24-hour format
+# HH - hours, 24-hour format, 2 digits
+# d - date number
+# dd - date number, 2 digits
+# ddd - date name, short
+# dddd - date name, full
+# M - month number
+# MM - month number, 2 digits
+# MMM - month name, short
+# MMMM - month name, full
+# yy - year, 2 digits
+# yyyy - year, 4 digits
+# t - 'a' or 'p'
+# tt - 'am' or 'pm'
+# T - 'A' or 'P'
+# TT - 'AM' or 'PM'
+# u - ISO8601 format
+# S - 'st', 'nd', 'rd', 'th' for the date
+# W - the ISO8601 week number
+#
+# Special Characters:
+# '...' literal text
+# '' single quote (represented by two single quotes)
+# (...) only displays format if one of the enclosed variables is non-zero
+
+# Date Format
+titleformat_year=YYYY年
+titleformat_month_and_year=YYYY年 M月
+titleformat_month_and_day_and_year=YYYY年 M月 D日
+# アンダースコア（アンダーバー）記号を削除しないでください。カレンダー画面がロードされるときに半角スペースに変換されます。
+titleformat_range_separator=日_〜_
+datetimeformat_date_time=YYYY/MM/DD HH:mm
+datetimeformat_date=YYYY/MM/DD
+
+# The text that will be displayed on the calendar's column headings.
+# like 'Mon', for month view
+columnFormat_view_month=ddd
+# like 'Mon 9/7', for week views
+columnFormat_view_week=M/D ddd
+# like 'Monday', for day views
+columnFormat_view_day=dddd
+
+# The time-text that will be displayed on each event.
+# like '5:00', for the agenda views
+timeFormat_view_agenda=H:mm
+# like '7p', for all other views
+timeFormat_view_basic=H:mm
+
+# Status Messages (displayed in the bottom of the Proteus views)
+proteus_status_message_move_event_start_end=displayname + ' ' + id + ' を移動しました。 (開始日: ' + start + ' 終了日: ' + end + ')'
+proteus_status_message_move_event_date=displayname + ' ' + id + ' を移動しました。 (日付: ' + start + ')'
+
+proteus_status_message_move_pm_due=displayname + ' ' + id + ' を移動しました。 (締切日: ' + start + ')'
+proteus_status_message_move_pm_start_end=displayname + ' ' + id + ' を移動しました。 (開始日: ' + start + ' 終了日: ' + end + ')'
+proteus_status_message_resize_event_start_end=displayname + ' ' + id + ' を編集しました。 (開始日時: ' + start + ' 終了日時: ' + end + ')'
+
+proteus_status_message_close_task=displayname + ' ' + id + ' を完了しました。'
+proteus_status_message_reopen_task=displayname + ' ' + id + ' を再開しました。'
+
+# Mucals Form Labels
+group_selector_label=グループ選択:
+group_selector_optgroup_usergroupdefinition_label=ユーザー グループ
+group_selector_optgroup_project_label=スペース
+group_selector_optgroup_goal_label=プロジェクト
+group_selector_optgroup_follow_label=フォロー
+group_selector_optgroup_other_label=その他
+group_option_All_Users_label=すべてのユーザー
+
+# Mucals Button Text
+add_entry_for_all_users_label=全員の:
+Add_Event=予定を追加
+Add_Task=タスクを追加
+Add_Project=プロジェクトを追加
+Add_Milestone=マイルストーンを追加
+Add_PhoneNotes=電話メモを追加
+
+# Mucals Title Tips
+sect_hd_user_avatar_title_text=ユーザー {0} のプロフィール ダイアログを表示
+sect_hd_user_link_title_text=ユーザー {0} の月間カレンダーを表示
+title_info_user_link_text=ユーザー {0} のカレンダーへスクロール
+
+# Settings
+setting_fullcalendar_views_display_name=標準カレンダー: 選択可能なカレンダーの種類
+setting_fullcalendar_views_description=標準カレンダーで利用可能なカレンダーの種類を選択します。選択された種類に対応するボタンが、カレンダー画面の左上に表示されます。
+setting_fullcalendar_views_tip=
+setting_fullcalendar_views_option_month_label=月
+setting_fullcalendar_views_option_basicDay_label=日
+setting_fullcalendar_views_option_basicSevenDays_label=7 日
+setting_fullcalendar_views_option_basicWeek_label=週
+setting_fullcalendar_views_option_basicTwoWeeks_label=2 週
+setting_fullcalendar_views_option_agendaDay_label=日 アジェンダ
+setting_fullcalendar_views_option_agendaWeek_label=週 アジェンダ
+setting_fullcalendar_views_option_agendaSevenDays_label=7 日 アジェンダ
+setting_fullcalendar_views_option_listDay_label=日 リスト
+setting_fullcalendar_views_option_listWeek_label=週 リスト
+setting_fullcalendar_views_option_listMonth_label=月 リスト
+setting_fullcalendar_views_option_listYear_label=年 リスト
+
+setting_fullcalendar_gcal_apikey_display_name=Google カレンダー API キー
+setting_fullcalendar_gcal_apikey_description=カレンダーに読み込みたい Google カレンダーの API キーを指定します。
+setting_fullcalendar_gcal_apikey_tip=
+
+setting_fullcalendar_gcal_displayname1_display_name=表示名
+setting_fullcalendar_gcal_displayname1_description=
+setting_fullcalendar_gcal_displayname1_default=Google カレンダー 1
+setting_fullcalendar_gcal_displayname2_display_name=表示名
+setting_fullcalendar_gcal_displayname2_description=
+setting_fullcalendar_gcal_displayname2_default=Google カレンダー 2
+setting_fullcalendar_gcal_displayname3_display_name=表示名
+setting_fullcalendar_gcal_displayname3_description=
+setting_fullcalendar_gcal_displayname3_default=Google カレンダー 3
+setting_fullcalendar_gcal_displayname4_display_name=表示名
+setting_fullcalendar_gcal_displayname4_description=
+setting_fullcalendar_gcal_displayname4_default=Google カレンダー 4
+
+setting_fullcalendar_gcal_source1_display_name=カレンダー ID
+setting_fullcalendar_gcal_source1_description=
+setting_fullcalendar_gcal_source2_display_name=カレンダー ID
+setting_fullcalendar_gcal_source2_description=
+setting_fullcalendar_gcal_source3_display_name=カレンダー ID
+setting_fullcalendar_gcal_source3_description=
+setting_fullcalendar_gcal_source4_display_name=カレンダー ID
+setting_fullcalendar_gcal_source4_description=
+
+setting_fullcalendar_gcal_color1_display_name=テキストの色
+setting_fullcalendar_gcal_color1_description=
+setting_fullcalendar_gcal_color2_display_name=テキストの色
+setting_fullcalendar_gcal_color2_description=
+setting_fullcalendar_gcal_color3_display_name=テキストの色
+setting_fullcalendar_gcal_color3_description=
+setting_fullcalendar_gcal_color4_display_name=テキストの色
+setting_fullcalendar_gcal_color4_description=
+
+setting_fullcalendar_gcal_bgcolor1_display_name=背景色
+setting_fullcalendar_gcal_bgcolor1_description=
+setting_fullcalendar_gcal_bgcolor2_display_name=背景色
+setting_fullcalendar_gcal_bgcolor2_description=
+setting_fullcalendar_gcal_bgcolor3_display_name=背景色
+setting_fullcalendar_gcal_bgcolor3_description=
+setting_fullcalendar_gcal_bgcolor4_display_name=背景色
+setting_fullcalendar_gcal_bgcolor4_description=
+
+setting_fullcalendar_button_text_month_display_name=月
+setting_fullcalendar_button_text_month_description=
+setting_fullcalendar_button_text_month_tip=
+setting_fullcalendar_button_text_month_default=月
+
+setting_fullcalendar_button_text_basicDay_display_name=日
+setting_fullcalendar_button_text_basicDay_description=
+setting_fullcalendar_button_text_basicDay_tip=
+setting_fullcalendar_button_text_basicDay_default=日
+
+setting_fullcalendar_button_text_basicSevenDays_display_name=7 日
+setting_fullcalendar_button_text_basicSevenDays_description=
+setting_fullcalendar_button_text_basicSevenDays_tip=
+setting_fullcalendar_button_text_basicSevenDays_default=7 日
+
+setting_fullcalendar_button_text_basicWeek_display_name=週
+setting_fullcalendar_button_text_basicWeek_description=
+setting_fullcalendar_button_text_basicWeek_tip=
+setting_fullcalendar_button_text_basicWeek_default=週
+
+setting_fullcalendar_button_text_basicTwoWeeks_display_name=2 週
+setting_fullcalendar_button_text_basicTwoWeeks_description=
+setting_fullcalendar_button_text_basicTwoWeeks_tip=
+setting_fullcalendar_button_text_basicTwoWeeks_default=2 週
+
+setting_fullcalendar_button_text_agendaDay_display_name=日
+setting_fullcalendar_button_text_agendaDay_description=
+setting_fullcalendar_button_text_agendaDay_tip=
+setting_fullcalendar_button_text_agendaDay_default=日 アジェンダ
+
+setting_fullcalendar_button_text_agendaWeek_display_name=週
+setting_fullcalendar_button_text_agendaWeek_description=
+setting_fullcalendar_button_text_agendaWeek_tip=
+setting_fullcalendar_button_text_agendaWeek_default=週 アジェンダ
+
+setting_fullcalendar_button_text_agendaSevenDays_display_name=7 日
+setting_fullcalendar_button_text_agendaSevenDays_description=
+setting_fullcalendar_button_text_agendaSevenDays_tip=
+setting_fullcalendar_button_text_agendaSevenDays_default=7 日 アジェンダ
+
+setting_fullcalendar_button_text_listDay_display_name=日
+setting_fullcalendar_button_text_listDay_description=
+setting_fullcalendar_button_text_listDay_tip=
+setting_fullcalendar_button_text_listDay_default=日 リスト
+
+setting_fullcalendar_button_text_listWeek_display_name=週
+setting_fullcalendar_button_text_listWeek_description=
+setting_fullcalendar_button_text_listWeek_tip=
+setting_fullcalendar_button_text_listWeek_default=週 リスト
+
+setting_fullcalendar_button_text_listMonth_display_name=月
+setting_fullcalendar_button_text_listMonth_description=
+setting_fullcalendar_button_text_listMonth_tip=
+setting_fullcalendar_button_text_listMonth_default=月 リスト
+
+setting_fullcalendar_button_text_listYear_display_name=年
+setting_fullcalendar_button_text_listYear_description=
+setting_fullcalendar_button_text_listYear_tip=
+setting_fullcalendar_button_text_listYear_default=年 リスト
+
+setting_fc_mucals_views_display_name=グループ選択カレンダー: 選択可能なカレンダーの種類
+setting_fc_mucals_views_description=グループ選択カレンダーで利用可能なカレンダーの種類を選択します。選択された種類に対応するボタンが、カレンダー画面の左上に表示されます。
+setting_fc_mucals_views_tip=
+
+setting_fc_mucals_my_calendar_first_display_name=自分のカレンダーを最初に表示
+setting_fc_mucals_my_calendar_first_description=自分のカレンダーが含まれる場合に、他のユーザーのカレンダーより先に（画面の上に）自分のカレンダーを表示するかどうかを選択します。
+setting_fc_mucals_my_calendar_first_tip=
+
+setting_fc_mucals_default_group_display_name=既定のグループ
+setting_fc_mucals_default_group_description=ここで選択されたグループが、グループ選択カレンダーで既定で選択されます。ただし、スペースやプロジェクトなどから同画面が呼び出された場合を除きます。
+setting_fc_mucals_default_group_tip=
+
+setting_calendaritemdetails_enable_displaying_tags_display_name=タイトルにタグを表示
+setting_calendaritemdetails_enable_displaying_tags_description=ここで [はい] を選択すると、下の設定で選択されたタグが付けられている場合、そのタグがタイトルに挿入されて表示されます。
+setting_calendaritemdetails_enable_displaying_tags_tip=
+
+setting_calendaritemdetails_enable_displaying_tags_loc_display_name=タグの挿入位置
+setting_calendaritemdetails_enable_displaying_tags_loc_description=予定やタスクのタイトルの前と後ろのどちらにタグを挿入表示するかを選択します。
+setting_calendaritemdetails_enable_displaying_tags_loc_tip=
+setting_calendaritemdetails_enable_displaying_tags_loc_option_before=タイトルの前
+setting_calendaritemdetails_enable_displaying_tags_loc_option_after=タイトルの後
+
+setting_calendaritemdetails_tags_list_event_display_name=予定のタグ
+setting_calendaritemdetails_tags_list_event_description=ここで指定されたタグが予定記事に付けられている場合、カレンダーに表示された予定記事のタイトルにそのタグが挿入されて表示されます。空欄の場合、色設定の "color:X" タグを除いて、付けられているすべてのタグが表示されます。複数設定する場合は半角カンマ記号で区切ってください。
+setting_calendaritemdetails_tags_list_event_tip=
+
+setting_calendaritemdetails_tags_list_task_display_name=タスクのタグ
+setting_calendaritemdetails_tags_list_task_description=ここで指定されたタグがタスク記事に付けられている場合、カレンダーに表示されたタスク記事のタイトルにそのタグが挿入されて表示されます。空欄の場合、状況を表す "to do" および "done"、色を表す "color:X"、優先度を表す "pX" タグを除いて、付けられているすべてのタグが表示されます。複数設定する場合は半角カンマ記号で区切ってください。
+setting_calendaritemdetails_tags_list_task_tip=
+
+setting_calendaritemdetails_enable_displaying_goal_display_name=タイトルに関連プロジェクトを挿入
+setting_calendaritemdetails_enable_displaying_goal_description=ここで [はい] を選択すると、プロジェクトに関連付けられている場合、そのプロジェクト名がタイトルに挿入されて表示されます。
+setting_calendaritemdetails_enable_displaying_goal_tip=
+
+setting_calendaritemdetails_enable_displaying_milestone_display_name=タイトルに関連マイルストーンを挿入
+setting_calendaritemdetails_enable_displaying_milestone_description=ここで [はい] を選択すると、マイルストーンに関連付けられている場合、そのマイルストーン名がタイトルに挿入されて表示されます。
+setting_calendaritemdetails_enable_displaying_milestone_tip=
+
+setting_calendaritemdetails_enable_displaying_goal_loc_display_name=プロジェクトの挿入位置
+setting_calendaritemdetails_enable_displaying_goal_loc_description=関連するプロジェクト名を、予定やタスクのタイトルの前と後ろのどちらに挿入するかを選択します。
+setting_calendaritemdetails_enable_displaying_goal_loc_tip=
+setting_calendaritemdetails_enable_displaying_goal_loc_option_before=タイトルの前
+setting_calendaritemdetails_enable_displaying_goal_loc_option_after=タイトルの後
+
+setting_calendaritemdetails_enable_displaying_milestone_loc_display_name=マイルストーンの挿入位置
+setting_calendaritemdetails_enable_displaying_milestone_loc_description=関連するマイルストーン名を、予定やタスクのタイトルの前と後ろのどちらに挿入するかを選択します。
+setting_calendaritemdetails_enable_displaying_milestone_loc_tip=
+setting_calendaritemdetails_enable_displaying_milestone_loc_option_before=タイトルの前
+setting_calendaritemdetails_enable_displaying_milestone_loc_option_after=タイトルの後
+
+setting_fullcalendar_height_standard_cal_display_name=標準カレンダーの高さ
+setting_fullcalendar_height_standard_cal_description=[カレンダー] タブ &gt; [すべてのユーザー] サブタブやプロフィール ページの [カレンダー] タブに表示されるカレンダーの高さを設定します。
+setting_fullcalendar_height_standard_cal_tip=
+
+setting_fullcalendar_height_standard_basicMonth_display_name=テーブル型: 月
+setting_fullcalendar_height_standard_basicMonth_description=
+setting_fullcalendar_height_standard_basicMonth_tip=
+
+setting_fullcalendar_height_standard_basicWeek_display_name=テーブル型: 週、 7 日
+setting_fullcalendar_height_standard_basicWeek_description=
+setting_fullcalendar_height_standard_basicWeek_tip=
+
+setting_fullcalendar_height_standard_basic2Weeks_display_name=テーブル型: 2 週
+setting_fullcalendar_height_standard_basic2Weeks_description=
+setting_fullcalendar_height_standard_basic2Weeks_tip=
+
+setting_fullcalendar_height_standard_agendaWeek_display_name=アジェンダ型: 週、7 日
+setting_fullcalendar_height_standard_agendaWeek_description=
+setting_fullcalendar_height_standard_agendaWeek_tip=
+
+setting_fullcalendar_height_standard_list_display_name=リスト型: 日、週、月、年
+setting_fullcalendar_height_standard_list_description=
+setting_fullcalendar_height_standard_list_tip=
+
+setting_fullcalendar_height_mucals_basicMonth_display_name=テーブル型: 月
+setting_fullcalendar_height_mucals_basicMonth_description=
+setting_fullcalendar_height_mucals_basicMonth_tip=
+
+setting_fullcalendar_height_mucals_basicWeek_display_name=テーブル型: 週、7 日
+setting_fullcalendar_height_mucals_basicWeek_description=
+setting_fullcalendar_height_mucals_basicWeek_tip=
+
+setting_fullcalendar_height_mucals_basic2Weeks_display_name=テーブル型: 2 週
+setting_fullcalendar_height_mucals_basic2Weeks_description=
+setting_fullcalendar_height_mucals_basic2Weeks_tip=
+
+setting_fullcalendar_height_mucals_agendaWeek_display_name=アジェンダ型: 週、7 日
+setting_fullcalendar_height_mucals_agendaWeek_description=
+setting_fullcalendar_height_mucals_agendaWeek_tip=
+
+setting_fullcalendar_height_mucals_list_display_name=リスト型: 日、週、月、年
+setting_fullcalendar_height_mucals_list_description=
+setting_fullcalendar_height_mucals_list_tip=
+
+setting_fullcalendar_contentHeight_auto_display_name=高さの自動設定
+setting_fullcalendar_contentHeight_auto_description=ここで [はい] を選択すると、カレンダーのコンテンツに応じて高さが自動的に設定され、スクロールバーは表示されなくなります。ここで [いいえ] を選択すると、カレンダーの高さは、下の設定で指定されたピクセル数になります。
+setting_fullcalendar_contentHeight_auto_tip=
+
+setting_fullcalendar_aspectRatio_display_name=カレンダーの縦横比
+setting_fullcalendar_aspectRatio_description=[高さの自動設定] で [はい] が選択されている場合、カレンダーの高さはここで設定される比で決まります。
+setting_fullcalendar_aspectRatio_tip=大きな数値を入力するほど高さは低くなります。
+
+setting_fullcalendar_eventLimit_display_name=テーブル型カレンダーで表示イベント数を制限
+setting_fullcalendar_eventLimit_description=テーブル型カレンダーの日にちセルに表示されるイベント数を制限するかどうかを選択します。数字を選択すると、日にちセルに表示される最大件数が制限され、それ以上の件数がある場合は [他 2 件] のようなリンクが表示されます。制限しない場合は、すべてのイベントが表示されます。
+setting_fullcalendar_eventLimit_tip=
+setting_fullcalendar_eventLimit_option_0_label=制限しない
+setting_fullcalendar_eventLimit_option_3_label=3
+setting_fullcalendar_eventLimit_option_5_label=5
+setting_fullcalendar_eventLimit_option_10_label=10
+setting_fullcalendar_eventLimit_option_15_label=15
+
+setting_fullcalendar_display_title_tip_display_name=ツールチップを表示
+setting_fullcalendar_display_title_tip_description=ここで [はい] を選択すると、マウスカーソルをイベントのタイトル上に移動させたとき、イベントの概要がツールチップに表示されます。
+setting_fullcalendar_display_title_tip_tip=
+
+setting_fullcalendar_pagedesc_userprofile_cal_display_name=ユーザー プロフィールページの標準カレンダー
+setting_fullcalendar_pagedesc_userprofile_cal_description=タイトル下に表示される説明文を設定できます。HTML タグを使用可能です。ここに記入された <code>%userdisplayname%</code> はユーザーの名前（フルネーム）に変換されます。
+setting_fullcalendar_pagedesc_userprofile_cal_tip=
+
+setting_fullcalendar_pagedesc_allprojects_cal_display_name=[すべてのスペース] の標準カレンダー
+setting_fullcalendar_pagedesc_allprojects_cal_description=タイトル下に表示される説明文を設定できます。HTML タグを使用可能です。
+setting_fullcalendar_pagedesc_allprojects_cal_tip=
+
+setting_fullcalendar_pagedesc_allprojects_mucals_display_name=[すべてのスペース] のグループ選択カレンダー
+setting_fullcalendar_pagedesc_allprojects_mucals_description=タイトル下に表示される説明文を設定できます。HTML タグを使用可能です。
+setting_fullcalendar_pagedesc_allprojects_mucals_tip=
+
+setting_fullcalendar_pagedesc_project_cal_display_name=スペースの標準カレンダー
+setting_fullcalendar_pagedesc_project_cal_description=タイトル下に表示される説明文を設定できます。HTML タグを使用可能です。ここに記入された %projectdisplayname% はスペース表示名に変換されます。
+setting_fullcalendar_pagedesc_project_cal_tip=
+
+setting_fullcalendar_pagedesc_project_mucals_display_name=スペースのグループ選択カレンダー
+setting_fullcalendar_pagedesc_project_mucals_description=タイトル下に表示される説明文を設定できます。HTML タグを使用可能です。ここに記入された %projectdisplayname% はスペース表示名に変換されます。
+setting_fullcalendar_pagedesc_project_mucals_tip=
+
+setting_fullcalendar_add_tags_event_display_name=予定
+setting_fullcalendar_add_tags_event_description=ここで指定したタグは、予定の投稿フォームに既定で反映されます。（例: <code>+:FAQ,+:todo</code>）
+setting_fullcalendar_add_tags_event_tip=
+
+setting_fullcalendar_add_tags_task_display_name=タスク
+setting_fullcalendar_add_tags_task_description=ここで指定したタグは、タスクの投稿フォームに既定で反映されます。
+setting_fullcalendar_add_tags_task_tip=
+
+setting_fullcalendar_add_tags_phonenotes_display_name=電話メモ
+setting_fullcalendar_add_tags_phonenotes_description=ここで指定したタグは、電話メモの投稿フォームに既定で反映されます。
+setting_fullcalendar_add_tags_phonenotes_tip=
+
+# Integrated the com.traction.calendarholidaysweekends plug-in into this FullCalendar plug-in.
+setting_calendarholidaysweekends_enabled_display_name=休日・祝日表示機能を有効にする
+setting_calendarholidaysweekends_enabled_description=ここで [はい] を選択すると、TeamPage は下の [休日・祝日設定記事のタグのプレフィックス] 設定に基づいて休日・祝日の設定記事を検索し、記事の本文を元に休日・祝日のカレンダー用データを作成し、FullCalendar へ渡します。
+setting_calendarholidaysweekends_enabled_tip=
+
+setting_calendarholidaysweekends_tag_prefix_display_name=休日・祝日設定記事のタグのプレフィックス
+setting_calendarholidaysweekends_tag_prefix_description=休日・祝日は、既定で「holidays:西暦」のタグが付いた記事に記述して指定します。この「holidays」の部分（プレフィックス）をここで変更できます。例: 2018年の休日・祝日設定記事には「holidays:2018」タグを付けます。
+setting_calendarholidaysweekends_tag_prefix_tip=休日・祝日設定記事は、すべてのユーザーの閲覧権限があるスペースに投稿してください。
+setting_calendarholidaysweekends_tag_prefix_default=holidays
+
+setting_calendarholidaysweekends_text_color_display_name=テキストの色
+setting_calendarholidaysweekends_text_color_description=ここで設定された色は、休日・祝日イベントのテキストに適用されます。
+setting_calendarholidaysweekends_text_color_tip=
+
+setting_calendarholidaysweekends_bg_color_display_name=背景色
+setting_calendarholidaysweekends_bg_color_description=ここで設定された色は、休日・祝日イベントに背景色として適用されます。
+setting_calendarholidaysweekends_bg_color_tip=
+
+setting_calendaritemdetails_enable_displaying_project_display_name_display_name=タイトルに投稿先スペース表示名を挿入
+setting_calendaritemdetails_enable_displaying_project_display_name_description=ここで [はい] を選択すると、投稿先スペースの表示名がタイトルに挿入されます。
+setting_calendaritemdetails_enable_displaying_project_display_name_tip=
+
+setting_calendaritemdetails_enable_displaying_project_display_name_loc_display_name=投稿先スペース表示名の挿入位置
+setting_calendaritemdetails_enable_displaying_project_display_name_loc_description=投稿先スペースの表示名を、予定やタスク等のタイトルの前と後ろのどちらに挿入するかを選択します。
+setting_calendaritemdetails_enable_displaying_project_display_name_loc_tip=
+
+# Setting Panels
+setting_panel_title_all_users=標準カレンダー
+setting_panel_title_mucals=グループ選択カレンダー
+setting_panel_title_basic_views=テーブル型カレンダー
+setting_panel_title_agenda_views=アジェンダ型カレンダー
+setting_panel_title_list_views=リスト型カレンダー
+setting_panel_title_google_calendar=Google カレンダー
+setting_panel_title_multiple_users=グループ選択
+setting_panel_title_tag_display=タグ表示
+setting_panel_title_related_project_and_milestone=プロジェクト管理
+setting_panel_title_heights=高さ
+setting_panel_title_button_labels=ボタンのテキスト
+setting_panel_title_fc_views=選択可能なカレンダー
+setting_panel_title_others=その他の設定
+setting_panel_title_icon_display=追加アイコン表示
+setting_panel_title_add_tags=追加タグ
+setting_panel_title_holidays=休日・祝日
+setting_panel_title_project_display=投稿先スペース
+
+# Setting Groups
+setting_group_title_general=全体設定
+setting_group_title_basic_calendars=テーブル型カレンダー
+setting_group_title_agenda_calendars=アジェンダ週型カレンダー
+setting_group_title_list_calendars=リスト型カレンダー
+setting_group_title_standard_calendars=標準カレンダー
+setting_group_title_multiple_user_calendars=グループ選択カレンダー
+setting_panel_title_pagedesc=ページ説明文
+setting_group_title_gcal_api_key=Google カレンダー API キー
+setting_group_title_gcal1=Google カレンダー 1
+setting_group_title_gcal2=Google カレンダー 2
+setting_group_title_gcal3=Google カレンダー 3
+setting_group_title_gcal4=Google カレンダー 4
