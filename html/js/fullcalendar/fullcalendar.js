@@ -8,27 +8,32 @@ Traction.FullCalendar = {
 
     console.log("Event entry was dropped. View = " + info.view.type);
 
-    // These values store the the new start and end dates/times.
-    var startDate = moment(info.event.start);
-    var startDateTimeHumanZone = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ssZ');
-    var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
+    var startDateTimeLocal = info.event.startStr; // YYYY-MM-DDTHH:mm:ssZ
+    var startDateTimeEpoch = moment(startDateTimeLocal).format('x');
 
-    // Note: The value of endDate is null when the event is dropped on an allday slot.
-    var endDate = info.event.end;
-    if ( endDate ) {
-      var endDateTimeHumanZone = moment(info.event.end).format('YYYY-MM-DDTHH:mm:ssZ');
-      var endDateTimeEpoch = moment(endDateTimeHumanZone).format('x');
-    }
+    var endDateTimeLocal = info.event.endStr; // YYYY-MM-DDTHH:mm:ssZ
+    var endDateTimeEpoch = moment(endDateTimeLocal).format('x');
+
+    console.log('startDateTimeLocal = ' + startDateTimeLocal);
+    console.log('startDateTimeEpoch = ' + startDateTimeEpoch);
+    console.log('endDateTimeLocal = ' + endDateTimeLocal);
+    console.log('endDateTimeEpoch = ' + endDateTimeEpoch);
 
     if ( info.view.type === "dayGridMonth" || info.view.type === "basicDay" || info.view.type === "basicSevenDays" || info.view.type === "basicWeek" || info.view.type === "basicTwoWeeks" ) {
 
       var endDate = moment(info.event.end).add(-1,'days');
       var msgArg = {
+        "fqid": info.event.id,
         "displayname": info.event.displayname,
         "tractionid": info.event.tractionid,
         "start": moment(info.event.start).format('YYYY/MM/DD HH:mm'),
         "end": moment(info.event.end).add(-1,'days').format('YYYY/MM/DD HH:mm')
       }
+
+      console.log("startDate = " + startDate);
+      console.log("startDate.format() = " + startDate.format());
+      console.log("endDate = " + endDate);
+      console.log("endDate.format() = " + endDate.format());
 
       if (startDate.format() === endDate.format()) {
         // Single day / AllDay Slot / Basic View / Event Entry
@@ -36,10 +41,8 @@ Traction.FullCalendar = {
         var callbackFunc = displayStatusMoveEventDate(msgArg);
 
       } else {
-        if (startDate.hasTime()) {
           // Multiple days / AllDay Slot / Basic View / Event Entry
           var callbackFunc = displayStatusMoveEventStartEnd(event.displayname, event.tractionid, startDate.format('#{@fullcalendar#datetimeformat_date_time}'), endDate.format('#{@fullcalendar#datetimeformat_date_time}'));
-        }
       }
       Proteus.Calendar.moveEvent(info.event.id, startDateTimeEpoch, callbackFunc);
     } else {
@@ -78,6 +81,7 @@ Traction.FullCalendar = {
           var endDateTimeEpoch = moment(endDateTimeHumanZone).format('x');
 
           var msgArg = {
+            "fqid": info.event.id,
             "displayname": info.event.extendedProps.displayname,
             "tractionid": info.event.extendedProps.tractionid,
             "start": moment(info.event.start).format('YYYY/MM/DD HH:mm'),
@@ -102,8 +106,8 @@ Traction.FullCalendar = {
 
         console.log("The state of allDay was true.");
 
-        var startDateTimeLocal = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ss');
-        var startDateTimeGMT = startDateTimeLocal + '+0000'
+        var startDateTimeLocal = info.event.startStr; // YYYY-MM-DDTHH:mm:ssZ
+        var startDateTimeGMT = moment(startDateTimeLocal).format('YYYY-MM-DDTHH:mm:ss') + '+0000'
         var startDateTimeEpoch = moment(startDateTimeGMT).format('x');
 
         var msgArg = {
