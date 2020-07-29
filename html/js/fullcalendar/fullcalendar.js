@@ -8,43 +8,47 @@ Traction.FullCalendar = {
 
     console.log("Event entry was dropped. View = " + info.view.type);
 
-    var startDateTimeLocal = info.event.startStr; // YYYY-MM-DDTHH:mm:ssZ
-    var startDateTimeEpoch = moment(startDateTimeLocal).format('x');
+    if ( info.view.type === "dayGridMonth" ) {
 
-    var endDateTimeLocal = info.event.endStr; // YYYY-MM-DDTHH:mm:ssZ
-    var endDateTimeEpoch = moment(endDateTimeLocal).format('x');
+      var startDateTimeLocal = moment(info.event.start).format();
+      var startDateTimeLocalX = moment(startDateTimeLocal).format('x');
 
-    console.log('startDateTimeLocal = ' + startDateTimeLocal);
-    console.log('startDateTimeEpoch = ' + startDateTimeEpoch);
-    console.log('endDateTimeLocal = ' + endDateTimeLocal);
-    console.log('endDateTimeEpoch = ' + endDateTimeEpoch);
-
-    if ( info.view.type === "dayGridMonth" || info.view.type === "basicDay" || info.view.type === "basicSevenDays" || info.view.type === "basicWeek" || info.view.type === "basicTwoWeeks" ) {
-
-      var endDate = moment(info.event.end).add(-1,'days');
-      var msgArg = {
-        "fqid": info.event.id,
-        "displayname": info.event.displayname,
-        "tractionid": info.event.tractionid,
-        "start": moment(info.event.start).format('YYYY/MM/DD HH:mm'),
-        "end": moment(info.event.end).add(-1,'days').format('YYYY/MM/DD HH:mm')
-      }
-
-      console.log("startDate = " + startDate);
-      console.log("startDate.format() = " + startDate.format());
-      console.log("endDate = " + endDate);
-      console.log("endDate.format() = " + endDate.format());
-
-      if (startDate.format() === endDate.format()) {
-        // Single day / AllDay Slot / Basic View / Event Entry
-
-        var callbackFunc = displayStatusMoveEventDate(msgArg);
-
+      if ( info.event.allDay ) {
+        //var endDateTimeLocal = info.event.endStr; // YYYY-MM-DDTHH:mm:ssZ
+        var endDateTimeLocal = moment(info.event.end).add(-1,'days').format();
+        var endDateTimeLocalX = moment(endDateTimeLocal).format('x');
+        var msgArg = {
+          "start": moment(startDateTimeLocal).format('YYYY/MM/DD'),
+          "end": moment(endDateTimeLocal).format('YYYY/MM/DD')
+        }
       } else {
-          // Multiple days / AllDay Slot / Basic View / Event Entry
-          var callbackFunc = displayStatusMoveEventStartEnd(event.displayname, event.tractionid, startDate.format('#{@fullcalendar#datetimeformat_date_time}'), endDate.format('#{@fullcalendar#datetimeformat_date_time}'));
+        var endDateTimeLocal = moment(info.event.end).format();
+        var endDateTimeLocalX = moment(endDateTimeLocal).format('x');
+        var msgArg = {
+          "start": moment(startDateTimeLocal).format('YYYY/MM/DD HH:mm'),
+          "end": moment(endDateTimeLocal).format('YYYY/MM/DD HH:mm')
+        }
       }
-      Proteus.Calendar.moveEvent(info.event.id, startDateTimeEpoch, callbackFunc);
+
+      msgArg.fqid = info.event.id;
+      msgArg.allday = info.event.allDay;
+      msgArg.displayname = info.event.extendedProps.displayname;
+      msgArg.tractionid = info.event.extendedProps.tractionid;
+
+      console.log('startDateTimeLocal = ' + startDateTimeLocal);
+      console.log('startDateTimeLocalX = ' + startDateTimeLocalX);
+      console.log('endDateTimeLocal = ' + endDateTimeLocal);
+      console.log('endDateTimeLocalX = ' + endDateTimeLocalX);
+      console.log(msgArg);
+
+      if (startDateTimeLocal == endDateTimeLocal) {
+        console.log("Single allDay");
+        var callbackFunc = Traction.FullCalendar.displayStatusMoveEventDate(msgArg);
+      } else {
+        console.log("Multiple allDay");
+        var callbackFunc = Traction.FullCalendar.displayStatusMoveEventStartEnd(msgArg);
+      }
+      Proteus.Calendar.moveEvent(info.event.id, startDateTimeLocalX, callbackFunc);
     } else {
       // Other calendar types
       if (info.event.allDay) {
@@ -106,9 +110,9 @@ Traction.FullCalendar = {
 
         console.log("The state of allDay was true.");
 
-        var startDateTimeLocal = info.event.startStr; // YYYY-MM-DDTHH:mm:ssZ
-        var startDateTimeGMT = moment(startDateTimeLocal).format('YYYY-MM-DDTHH:mm:ss') + '+0000'
-        var startDateTimeEpoch = moment(startDateTimeGMT).format('x');
+        var startDateTimeLocal = info.event.startStr; // YYYY-MM-DD
+        var startDateTimeGmtMidnight = moment(startDateTimeLocal).format('YYYY-MM-DD') + 'T00:00:00+0000';
+        var startDateTimeGmtMidnightX = moment(startDateTimeGmtMidnight).format('x');
 
         var msgArg = {
           "fqid": info.event.id,
@@ -118,12 +122,12 @@ Traction.FullCalendar = {
         };
 
         console.log('startDateTimeLocal = ' + startDateTimeLocal);
-        console.log('startDateTimeGMT = ' + startDateTimeGMT);
-        console.log('startDateTimeEpoch = ' + startDateTimeEpoch);
+        console.log('startDateTimeGmtMidnight = ' + startDateTimeGmtMidnight);
+        console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
         console.log(msgArg);
 
         var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
-        Proteus.Calendar.moveEvent(info.event.id, startDateTimeEpoch, callbackFunc);
+        Proteus.Calendar.moveEvent(info.event.id, startDateTimeGmtMidnightX, callbackFunc);
 
       } else {
 
@@ -186,7 +190,7 @@ Traction.FullCalendar = {
   displayStatusMoveEventDate: function(msgArg) {
     console.log('---- displayStatusMoveEventDate ----');
     console.log(msgArg);
-    Proteus.showStatusMessage(i18n_fullcalendarv5("proteus_status_message_move_event_date", "displayname + ' ' + id + ' was moved. (Date: ' + start + ')'"), true);
+    Proteus.showStatusMessage(eval(i18n_fullcalendarv5("proteus_status_message_move_event_date", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Date: ' + msgArg.start + ')'"), true));
   },
   //fcShowStatusMoveEventStartEnd
   displayStatusMoveEventStartEnd: function(msgArg) {

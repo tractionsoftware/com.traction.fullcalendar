@@ -27,6 +27,7 @@
 <sdl.function name="javascript">
   <##javascript />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.31/moment-timezone-with-data.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/locales-all.min.js"></script>
   <html.js url="/html/js/fullcalendar/fullcalendar.js" />
