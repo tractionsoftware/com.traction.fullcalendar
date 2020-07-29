@@ -6,6 +6,8 @@ Traction.FullCalendar = {
 
   onEventDropEvent: function(info) {
 
+    console.log("Event entry was dropped. View = " + info.view.type);
+
     // These values store the the new start and end dates/times.
     var startDate = moment(info.event.start);
     var startDateTimeHumanZone = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ssZ');
@@ -24,7 +26,7 @@ Traction.FullCalendar = {
       var msgArg = {
         "displayname": info.event.displayname,
         "tractionid": info.event.tractionid,
-        "start": moment(info.event.start).format('YYYY/MM/DD HH:mm')
+        "start": moment(info.event.start).format('YYYY/MM/DD HH:mm'),
         "end": moment(info.event.end).add(-1,'days').format('YYYY/MM/DD HH:mm')
       }
 
@@ -93,13 +95,42 @@ Traction.FullCalendar = {
 
   // When a PM entry (task, goal, milestone) is dropped
   onEventDropPm: function(info) {
+    console.log("PM entry was dropped. View = " + info.view.type);
     if ( info.view.type === "dayGridMonth" ) {
       // PM Entry: In the Basic view, the value of the event.allDay is always "true".
       if (info.event.allDay) {
-        var startDateTimeHumanZone = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ssZ');
+
+        console.log("The state of allDay was true.");
+
+        var startDateTimeLocal = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ss');
+        var startDateTimeGMT = startDateTimeLocal + '+0000'
+        var startDateTimeEpoch = moment(startDateTimeGMT).format('x');
+
+        var msgArg = {
+          "fqid": info.event.id,
+          "displayname": info.event.extendedProps.displayname,
+          "tractionid": info.event.extendedProps.tractionid,
+          "start": moment(info.event.start).format('YYYY/MM/DD HH:mm')
+        };
+
+        console.log('startDateTimeLocal = ' + startDateTimeLocal);
+        console.log('startDateTimeGMT = ' + startDateTimeGMT);
+        console.log('startDateTimeEpoch = ' + startDateTimeEpoch);
+        console.log(msgArg);
+
+        var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
+        Proteus.Calendar.moveEvent(info.event.id, startDateTimeEpoch, callbackFunc);
+
+      } else {
+
+        console.log("The state of allDay was false.");
+
+        var evTime = event.tpDue.match(/^.+T([0-9]+:[0-9]+:[0-9]+)[\+|-][0-9]+$/)[1];
+        var startDateTimeHumanZone = event.start.format('YYYY-MM-DD') + 'T' + evTime + '<datetime dateformat="Z" />';
         var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
 
         var msgArg = {
+          "fqid": info.event.id,
           "displayname": info.event.extendedProps.displayname,
           "tractionid": info.event.extendedProps.tractionid,
           "start": moment(info.event.start).format('YYYY/MM/DD HH:mm')
@@ -110,21 +141,8 @@ Traction.FullCalendar = {
         console.log(msgArg);
 
         var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
-        Proteus.Calendar.moveEvent(info.event.id, startDateTimeEpoch, callbackFunc);
-
-      } else {
-        var evTime = event.tpDue.match(/^.+T([0-9]+:[0-9]+:[0-9]+)[\+|-][0-9]+$/)[1];
-        var startDateTimeHumanZone = event.start.format('YYYY-MM-DD') + 'T' + evTime + '<datetime dateformat="Z" />';
-        var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
-
-        var msgArg = {
-          "displayname": info.event.extendedProps.displayname,
-          "tractionid": info.event.extendedProps.tractionid,
-          "start": moment(info.event.start).format('YYYY/MM/DD HH:mm')
-        };
-
-        var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
         Proteus.Calendar.moveEvent(event.id, startDateTimeEpoch, callbackFunc);
+
       }
     } else {
       // Agenda or List view. (Can not drag and drop in the List views, though.)
