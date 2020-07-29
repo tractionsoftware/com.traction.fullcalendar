@@ -1,7 +1,8 @@
-i18n_javascript_src=/config/i18n/resources/FullCalendarV5_ja.js
-
 plugin_display_name=FullCalendar V5
 plugin_description=Installs <a href="https://fullcalendar.io">FullCalendar</a> to TeamPage.
+
+# Internationalization and localization
+i18n_javascript_src=/config/i18n/resources/FullCalendar_ja.js
 
 # View Configurations
 viewname_fullcalendar=Calendar

@@ -66,19 +66,19 @@ Traction.FullCalendar = {
           Proteus.Calendar.setEventProperties(event.id, startDateTimeEpoch, endDateTimeEpoch, true, callbackFunc);
         }
       } else {
-        // Droped on Normal slot / Agenda view / Event entry
         if (info.event.extendedProps.tpAllDay) {
-          // If it is an AllDay event, set both of the start and the end date/time.
+          console.log("Droped on Normal slot / Agenda view / Event entry");
+          console.log("If it is an AllDay event, set both of the start and the end date/time.");
 
           // Completed JPBO16372
 
-          endDate = moment(startDate).add(2,'hours'); <!--- The value "+2 hours" is defined as defaultTimedEventDuration. -->
+          endDate = moment(startDate).add(2,'hours'); // The value "+2 hours" is defined as defaultTimedEventDuration.
           endDateTimeHumanZone = moment(endDate).format('YYYY-MM-DD') + 'T' + moment(endDate).format('HH:mm:ss') + '<datetime dateformat="Z" />';
           endDateTimeEpoch = moment(endDateTimeHumanZone).format('x');
           var callbackFunc = displayStatusMoveEventStartEnd(event.displayname, event.tractionid, startDate.format('#{@fullcalendar#datetimeformat_date_time}'), endDate.format('#{@fullcalendar#datetimeformat_date_time}'));
           Proteus.Calendar.setEventProperties(event.id, startDateTimeEpoch, endDateTimeEpoch, false, callbackFunc);
         } else {
-          // If it is a normal event, set the new start and end date/time.
+          console.log("If it is a non-allDay event, set the new start and end date/time.");
           var startDateTimeHumanZone = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ssZ');
           var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
           var endDateTimeHumanZone = moment(info.event.end).format('YYYY-MM-DDTHH:mm:ssZ');
@@ -190,24 +190,24 @@ Traction.FullCalendar = {
   displayStatusMoveEventDate: function(msgArg) {
     console.log('---- displayStatusMoveEventDate ----');
     console.log(msgArg);
-    Proteus.showStatusMessage(eval(i18n_fullcalendarv5("proteus_status_message_move_event_date", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Date: ' + msgArg.start + ')'"), true));
+    Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_move_event_date", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Date: ' + msgArg.start + ')'"), true));
   },
   //fcShowStatusMoveEventStartEnd
   displayStatusMoveEventStartEnd: function(msgArg) {
-    Proteus.showStatusMessage(eval(i18n_fullcalendarv5("proteus_status_message_move_event_start_end", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Start: ' + msgArg.start + ', End: ' + msgArg.end + ')'"), true));
+    Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_move_event_start_end", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Start: ' + msgArg.start + ', End: ' + msgArg.end + ')'"), true));
   },
   //fcShowStatusMovePMDue
   displayStatusMovePMDue: function(msgArg) {
-    Proteus.showStatusMessage(eval(i18n_fullcalendarv5("proteus_status_message_move_pm_due", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Due: ' + msgArg.start + ')'"), true));
+    Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_move_pm_due", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Due: ' + msgArg.start + ')'"), true));
   },
   fcShowStatusResizeEventStartEnd: function(msgArg) {
-    Proteus.showStatusMessage(i18n_fullcalendarv5("proteus_status_message_resize_event_start_end", "displayname + ' ' + id + ' was modified. (Start: ' + start + ', End: ' + end + ')'"), true);
+    Proteus.showStatusMessage(i18n_fullcalendar("proteus_status_message_resize_event_start_end", "displayname + ' ' + id + ' was modified. (Start: ' + start + ', End: ' + end + ')'"), true);
   },
   fcShowStatusPMTaskChkBox: function(displayname, id, action) {
     if ( action === 'close' ) {
-      Proteus.showStatusMessage(i18n_fullcalendarv5("proteus_status_message_close_task", "'You closed the ' + displayname + ' ' + id + '.'"), true);
+      Proteus.showStatusMessage(i18n_fullcalendar("proteus_status_message_close_task", "'You closed the ' + displayname + ' ' + id + '.'"), true);
     } else if ( action === 'open' ) {
-      Proteus.showStatusMessage(i18n_fullcalendarv5("proteus_status_message_reopen_task", "'You re-opened the ' + displayname + ' ' + id + '.'"), true);
+      Proteus.showStatusMessage(i18n_fullcalendar("proteus_status_message_reopen_task", "'You re-opened the ' + displayname + ' ' + id + '.'"), true);
     }
   }
 
