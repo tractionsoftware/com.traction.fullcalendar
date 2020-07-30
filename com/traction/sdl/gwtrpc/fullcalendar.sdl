@@ -788,7 +788,7 @@
 -->
 <sdl.function name="calendar-external-dragbase-back">
   <div id="external-events" class="fc-dragbase-wrapper">
-    <h3>ドラッグ＆ドロップ</h3>
+    <h3>締切日なし</h3>
 
     <var.set name="sql">select * from TSI_PM_DUE inner join TSI_PM_TASK on TSI_PM_DUE.FQID = TSI_PM_TASK.TASKID where DUE > timestamp('9999-12-01 00:00:00.0')<compare.equals "<shared#current-project-id />" "*" not> and PROJID = <shared#current-project-id /></compare.equals></var.set>
 
@@ -800,7 +800,22 @@
                   entries.url="__url.urlgen.here__"
                   sql="${sql}">
 
-        <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event" data-tractionid="__entry.tractionid__">
+        <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
+            data-tractionid="__entry.tractionid__"
+            data-fqid="__entry.tractionid.fqid__"
+            data-displayname="__entry.entryclass.displayname__"
+            data-displayname="__entry.displaytype__"
+            data-customentrytype="__entry.customentrytype__"
+            data-editable="<entry.permissions.edit>true<else>false</entry.permissions.edit>"
+            data-classname="<com.traction.sdl.json.fullcalendar_json#calitem-class />"
+            data-title="<htmlattributevalue.encode><com.traction.sdl.json.fullcalendar_json#calitem-title /></htmlattributevalue.encode>"
+            data-titletext="__entry.titletext__"
+            data-tpdue="<com.traction.sdl.json.fullcalendar_json#calitem-tp-due />"
+            data-tpallday="<entry.property.boolean name='allday' default='true'>true<else>false</entry.property.boolean>"
+            data-color="<com.traction.sdl.json.fullcalendar_json#color />"
+
+
+            data-event='{ "title": "my event", "duration": "02:00" }'>
           <div class="fc-event-main">__entry.titletext__</div>
         </div>
       </db.entries>
@@ -808,7 +823,7 @@
 
     <p>
       <input type="checkbox" id="drop-remove">
-      <label for="drop-remove">remove after drop</label>
+      <label for="drop-remove">ドラッグ後に削除</label>
     </p>
   </div>
 </sdl.function>

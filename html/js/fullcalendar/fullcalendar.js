@@ -118,7 +118,8 @@ Traction.FullCalendar = {
           "fqid": info.event.id,
           "displayname": info.event.extendedProps.displayname,
           "tractionid": info.event.extendedProps.tractionid,
-          "start": moment(info.event.start).format('YYYY/MM/DD HH:mm')
+          // Date only for the "allDay" PM entry
+          "start": moment(info.event.start).format('YYYY/MM/DD')
         };
 
         console.log('startDateTimeLocal = ' + startDateTimeLocal);
@@ -176,6 +177,47 @@ Traction.FullCalendar = {
         revertFunc();
       }
     }
+  },
+
+  // Drag'n'Drop of Event Entry from External or Another Callendar
+  onDropEvent: function(info, draggedItemParam) {
+    console.log("Event external dropped. View = " + info.view.type);
+
+  },
+
+  // Drag'n'Drop of PM Entry from External or Another Callendar
+  onDropPm: function(info, draggedItemParam) {
+    console.log("PM external dropped. View = " + info.view.type);
+    console.dir(draggedItemParam);
+
+    if (info.allDay) {
+      // Dropped on the allDay slot
+      if (draggedItemParam.tpallday === 'true') {
+        var startDateLocal = info.dateStr; // YYYY-MM-DD
+        var startDateTimeGmtMidnight = startDateLocal + 'T00:00:00+0000';
+        var startDateTimeGmtMidnightX = moment(startDateTimeGmtMidnight).format('x');
+
+        var msgArg = {
+          "fqid": draggedItemParam.fqid,
+          "displayname": draggedItemParam.displayname,
+          "tractionid": draggedItemParam.tractionid,
+          "start": startDateLocal
+        };
+
+        console.log('startDateLocal = ' + startDateLocal);
+        console.log('startDateTimeGmtMidnight = ' + startDateTimeGmtMidnight);
+        console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
+        console.log(msgArg);
+
+        var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
+        Proteus.Calendar.moveEvent(draggedItemParam.fqid, startDateTimeGmtMidnightX, callbackFunc);
+
+      }
+    } else {
+      // Dropped on the non-allDay slot that supports time-grid
+      alert('Dropping onto the time-grid area is not supported yet.');
+    }
+
   },
 
   // Convert an HTML string into the "real" HTML code.
@@ -247,6 +289,7 @@ function fcRenderCalendar(data) {
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
 
+    // Enable external drag-n-drop
     droppable: true,
 
     locale: data.locale,
@@ -295,8 +338,37 @@ function fcRenderCalendar(data) {
 
     },
 
-    // When an event is drooped...
+    // Called when an external draggable element or
+    // an event from another calendar has been dropped onto the calendar.
     drop: function(info) {
+      console.dir('---- drop: external drag\'n\'drop or another calendar ----');
+      console.dir(info);
+
+      // Entry's custom entry type (event, task, goal, milestone)
+      var customEntryType = info.draggedEl.dataset.customentrytype;
+      //info.event.extendedProps.customentrytype;
+
+      var draggedItemParam = {
+        "tractionid": info.draggedEl.dataset.tractionid,
+        "fqid": info.draggedEl.dataset.fqid,
+        "displayname": info.draggedEl.dataset.displayname,
+        "displayname": info.draggedEl.dataset.displayname,
+        "customentrytype": info.draggedEl.dataset.customentrytype,
+        "editable": info.draggedEl.dataset.editable,
+        "classname": info.draggedEl.dataset.classname,
+        "title": info.draggedEl.dataset.title,
+        "titletext": info.draggedEl.dataset.titletext,
+        "tpdue": info.draggedEl.dataset.tpdue,
+        "tpallday": info.draggedEl.dataset.tpallday,
+        "color": info.draggedEl.dataset.color
+
+      };
+
+      if ( customEntryType === 'event' ) {
+        Traction.FullCalendar.onDropEvent(info, draggedItemParam);
+      } else {
+        Traction.FullCalendar.onDropPm(info, draggedItemParam);
+      }
 
       // Remove the element from the "Draggable Events" list
       info.draggedEl.parentNode.removeChild(info.draggedEl);
