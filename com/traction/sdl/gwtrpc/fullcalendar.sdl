@@ -787,22 +787,14 @@
   Side Kanban boards that support Drag and Drop
 -->
 <sdl.function name="calendar-external-dragbase">
-  <div id="external-events" class="fc-dragbase-wrapper">
+  <div id="external-events" class="fc-dragbase-wrapper" data-proj="<compare.equals '<shared#current-project-id />' '*' not><shared#current-project-id /></compare.equals>" data-user="__journalrequest.targetuser.id__" data-goal="<entry.goal>__entry.tractionid.fqid__</entry.goal>" data-ms="<entry.milestone>__entry.tractionid.fqid__</entry.milestone>" data-caltype="normal">
     <div class="fc-dragbase-canvas">
       <h3>締切日なし</h3>
       <div class="entries">
         <#external-entries />
       </div>
     </div>
-
-    <hr >
-    <div class="sortable">
-      <#external-entries />
-    </div>
-
   </div>
-
-
 </sdl.function>
 
 <sdl.function name="external-entries">
@@ -816,7 +808,12 @@
                 entries.url="__url.urlgen.here__"
                 sql="${sql}">
 
-      <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
+      <!--- The id= parameter will be used by jQuery UI Sortable
+            to get the order of the entries in the external-events area
+            when the drag is over and the order was changed.
+            See the Proteus.addHander('load') section in fullcalendar.js. -->
+      <div id="entry-<entry.tractionid.fqid />"
+          class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
           data-tractionid="__entry.tractionid__"
           data-fqid="__entry.tractionid.fqid__"
           data-displayname="__entry.entryclass.name__"

@@ -258,18 +258,14 @@ Traction.FullCalendar = {
   },
 
   // -------------------------------------------------------
-  // Record the order of the external events
+  // Record the order of the external events by using jQuery UI Sortable.
+  // See the Proteus.addHandler('load') section.
   // -------------------------------------------------------
-  getExtEvEntries: function(fcObj,boardId) {
-    const entries = fcObj.getBoardElements(boardId);
-    let arrayEntries = [];
-    entries.forEach(function(entry,index){
-      arrayEntries.push(entry.dataset.eid);
-    });
-    return arrayEntries;
-  },
+  updateExtEvOrder: function(arrayFqid, calParam) {
 
-  updateExtEvOrder: function(kanbanObj,boardId,projId,goalId,msId,userId) {
+    console.log(arrayFqid);
+    console.dir(calParam);
+
 
     // This will be the payload encoded for a POST request to the
     // server.
@@ -279,32 +275,38 @@ Traction.FullCalendar = {
     poststring = fm_append(poststring, "method=update");
     // _get_url_param is exported by GWT to the global JS namespace,
     // to allow getting the current value of the proj= param.
-    poststring = fm_append(poststring, "boardid="+boardId);
-    poststring = fm_append(poststring, "projid="+projId);
-    poststring = fm_append(poststring, "goalid="+goalId);
-    poststring = fm_append(poststring, "msid="+msId);
-    poststring = fm_append(poststring, "userid="+userId);
-    poststring = fm_append(poststring, "entryid="+encode_url_parameter(getEntriesOnBoard(kanbanObj,boardId).join(","), -1));
+    poststring = fm_append(poststring, "projid="+calParam.projId);
+    poststring = fm_append(poststring, "goalid="+calParam.goalId);
+    poststring = fm_append(poststring, "msid="+calParam.msId);
+    poststring = fm_append(poststring, "userid="+calParam.userId);
+    poststring = fm_append(poststring, "caltype="+calParam.calType);
+    poststring = fm_append(poststring, "entryid="+encode_url_parameter(arrayFqid.join(',')));
 
     // Browser ID is required by the server as a CSRF attack
     // countermeasure
     poststring = fm_append(poststring, "browserid="+Traction.ContextMenu.getBrowserId());
 
-    console.log('updateItemsOnBoard poststring = ' + poststring);
+    console.log('updateExtEvOrder poststring = ' + poststring);
 
     // you can put anything in here your callback needs to know
     // when handling the response
     const state = {
-      "method": "updateItemsOnBoard",
-      "boardId": boardId,
-      "projId": projId,
-      "goalId": goalId,
-      "msId": msId,
-      "userId": userId
+      "method": "update",
+      "projId": calParam.projId,
+      "goalId": calParam.goalId,
+      "msId": calParam.msId,
+      "userId": calParam.userId,
+      "calType": calParam.calType
     };
 
     // Call back to the kanbanDefaultResponse function when response received
-    xmlpost_async(FORM_ACTION_READ_WRITE, poststring, null, true, kanbanDefaultResponse, state);
+    xmlpost_async(FORM_ACTION_READ_WRITE, poststring, null, true, Traction.FullCalendar.extEvOrderDefaultResponse, state);
+  },
+
+
+  extEvOrderDefaultResponse: function(responseText, state) {
+    console.dir(state);
+    console.log("extEvOrderDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
   }
 
 
@@ -538,5 +540,28 @@ function fcRenderCalendar(data) {
 
 
 Proteus.addHandler("load", function() {
-  $('#external-events .entries').sortable();
+  $('#external-events .entries').sortable({
+    // When sorting is over and the order was changed
+    "update": function(ev,ui){
+
+      var arrayFqid = $(this).sortable('serialize', {
+        // Make the output be like entry=fqid1&entry=fqid2...
+        key: "entry"
+      }).replace(/entry=/g,'').split("&");
+
+      // These parameters represent where the target calendar is.
+      // For example, userId = 5 means "this calendar is in the user profile page whose user id is 5."
+      var calParam = {
+        "projId": $('#external-events').attr('data-proj'),
+        "userId": $('#external-events').attr('data-user'),
+        "goalId": $('#external-events').attr('data-goal'),
+        "msId": $('#external-events').attr('data-ms'),
+        // Calendar type name, default = "normal"
+        "calType": $('#external-events').attr('data-caltype')
+      };
+
+      Traction.FullCalendar.updateExtEvOrder(arrayFqid, calParam)
+
+    }
+  });
 });
