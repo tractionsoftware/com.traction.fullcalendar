@@ -217,6 +217,7 @@
     var arg = {
       "fcCanvasId": "${fcCanvasId}",
       "locale": locale,
+      "initialDate": "<datetime dateformat='yyyy-MM-dd' />",
       "firstDay": firstDay,
       "tpSourceURL": tpSourceURL,
       "tpSourceId": tpSourceId,

@@ -352,11 +352,33 @@ function fcRenderCalendar(data) {
     locale: data.locale,
     firstDay: data.firstDay,
     initialView: 'dayGridMonth',
-    initialDate: '2020-07-07',
+    initialDate: data.initialDate,
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      right: 'dayGridMonth,timeGridWeek,dayGridTwoWeek,timeGridSevenDay,timeGridDay,listMonth'
+    },
+    views: {
+      timeGridSevenDay: {
+        type: 'timeGrid',
+        duration: { days: 7 },
+        buttonText: '7 day'
+      },
+      dayGridOneWeek: {
+        type: 'dayGrid',
+        duration: { weeks: 1 },
+        buttonText: '1 w'
+      },
+      dayGridSevenDay: {
+        type: 'dayGrid',
+        duration: { days: 7 },
+        buttonText: '7 d'
+      },
+      dayGridTwoWeek: {
+        type: 'dayGrid',
+        duration: { weeks: 2 },
+        buttonText: '2 w'
+      }
     },
 
     eventSources: [
