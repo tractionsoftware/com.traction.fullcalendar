@@ -29,7 +29,7 @@
 
 <sdl.function name="view">
 
-<var.set name="method"><url.param name="method" /></var.set>
+  <var.set name="method"><url.param name="method" /></var.set>
   <var.set name="projid"><url.param name="projid" /></var.set>
   <var.set name="userId">-1</var.set>
   <var.set name="fqid"><url.param name="entryid" /></var.set>

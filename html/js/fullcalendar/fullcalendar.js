@@ -401,12 +401,10 @@ function fcRenderCalendar(data) {
 
       // Entry's custom entry type (event, task, goal, milestone)
       var customEntryType = info.draggedEl.dataset.customentrytype;
-      //info.event.extendedProps.customentrytype;
 
       var draggedItemParam = {
         "tractionid": info.draggedEl.dataset.tractionid,
         "fqid": info.draggedEl.dataset.fqid,
-        "displayname": info.draggedEl.dataset.displayname,
         "displayname": info.draggedEl.dataset.displayname,
         "customentrytype": info.draggedEl.dataset.customentrytype,
         "editable": info.draggedEl.dataset.editable,
@@ -416,7 +414,6 @@ function fcRenderCalendar(data) {
         "tpdue": info.draggedEl.dataset.tpdue,
         "tpallday": info.draggedEl.dataset.tpallday,
         "color": info.draggedEl.dataset.color
-
       };
 
       if ( customEntryType === 'event' ) {
@@ -541,6 +538,5 @@ function fcRenderCalendar(data) {
 
 
 Proteus.addHandler("load", function() {
-
-
+  $('#external-events .entries').sortable();
 });

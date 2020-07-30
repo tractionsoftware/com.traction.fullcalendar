@@ -794,7 +794,15 @@
         <#external-entries />
       </div>
     </div>
+
+    <hr >
+    <div class="sortable">
+      <#external-entries />
+    </div>
+
   </div>
+
+
 </sdl.function>
 
 <sdl.function name="external-entries">
