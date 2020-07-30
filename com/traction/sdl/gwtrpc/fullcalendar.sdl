@@ -787,7 +787,14 @@
   Side Kanban boards that support Drag and Drop
 -->
 <sdl.function name="calendar-external-dragbase">
-  <div id="external-events" class="fc-dragbase-wrapper" data-proj="<compare.equals '<shared#current-project-id />' '*' not><shared#current-project-id /></compare.equals>" data-user="__journalrequest.targetuser.id__" data-goal="<entry.goal>__entry.tractionid.fqid__</entry.goal>" data-ms="<entry.milestone>__entry.tractionid.fqid__</entry.milestone>" data-caltype="normal">
+
+  <var.set name="projId"><compare.equals '<shared#current-project-id />' '*'>-1<else><shared#current-project-id /></compare.equals></var.set>
+  <var.set name="userId"><journalrequest.targetuser>__journalrequest.targetuser.id__<else>-1</journalrequest.targetuser></var.set>
+  <var.set name="goalId"><compare.equals "__entry.customentrytype__" "goal">__entry.tractionid.fqid__<else>-1</compare.equals></var.set>
+  <var.set name="msId"><compare.equals "__entry.customentrytype__" "milestones">__entry.tractionid.fqid__<else>-1</compare.equals></var.set>
+  <var.set name="calType">normal</var.set>
+
+  <div id="external-events" class="fc-dragbase-wrapper" data-proj="${projId}" data-user="${userId}" data-goal="${goalId}" data-ms="${msId}" data-caltype="${calType}">
     <div class="fc-dragbase-canvas">
       <h3>締切日なし</h3>
       <div class="entries">
@@ -795,10 +802,11 @@
       </div>
     </div>
   </div>
+
 </sdl.function>
 
 <sdl.function name="external-entries">
-  <var.set name="sql">select * from TSI_PM_DUE inner join TSI_PM_TASK on TSI_PM_DUE.FQID = TSI_PM_TASK.TASKID where DUE > timestamp('9999-12-01 00:00:00.0')<compare.equals "<shared#current-project-id />" "*" not> and PROJID = <shared#current-project-id /></compare.equals></var.set>
+  <var.set name="sql">select * from TSI_PM_DUE inner join TSI_PM_TASK on TSI_PM_DUE.FQID = TSI_PM_TASK.TASKID where <compare.equals "<url.param name='ts' default='1' />" "1">TSI_PM_TASK.STATUS = 1 and </compare.equals>DUE > timestamp('9999-12-01 00:00:00.0')<compare.equals "<shared#current-project-id />" "*" not> and PROJID = <shared#current-project-id /></compare.equals></var.set>
 
   <db.connect>
     <db.entries supportschunking="false"
@@ -807,29 +815,32 @@
                 obeySearchFilter="true"
                 entries.url="__url.urlgen.here__"
                 sql="${sql}">
-
-      <!--- The id= parameter will be used by jQuery UI Sortable
-            to get the order of the entries in the external-events area
-            when the drag is over and the order was changed.
-            See the Proteus.addHander('load') section in fullcalendar.js. -->
-      <div id="entry-<entry.tractionid.fqid />"
-          class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
-          data-tractionid="__entry.tractionid__"
-          data-fqid="__entry.tractionid.fqid__"
-          data-displayname="__entry.entryclass.name__"
-          data-entryclassdisplayname="__entry.entryclass.displayname__"
-          data-entrydisplaytype="__entry.displaytype__"
-          data-customentrytype="__entry.customentrytype__"
-          data-editable="<entry.permissions.edit>true<else>false</entry.permissions.edit>"
-          data-classname="<com.traction.sdl.json.fullcalendar_json#calitem-class />"
-          data-title="<htmlattributevalue.encode><com.traction.sdl.json.fullcalendar_json#calitem-title /></htmlattributevalue.encode>"
-          data-titletext="__entry.titletext__"
-          data-tpdue="<com.traction.sdl.json.fullcalendar_json#calitem-tp-due />"
-          data-tpallday="<entry.property.boolean name='allday' default='true'>true<else>false</entry.property.boolean>"
-          data-color="<com.traction.sdl.json.fullcalendar_json#color />"
-          >
-        <div class="fc-event-main">__entry.titletext__</div>
-      </div>
+      <#external-entry-div />
     </db.entries>
   </db.connect>
+</sdl.function>
+
+<sdl.function name="external-entry-div">
+  <!--- The id= parameter will be used by jQuery UI Sortable
+        to get the order of the entries in the external-events area
+        when the drag is over and the order was changed.
+        See the Proteus.addHander('load') section in fullcalendar.js. -->
+  <div id="entry-<entry.tractionid.fqid />"
+      class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
+      data-tractionid="__entry.tractionid__"
+      data-fqid="__entry.tractionid.fqid__"
+      data-displayname="__entry.entryclass.name__"
+      data-entryclassdisplayname="__entry.entryclass.displayname__"
+      data-entrydisplaytype="__entry.displaytype__"
+      data-customentrytype="__entry.customentrytype__"
+      data-editable="<entry.permissions.edit>true<else>false</entry.permissions.edit>"
+      data-classname="<com.traction.sdl.json.fullcalendar_json#calitem-class />"
+      data-title="<htmlattributevalue.encode><com.traction.sdl.json.fullcalendar_json#calitem-title /></htmlattributevalue.encode>"
+      data-titletext="__entry.titletext__"
+      data-tpdue="<com.traction.sdl.json.fullcalendar_json#calitem-tp-due />"
+      data-tpallday="<entry.property.boolean name='allday' default='true'>true<else>false</entry.property.boolean>"
+      data-color="<com.traction.sdl.json.fullcalendar_json#color />"
+      >
+    <div class="fc-event-main">__entry.titletext__</div>
+  </div>
 </sdl.function>
