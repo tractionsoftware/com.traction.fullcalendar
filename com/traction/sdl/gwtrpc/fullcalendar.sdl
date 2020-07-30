@@ -794,20 +794,40 @@
   <var.set name="msId"><compare.equals "__entry.customentrytype__" "milestones">__entry.tractionid.fqid__<else>-1</compare.equals></var.set>
   <var.set name="calType">normal</var.set>
 
+  <foreach list="projId,userId,goalId,msId,calType">
+    <console>__foreach.current__ = <var.value name="__foreach.current__" /></console>
+  </foreach>
+
   <div id="external-events" class="fc-dragbase-wrapper" data-proj="${projId}" data-user="${userId}" data-goal="${goalId}" data-ms="${msId}" data-caltype="${calType}">
     <div class="fc-dragbase-canvas">
-      <h3>締切日なし</h3>
+      <h3>#{@fullcalendar#No_Due_Date}</h3>
       <div class="entries">
-        <#external-entries />
+        <#external-entries-new />
+        <#external-entries-ordered />
       </div>
     </div>
   </div>
 
 </sdl.function>
 
-<sdl.function name="external-entries">
-  <var.set name="sql">select * from TSI_PM_DUE inner join TSI_PM_TASK on TSI_PM_DUE.FQID = TSI_PM_TASK.TASKID where <compare.equals "<url.param name='ts' default='1' />" "1">TSI_PM_TASK.STATUS = 1 and </compare.equals>DUE > timestamp('9999-12-01 00:00:00.0')<compare.equals "<shared#current-project-id />" "*" not> and PROJID = <shared#current-project-id /></compare.equals></var.set>
+<sdl.function name="external-entries-new">
+  <var.set name="sql">
+    select * from TSI_PM_DUE inner join TSI_PM_TASK on TSI_PM_DUE.FQID = TSI_PM_TASK.TASKID where TSI_PM_TASK.STATUS = 1 and DUE > timestamp('9999-12-01 00:00:00.0')<compare.equals "<shared#current-project-id />" "*" not> and PROJID = <shared#current-project-id /></compare.equals> and TSI_PM_DUE.FQID not in (
+      select FQID from TSI_FC_EXTEV_ORDER where STATUS = 1 and PROJID = ${projId} and USERID = ${userId} and GOALID = ${goalId} and MSID = ${msId}
+    ) order by TSI_PM_TASK.TASKID desc
+    <!--- Order by TASKID (FQID) because there is no columns that store submission dates. -->
+  </var.set>
+  <#external-entries />
+</sdl.function>
 
+<sdl.function name="external-entries-ordered">
+  <var.set name="sql">
+    select FQID from TSI_FC_EXTEV_ORDER where STATUS = 1 and PROJID = ${projId} and USERID = ${userId} and GOALID = ${goalId} and MSID = ${msId} order by IDX asc
+  </var.set>
+  <#external-entries />
+</sdl.function>
+
+<sdl.function name="external-entries">
   <db.connect>
     <db.entries supportschunking="false"
                 coltype="fqid"

@@ -119,8 +119,9 @@
   <db.update>
     CREATE TABLE TSI_FC_EXTEV_ORDER (
       DATE          TIMESTAMP         NOT NULL,
-      WHODID        INT               NOT NULL, <!--- User who did the operation -->
-      ENTRYID       ${db_spc_bigint}  NOT NULL,
+      MAKER         INT               NOT NULL, <!--- User who did the operation -->
+      FQID          ${db_spc_bigint}  NOT NULL,
+      STATUS        INT,              <!--- 0=closed, 1=open, 2=archived -->
       TITLE         VARCHAR(250),     <!--- Entry title. -->
       CUSTETYPE     VARCHAR(32),      <!--- Custom entry type -->
       ECLASSDNAME   VARCHAR(32),      <!--- Entry class display name -->
@@ -175,8 +176,9 @@
 <sdl.function name="record-extev-order">
   <db.update prepared="true"
              timestamp="<datetime dateformat='<#timestamp-dateformat />' timezone='GMT' />"
-             int="<#who-did-this />"
+             int="<#who-ordered />"
              bigint="${entryFqid}"
+             int="<com.traction.sdl.tasks.tasks#status />"
              varchar="<#entry-title />"
              varchar="<#custom-entry-type />"
              varchar="<#entry-class-display-name />"
@@ -188,7 +190,7 @@
              bigint="${msId}"
              int="${idx}"
     >
-    insert into TSI_FC_EXTEV_ORDER values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+    insert into TSI_FC_EXTEV_ORDER values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
   </db.update>
 </sdl.function>
 
@@ -218,7 +220,7 @@
   </sql.encode>
 </sdl.function>
 
-<sdl.function name="who-did-this">
+<sdl.function name="who-ordered">
   <journalrequest.user>
     __journalrequest.user.id__
   <else>
