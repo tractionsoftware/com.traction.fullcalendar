@@ -92,7 +92,7 @@
     <!--- #calendar-loading-status / -->
     <shared#search-expression />
     <div class="calendar-container">
-      <#calendar-external-dragbase-back />
+      <#calendar-external-dragbase />
       <!--- To execlude specific types of entries, the journalrequest tag with the search= parameter was required. JPBO18017 -->
       <journalrequest search="<#calendar-search-expression />">
         <#calendar-entries targetUserId="" />
@@ -786,93 +786,46 @@
 <!---
   Side Kanban boards that support Drag and Drop
 -->
-<sdl.function name="calendar-external-dragbase-back">
+<sdl.function name="calendar-external-dragbase">
   <div id="external-events" class="fc-dragbase-wrapper">
-    <h3>締切日なし</h3>
-
-    <var.set name="sql">select * from TSI_PM_DUE inner join TSI_PM_TASK on TSI_PM_DUE.FQID = TSI_PM_TASK.TASKID where DUE > timestamp('9999-12-01 00:00:00.0')<compare.equals "<shared#current-project-id />" "*" not> and PROJID = <shared#current-project-id /></compare.equals></var.set>
-
-    <db.connect>
-      <db.entries supportschunking="false"
-                  coltype="fqid"
-                  colname="FQID"
-                  obeySearchFilter="true"
-                  entries.url="__url.urlgen.here__"
-                  sql="${sql}">
-
-        <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
-            data-tractionid="__entry.tractionid__"
-            data-fqid="__entry.tractionid.fqid__"
-            data-displayname="__entry.entryclass.displayname__"
-            data-displayname="__entry.displaytype__"
-            data-customentrytype="__entry.customentrytype__"
-            data-editable="<entry.permissions.edit>true<else>false</entry.permissions.edit>"
-            data-classname="<com.traction.sdl.json.fullcalendar_json#calitem-class />"
-            data-title="<htmlattributevalue.encode><com.traction.sdl.json.fullcalendar_json#calitem-title /></htmlattributevalue.encode>"
-            data-titletext="__entry.titletext__"
-            data-tpdue="<com.traction.sdl.json.fullcalendar_json#calitem-tp-due />"
-            data-tpallday="<entry.property.boolean name='allday' default='true'>true<else>false</entry.property.boolean>"
-            data-color="<com.traction.sdl.json.fullcalendar_json#color />"
-
-
-            data-event='{ "title": "my event", "duration": "02:00" }'>
-          <div class="fc-event-main">__entry.titletext__</div>
-        </div>
-      </db.entries>
-    </db.connect>
-
+    <div class="fc-dragbase-canvas">
+      <h3>締切日なし</h3>
+      <div class="entries">
+        <#external-entries />
+      </div>
+    </div>
   </div>
 </sdl.function>
 
-<sdl.function name="calendar-external-dragbase-kanban">
+<sdl.function name="external-entries">
+  <var.set name="sql">select * from TSI_PM_DUE inner join TSI_PM_TASK on TSI_PM_DUE.FQID = TSI_PM_TASK.TASKID where DUE > timestamp('9999-12-01 00:00:00.0')<compare.equals "<shared#current-project-id />" "*" not> and PROJID = <shared#current-project-id /></compare.equals></var.set>
 
-  <global.init name="kanbanIncludeLabelName" /><!--- Example: todo,phase1 -->
-  <global.init name="kanbanExcludeLabelName" /><!--- Example: done,phase2,phase3,phase4 -->
-  <global.init name="kanbanBoardDisplayName" /><!--- Example: Waiting,Phase1,...,Completed -->
-  <global.set name="kanbanBoardIndexList" value="" /><!--- Example: 1,2,3,4,5... -->
+  <db.connect>
+    <db.entries supportschunking="false"
+                coltype="fqid"
+                colname="FQID"
+                obeySearchFilter="true"
+                entries.url="__url.urlgen.here__"
+                sql="${sql}">
 
-  <global.set name="kanbanIncludeLabelName" index="1">
-    todo
-  </global.set>
-  <global.set name="kanbanIncludeLabelName" index="2">
-    todo,standby
-  </global.set>
-  <global.set name="kanbanExcludeLabelName" index="1">
-    standby,done
-  </global.set>
-  <global.set name="kanbanExcludeLabelName" index="2">
-    done
-  </global.set>
-  <global.set name="kanbanBoardDisplayName" index="1">Just To Do</global.set>
-  <global.set name="kanbanBoardDisplayName" index="2">Stand-By</global.set>
-  <global.set name="kanbanBoardIndexList">1,2</global.set>
+      <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
+          data-tractionid="__entry.tractionid__"
+          data-fqid="__entry.tractionid.fqid__"
+          data-displayname="__entry.entryclass.displayname__"
+          data-displayname="__entry.displaytype__"
+          data-customentrytype="__entry.customentrytype__"
+          data-editable="<entry.permissions.edit>true<else>false</entry.permissions.edit>"
+          data-classname="<com.traction.sdl.json.fullcalendar_json#calitem-class />"
+          data-title="<htmlattributevalue.encode><com.traction.sdl.json.fullcalendar_json#calitem-title /></htmlattributevalue.encode>"
+          data-titletext="__entry.titletext__"
+          data-tpdue="<com.traction.sdl.json.fullcalendar_json#calitem-tp-due />"
+          data-tpallday="<entry.property.boolean name='allday' default='true'>true<else>false</entry.property.boolean>"
+          data-color="<com.traction.sdl.json.fullcalendar_json#color />"
 
-  <!--- The ID of the Kanban board must be "external-events" since
-        it is the required ID for the external drag-n-drop feature. -->
-  <var.set name="kanbanId" value="external-events" />
 
-  <var.set name="dataBoards">
-    <join separator=",">
-      <foreach list="${kanbanBoardIndexList}" set="boardIndex"><!--- 1,2,3,4... -->
-        <var.set name="boardDisplayName"><global.value name="kanbanBoardDisplayName" index="${boardIndex}" /></var.set>
-        <var.set name="boardIncludeLabelName"><global.value name="kanbanIncludeLabelName" index="${boardIndex}" /></var.set>
-        <var.set name="boardExcludeLabelName"><global.value name="kanbanExcludeLabelName" index="${boardIndex}" /></var.set>
-        <var.set name="sql">
-          <com.traction.kanban.sdl.gwtrpc.kanban#board-sql />
-        </var.set>
-        <!--- For external drag-n-dropping, each kanban item should have the "fc-event" class. -->
-        <com.traction.kanban.sdl.gwtrpc.kanban#board-json itemAddClass="fc-event" />__join.separator__
-      </foreach>
-    </join>
-  </var.set>
-
-  <!--- console>kanbanIncludeLabelName = ${kanbanIncludeLabelName}</console>
-  <console>kanbanExcludeLabelName = ${kanbanExcludeLabelName}</console>
-  <console>kanbanBoardIndexList = ${kanbanBoardIndexList}</console>
-  <console>dataBoards = ${dataBoards}</console -->
-
-  <com.traction.kanban.sdl.gwtrpc.kanban#kanban-canvas kanbanClass="external-events" />
-  <com.traction.kanban.sdl.gwtrpc.kanban#kanban-script />
-  <com.traction.kanban.sdl.gwtrpc.kanban#kanban-colors />
-
+          data-event='{ "title": "my event", "duration": "02:00" }'>
+        <div class="fc-event-main">__entry.titletext__</div>
+      </div>
+    </db.entries>
+  </db.connect>
 </sdl.function>
