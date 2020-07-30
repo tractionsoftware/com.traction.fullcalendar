@@ -84,29 +84,16 @@ $bgsat: #f8ffff;
 
 // External Drag and Drop (prototype)
 .calendar-container {
-  .kanban-canvas.external-events {
-    width: 320px;
-    float: left;
+  display: flex;
+  flex-wrap: wrap;
+  .fc-dragbase-wrapper {
+    position: relative;
+    flex: 0 0 25%;
+    max-width: 25%;
   }
   .fc-canvas-wrapper {
-    width: calc(100% - 320px);
-    float: left;
+    position: relative;
+    flex: 0 0 75%;
+    max-width: 75%;
   }
-  &:after {
-    content: " ";
-    display: table;
-    clear: both;
-  }
-}
-
-.fc-dragbase-wrapper {
-  width: 150px;
-  float: left;
-}
-.fc-canvas-wrapper {
-  width: calc(100% - 150px);
-  float: left;
-}
-.fc-linkcolor-placeholder {
-  clear: both;
 }

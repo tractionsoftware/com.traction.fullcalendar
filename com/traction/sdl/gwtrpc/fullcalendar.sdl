@@ -821,10 +821,6 @@
       </db.entries>
     </db.connect>
 
-    <p>
-      <input type="checkbox" id="drop-remove">
-      <label for="drop-remove">ドラッグ後に削除</label>
-    </p>
   </div>
 </sdl.function>
 
