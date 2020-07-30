@@ -1,0 +1,257 @@
+<!---
+
+      Copyright 1996-2020 Traction Software, Inc.
+
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+
+-->
+
+<!--- PLEASE DO NOT DELETE THIS LINE - make copyright depends on it. -->
+
+<sdl.import name="dbtoolslib" template="com.traction.sdl.misc.dbtoolslib" />
+
+<dbtoolslib#view *body="<#body />" />
+
+<sdl.function name="body">
+
+  <h1>FullCalenar DB Tools</h1>
+
+  <#menu />
+
+  <dbtoolslib#import-stats importer="fullcalendar" />
+
+  <db.connect>
+
+    <switch value="#$op$">
+
+      <case value="none">
+      </case>
+
+      <case value="show">
+        <#show />
+      </case>
+
+      <case value="show-all">
+        <#show all="true" />
+      </case>
+
+      <case value="adv">
+        <#adv />
+      </case>
+
+      <case value="drop">
+        <#drop />
+      </case>
+
+      <case value="init">
+        <#init />
+      </case>
+
+      <case value="clean">
+        <#clean />
+      </case>
+
+      <case.default>
+        <#other-op />
+      </case.default>
+
+    </switch>
+
+  </db.connect>
+
+</sdl.function>
+
+<sdl.function name="menu">
+  <dbtoolslib#default-menu />
+</sdl.function>
+
+<sdl.function name="adv">
+  <dbtoolslib#adv *adv-options="<#adv-options />" />
+</sdl.function>
+
+<sdl.function name="other-op">
+  <dbtoolslib#unknown-op />
+</sdl.function>
+
+<sdl.function name="adv-options">
+  <join separator=" | ">
+    <dbtoolslib#op-button buttonOp="drop" buttonText="Erase Schema">__join.separator__
+    <dbtoolslib#op-button buttonOp="init" buttonText="Erase+Install Schema">__join.separator__
+    <dbtoolslib#op-button buttonOp="clean" buttonText="Erase+Install+Import (Clean)">
+  </join>
+</sdl.function>
+
+<sdl.function name="show">
+  <h2>Showing <variable.boolean name="all">ALL</variable.boolean> rows...</h2>
+  <schema#checkInstall />
+  <variable.global.boolean name="installed">
+    <#show-tables />
+  <else>
+    <h3>(FullCalendar tables do not exist)</h3>
+  </variable.global.boolean>
+</sdl.function>
+
+<sdl.function name="drop">
+  <#adv />
+  <schema#checkInstall />
+  <variable.global.boolean name="installed">
+    <h2>Dropping FullCalenar tables...</h2>
+    <log type="traction">__journalrequest.user.name__ requested that the FullCalenar database tables be erased.</log>
+    <import.task.setuplock importer="fullcalendar">
+      <schema#dropSchema />
+    </import.task.setuplock>
+    <schema#checkInstall />
+    <variable.global.boolean name="installed">
+      <h3>ERROR: tables still exists</h3>
+    <else>
+      <h3>Confirmed</h3>
+    </variable.global.boolean>
+  <else>
+    <h2>No schema installed</h2>
+  </variable.global.boolean>
+</sdl.function>
+
+<sdl.function name="init">
+  <#adv />
+  <h2>Dropping and recreating FullCalenar tables...</h2>
+  <schema#import-all-task-setup />
+  <log type="traction">__journalrequest.user.name__ requested that the FullCalenar database tables be erased and recreated.</log>
+  <schema#checkInstall />
+  <variable.global.boolean name="installed">
+    <h3>Confirmed</h3>
+  <else>
+    <h2>Failed to install schema</h2>
+  </variable.global.boolean>
+</sdl.function>
+
+<sdl.function name="clean">
+
+  <#adv />
+
+  <import.task.request importer="fullcalendar">
+    <h2>Importing FullCalenar data from journal</h2>
+    <import.task.progress importer="fullcalendar" denied="ignore">
+      <h3>status: ${status} - ${counts}</h3>
+    </import.task.progress>
+    <p>You can monitor progress in the log file. See <a href="/rs/threadman" target="_blank">the thread manager</a> to track the task.</p>
+  <else>
+    <h3>Request for FullCalenar Data Full Import failed</h3>
+    <div class="error">${errorMessage}</div>
+  </import.task.request>
+
+</sdl.function>
+
+<sdl.function name="show-tables">
+
+  <h2>FullCalenar Schema Version ${version}</h2>
+
+  <h3><dbtoolslib#show-table-heading tableName="TSI_FC_EXTEV_ORDER" /></h3>
+  <var.set name="cols">DATE,ENTRYID,TITLE,CUSTETYPE,ECLASSDNAME,EDISTYPE,CALTYPE,PROJID,USERID,GOALID,MSID,IDX</var.set>
+  <#order-results sql="select * from TSI_FC_EXTEV_ORDER order by DATE asc, TITLE asc" />
+  <br><br>
+
+  <h3><dbtoolslib#show-table-heading tableName="TSI_FC_VERSION" /></h3>
+  <#version-results sql="select * from TSI_FC_VERSION" />
+
+</sdl.function>
+
+<sdl.function name="order-results">
+  <table class="dump">
+    <thead>
+      <tr>
+        <th></th>
+        <foreach list="${cols}">
+          <th class="<string.tolowercase>__foreach.current__</string.tolowercase>">
+            <span title="__foreach.current__">__foreach.current__</span>
+          </th>
+        </foreach>
+      </tr>
+    </thead>
+    <tbody>
+    <db.query sql="#$sql$" max="<dbtoolslib#query-rows-max />">
+      <tr>
+        <td>__loop.index__</td>
+        <foreach list="${cols}">
+          <td class="<string.tolowercase>__foreach.current__</string.tolowercase>">
+            <switch value="__foreach.current__">
+              <case value="ENTRYID" value="GOALID" value="MSID">
+                <compare.equals "#$db.query.result[__foreach.current__]$" "-1">
+                #$db.query.result[__foreach.current__]$<!--- -1 -->
+                <else>
+                  <dbtoolslib#result-column-fqid2entry fqidColumnName="__foreach.current__" />
+                </compare.equals>
+              </case>
+              <case value="PROJID">
+                <compare.equals "#$db.query.result[PROJID]$" "-1">
+                  #{All_Projects} (-1)
+                <else>
+                  <project id="#$db.query.result[PROJID]$">
+                    __project.name__ (#$db.query.result[PROJID]$)
+                  </project>
+                </compare.equals>
+              </case>
+              <case.default>
+                <html.encode>#$db.query.result[__foreach.current__]$</html.encode>
+              </case.default>
+            </switch>
+          </td>
+        </foreach>
+      </tr>
+      <loop.none>
+        <tr>
+          <td colspan="<jeval> 1 + <foreach list='${cols}'><loop.last>__loop.index__</loop.last></foreach></jeval>">
+            No rows.
+          </td>
+        </tr>
+      </loop.none>
+    </db.query></tbody>
+  </table>
+</sdl.function>
+
+<sdl.function name="version-results">
+  <var.set name="cols">VERSION</var.set>
+  <table class="dump">
+    <thead>
+      <tr>
+        <th></th>
+        <foreach list="${cols}">
+          <th class="<string.tolowercase>__foreach.current__</string.tolowercase>">
+            <span title="__foreach.current__">__foreach.current__</span>
+          </th>
+        </foreach>
+      </tr>
+    </thead>
+    <tbody>
+    <db.query sql="#$sql$" max="<dbtoolslib#query-rows-max />">
+      <tr>
+        <td>__loop.index__</td>
+        <foreach list="${cols}">
+          <td class="<string.tolowercase>__foreach.current__</string.tolowercase>">
+            <switch value="__foreach.current__">
+              <case.default>
+                <html.encode>#$db.query.result[__foreach.current__]$</html.encode>
+              </case.default>
+            </switch>
+          </td>
+        </foreach>
+      </tr>
+      <loop.none>
+        <tr>
+          <td colspan="2">
+            No rows.
+          </td>
+        </tr>
+      </loop.none>
+    </db.query></tbody>
+  </table>
+</sdl.function>

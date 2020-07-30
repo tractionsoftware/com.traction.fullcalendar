@@ -50,6 +50,45 @@
     },
     "holijsonp": {
       "__inherits": "holidays_jsonp"
+    },
+    "fcdbtools": {
+      "sdl": "com.traction.fullcalendar.sdl.db.dbtools",
+      "viewtype": "fcdbtools",
+      "rskeywords": "fcdbtools",
+      "titleprovider": "com.traction.sdk.view.ConfigTitles",
+      "htmltitle": "FullCalenar Database Tools",
+      "sectiontitle": "FullCalenar Database Tools",
+      "viewname": "FullCalenar Database Tools",
+      "description": "A support tool for managing the database tables used by the FullCalendar plug-in.",
+      "operations_maintenance": "drop,init,import,clean"
+    },
+    "fcextevorder": {
+      "sdl": "com.traction.fullcalendar.sdl.db.fcextevorder",
+      "viewtype": "fcextevorder",
+      "rskeywords": "fcextevorder",
+      "titleprovider": "com.traction.sdk.view.ConfigTitles",
+      "htmltitle": "FullCalendar External Event Order Manager",
+      "sectiontitle": "FullCalendar External Event Order Manager",
+      "viewname": "FullCalendar External Event Order Manager",
+      "description": "A special view that is used to remember and/or get the order of the items displayed on the external-events panel.",
+      "format": "text"
+      //"Content-type": "application/json; charset=UTF-8"
+    }
+  },
+  "config/importers": {
+    "fullcalendar": {
+      "run_sdl": "com.traction.fullcalendar.sdl.db.schema#import-all-run",
+      "setup_sdl": "com.traction.fullcalendar.sdl.db.schema#db-setup"
+    }
+  },
+  "config/events/listeners": {
+    "fc_sync": {
+      "sdl": "com.traction.fullcalendar.sdl.db.sync",
+      "events": "init",
+      "display_name": "FullCalenar Synchronizer",
+      "description": "A special listner that reads some FullCalendar data and push it into the database.",
+      "user": "(super)",
+      "skip_queue": "true"
     }
   },
   "config/settings/props/journal": {

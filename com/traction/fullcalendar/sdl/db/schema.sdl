@@ -1,0 +1,235 @@
+<!---
+
+      Copyright 1996-2020 Traction Software, Inc.
+
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+
+-->
+
+<!--- PLEASE DO NOT DELETE THIS LINE - make copyright depends on it. -->
+
+<sdl.function name="log">
+  <log type="<#logStream />">
+    <variable.defined name="msg">
+      ${msg}
+    <else>
+      <*yield />
+    </variable.defined>
+  </log>
+</sdl.function>
+
+<sdl.function name="logStream">
+  <variable.value name="logStream" default="Debug.sqlimport" />
+</sdl.function>
+
+<sdl.function name="tx-method">
+  <db.transaction>
+    <*method />
+  </db.transaction>
+</sdl.function>
+
+<sdl.function name="init">
+  <#checkInstall />
+  <variable.boolean name="installed" not>
+    <#tx-method *method="<#createSchema />" />
+    <#log msg="FullCalendar: schema created" />
+    <#checkInstall />
+  </variable.boolean>
+</sdl.function>
+
+<sdl.function name="import-all">
+  <import.task.request importer="fullcalendar">
+    <#log msg="FullCalendar Data Full Import: Requested" />
+    <import.task.progress importer="fullcalendar" denied="ignore">
+      <#log msg="status: ${status} - ${counts}" />
+    </import.task.progress>
+  <else>
+    <#log logStream="err" msg="Failed to request FullCalendar Data Full Import: ${errorMessage}" />
+  </import.task.request>
+</sdl.function>
+
+<sdl.function name="db-setup">
+  <db.connect>
+    <#db-setup-impl />
+  </db.connect>
+</sdl.function>
+
+<sdl.function name="db-setup-impl">
+  <import.task.setuplock importer="fullcalendar">
+    <#dropSchema />
+    <#init />
+  </import.task.setuplock>
+</sdl.function>
+
+<sdl.function name="import-all-run">
+
+  <import.task.ready importer="fullcalendar">
+
+    <#log logStream="err" msg="FullCalendar Data Full Import: Starting" />
+
+    <!--- db.connect>
+
+      <entries proj="*" type="rchron" entrytypesfilter="task" edate="all" supportschunking="false" max="-1" sort="1" volume="full">
+        <switch value="__entry.displaytype__">
+          <case.default>
+            <#tx-method *method="<#record-task />" />
+            <import.task.incrementcount name="task" />
+          </case.default>
+        </switch>
+      </entries>
+
+    </db.connect -->
+
+    <#log logStream="err" msg="FullCalendar Data Full Import: Complete (${importSummary})" />
+
+  <else>
+
+    <#log logStream="err" msg="FullCalendar Data Full Import: Not Ready (${errorMessage})" />
+
+  </import.task.ready>
+
+</sdl.function>
+
+<sdl.function name="getVersion">1</sdl.function>
+
+<sdl.function name="checkInstall">
+  <db.checkinstalled tableName="TSI_FC_EXTEV_ORDER" versionTableName="TSI_FC_VERSION">
+    <variable.global.set name="installed" value="true" />
+    <variable.global.set name="version" value="${installedVersion}" />
+  <else>
+    <variable.global.set name="installed" value="false" />
+  </db.checkinstalled>
+</sdl.function>
+
+<sdl.function name="createSchema">
+
+  <console>Creating FullCalendar Schema...</console>
+
+  <console>Creating TSI_FC_EXTEV_ORDER...</console>
+  <db.update>
+    CREATE TABLE TSI_FC_EXTEV_ORDER (
+      DATE          TIMESTAMP         NOT NULL,
+      ENTRYID       ${db_spc_bigint}  NOT NULL,
+      TITLE         VARCHAR(250),     <!--- Entry title. -->
+      CUSTETYPE     VARCHAR(32),      <!--- Custom entry type -->
+      ECLASSDNAME   VARCHAR(32),      <!--- Entry class display name -->
+      EDISPTYPE     VARCHAR(32),      <!--- Entry display type -->
+      CALTYPE       VARCHAR(32),      <!--- Name of tye calendar type. e.g., inquiry, questionaire ... -->
+      PROJID        INT               NOT NULL,
+      USERID        INT,
+      GOALID        ${db_spc_bigint},
+      MSID          ${db_spc_bigint},
+      IDX           INT
+    )
+  </db.update>
+
+  <console>version = <#getVersion /></console>
+
+  <console>Creating TSI_FC_VERSION...</console>
+  <db.update>
+    CREATE TABLE TSI_FC_VERSION (
+	   VERSION   INT
+    )
+  </db.update>
+
+  <db.update prepared="true" int="<#getVersion />">
+    insert into TSI_FC_VERSION values ( ? )
+  </db.update>
+
+</sdl.function>
+
+<sdl.function name="dropSchema">
+   <#checkInstall />
+   <variable.boolean name="installed">
+      <#tx-method *method="<#dropSchema-impl />" />
+   <else>
+<!---
+      <#log msg="FullCalendar schema not installed. Not dropping.">
+-->
+   </variable.boolean>
+</sdl.function>
+
+<sdl.function name="dropSchema-impl">
+
+  <db.update>
+    drop table TSI_FC_EXTEV_ORDER
+  </db.update>
+
+  <db.update>
+    drop table TSI_FC_VERSION
+  </db.update>
+
+</sdl.function>
+
+<sdl.function name="record-extev-order">
+  <db.update prepared="true"
+             timestamp="<datetime dateformat='<#timestamp-dateformat />' timezone='GMT' />"
+             bigint="${entryFqid}"
+             varchar="<#entry-title />"
+             varchar="<#custom-entry-type />"
+             varchar="<#entry-class-display-name />"
+             varchar="<#entry-display-type />"
+             varchar="<#calendar-type />"
+             int="${projId}"
+             int="${userId}"
+             bigint="${goalId}"
+             bigint="${msId}"
+             int="${idx}"
+    >
+    insert into TSI_FC_EXTEV_ORDER values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+  </db.update>
+</sdl.function>
+
+<sdl.function name="entry-date-timestamp">
+  <entry.date dateformat="<#timestamp-dateformat />" timezone="GMT" />
+</sdl.function>
+
+<sdl.function name="timestamp-dateformat">yyyy-MM-dd HH:mm:ss.SSS</sdl.function>
+
+<sdl.function name="column-text-value">
+  <sql.encode>
+    <truncate max="${max}" append="">
+      <*yield />
+    </truncate>
+  </sql.encode>
+</sdl.function>
+
+<sdl.function name="entry-title">
+  <#column-text-value max="250">
+    __entry.titletext__
+  </#column-text-value>
+</sdl.function>
+
+<sdl.function name="custom-entry-type">
+  <#column-text-value max="32">
+    __entry.customentrytype__
+  </#column-text-value>
+</sdl.function>
+
+<sdl.function name="entry-class-display-name">
+  <#column-text-value max="32">
+    __entry.entryclass.displayname__
+  </#column-text-value>
+</sdl.function>
+
+<sdl.function name="entry-display-type">
+  <#column-text-value max="32">
+    __entry.displaytype__
+  </#column-text-value>
+</sdl.function>
+
+<sdl.function name="calendar-type">
+  <#column-text-value max="32">
+    <url.param name="caltype" default="normal" />
+  </#column-text-value>
+</sdl.function>

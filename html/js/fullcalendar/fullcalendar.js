@@ -228,6 +228,10 @@ Traction.FullCalendar = {
     return template.content.childNodes;
   },
 
+  // -------------------------------------------------------
+  // Display status messages
+  // -------------------------------------------------------
+
   // fcShowStatusMoveEventDate
   displayStatusMoveEventDate: function(msgArg) {
     console.log('---- displayStatusMoveEventDate ----');
@@ -251,7 +255,58 @@ Traction.FullCalendar = {
     } else if ( action === 'open' ) {
       Proteus.showStatusMessage(i18n_fullcalendar("proteus_status_message_reopen_task", "'You re-opened the ' + displayname + ' ' + id + '.'"), true);
     }
+  },
+
+  // -------------------------------------------------------
+  // Record the order of the external events
+  // -------------------------------------------------------
+  getExtEvEntries: function(fcObj,boardId) {
+    const entries = fcObj.getBoardElements(boardId);
+    let arrayEntries = [];
+    entries.forEach(function(entry,index){
+      arrayEntries.push(entry.dataset.eid);
+    });
+    return arrayEntries;
+  },
+
+  updateExtEvOrder: function(kanbanObj,boardId,projId,goalId,msId,userId) {
+
+    // This will be the payload encoded for a POST request to the
+    // server.
+    var poststring = "";
+    // The type of the view is "ajaxrpc"
+    poststring = fm_append(poststring, "type=fcextevorder");
+    poststring = fm_append(poststring, "method=update");
+    // _get_url_param is exported by GWT to the global JS namespace,
+    // to allow getting the current value of the proj= param.
+    poststring = fm_append(poststring, "boardid="+boardId);
+    poststring = fm_append(poststring, "projid="+projId);
+    poststring = fm_append(poststring, "goalid="+goalId);
+    poststring = fm_append(poststring, "msid="+msId);
+    poststring = fm_append(poststring, "userid="+userId);
+    poststring = fm_append(poststring, "entryid="+encode_url_parameter(getEntriesOnBoard(kanbanObj,boardId).join(","), -1));
+
+    // Browser ID is required by the server as a CSRF attack
+    // countermeasure
+    poststring = fm_append(poststring, "browserid="+Traction.ContextMenu.getBrowserId());
+
+    console.log('updateItemsOnBoard poststring = ' + poststring);
+
+    // you can put anything in here your callback needs to know
+    // when handling the response
+    const state = {
+      "method": "updateItemsOnBoard",
+      "boardId": boardId,
+      "projId": projId,
+      "goalId": goalId,
+      "msId": msId,
+      "userId": userId
+    };
+
+    // Call back to the kanbanDefaultResponse function when response received
+    xmlpost_async(FORM_ACTION_READ_WRITE, poststring, null, true, kanbanDefaultResponse, state);
   }
+
 
 }
 
