@@ -156,7 +156,7 @@
   <h2>FullCalenar Schema Version ${version}</h2>
 
   <h3><dbtoolslib#show-table-heading tableName="TSI_FC_EXTEV_ORDER" /></h3>
-  <var.set name="cols">DATE,ENTRYID,TITLE,CUSTETYPE,ECLASSDNAME,EDISTYPE,CALTYPE,PROJID,USERID,GOALID,MSID,IDX</var.set>
+  <var.set name="cols">DATE,WHODID,ENTRYID,TITLE,CUSTETYPE,ECLASSDNAME,EDISTYPE,CALTYPE,PROJID,USERID,GOALID,MSID,IDX</var.set>
   <#order-results sql="select * from TSI_FC_EXTEV_ORDER order by DATE asc, TITLE asc" />
   <br><br>
 

@@ -119,6 +119,7 @@
   <db.update>
     CREATE TABLE TSI_FC_EXTEV_ORDER (
       DATE          TIMESTAMP         NOT NULL,
+      WHODID        INT               NOT NULL, <!--- User who did the operation -->
       ENTRYID       ${db_spc_bigint}  NOT NULL,
       TITLE         VARCHAR(250),     <!--- Entry title. -->
       CUSTETYPE     VARCHAR(32),      <!--- Custom entry type -->
@@ -174,6 +175,7 @@
 <sdl.function name="record-extev-order">
   <db.update prepared="true"
              timestamp="<datetime dateformat='<#timestamp-dateformat />' timezone='GMT' />"
+             int="<#who-did-this />"
              bigint="${entryFqid}"
              varchar="<#entry-title />"
              varchar="<#custom-entry-type />"
@@ -186,7 +188,19 @@
              bigint="${msId}"
              int="${idx}"
     >
-    insert into TSI_FC_EXTEV_ORDER values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+    insert into TSI_FC_EXTEV_ORDER values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+  </db.update>
+</sdl.function>
+
+<sdl.function name="erase-extev-order">
+  <db.update prepared="true"
+            bigint="${entryFqid}"
+            int="${projId}"
+            int="${userId}"
+            bigint="${goalId}"
+            bigint="${msId}"
+    >
+    delete from TSI_FC_EXTEV_ORDER where ENTRYID = ? and PROJID = ? and USERID = ? and GOALID = ? and MSID = ?
   </db.update>
 </sdl.function>
 
@@ -202,6 +216,14 @@
       <*yield />
     </truncate>
   </sql.encode>
+</sdl.function>
+
+<sdl.function name="who-did-this">
+  <journalrequest.user>
+    __journalrequest.user.id__
+  <else>
+    -1
+  </journalrequest.user>
 </sdl.function>
 
 <sdl.function name="entry-title">
