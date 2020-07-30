@@ -92,14 +92,24 @@ $bgsat: #f8ffff;
     max-width: 25%;
     .fc-dragbase-canvas {
       padding-right: 1em;
-      &> h3 {
-        margin-top: 0 !important;
-        margin-bottom: 1em;
+      .hd {
+        display: flex;
+        justify-content: space-between;
+        h2 {
+          margin-top: 0 !important;
+          margin-bottom: 1em;
+          padding: 0.25em 0;
+        }
+        .add {
+
+        }
       }
-      &> .entries {
-        margin-top: 1em;
-        &> div.fc-event:not(:last-child) {
-          margin-bottom: 0.5em;
+      .bd {
+        .entries {
+          margin-top: 1em;
+          &> div.fc-event:not(:last-child) {
+            margin-bottom: 0.5em;
+          }
         }
       }
     }
