@@ -823,14 +823,14 @@
     ) order by TSI_PM_TASK.TASKID desc
     <!--- Order by TASKID (FQID) because there is no columns that store submission dates. -->
   </var.set>
-  <#external-entries />
+  <#external-entries extevType="new" />
 </sdl.function>
 
 <sdl.function name="external-entries-ordered">
   <var.set name="sql">
     select FQID from TSI_FC_EXTEV_ORDER where STATUS = 1 and PROJID = ${projId} and USERID = ${userId} and GOALID = ${goalId} and MSID = ${msId} order by IDX asc
   </var.set>
-  <#external-entries />
+  <#external-entries extevType="ordered" />
 </sdl.function>
 
 <sdl.function name="external-entries">
@@ -853,6 +853,7 @@
         See the Proteus.addHander('load') section in fullcalendar.js. -->
   <div id="entry-<entry.tractionid.fqid />"
       class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
+      data-extev-type="${extevType}"
       data-tractionid="__entry.tractionid__"
       data-fqid="__entry.tractionid.fqid__"
       data-displayname="__entry.entryclass.name__"
