@@ -195,6 +195,7 @@
 </sdl.function>
 
 <sdl.function name="erase-extev-order">
+  <!--- console>erase-extev-order entryFqid = ${entryFqid}, userId = ${userId}, goalId = ${goalId}, msId = ${msId}</console -->
   <db.update prepared="true"
             bigint="${entryFqid}"
             int="${projId}"
@@ -202,7 +203,7 @@
             bigint="${goalId}"
             bigint="${msId}"
     >
-    delete from TSI_FC_EXTEV_ORDER where ENTRYID = ? and PROJID = ? and USERID = ? and GOALID = ? and MSID = ?
+    delete from TSI_FC_EXTEV_ORDER where FQID = ? and PROJID = ? and USERID = ? and GOALID = ? and MSID = ?
   </db.update>
 </sdl.function>
 
