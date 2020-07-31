@@ -215,7 +215,16 @@ Traction.FullCalendar = {
       }
     } else {
       // Dropped on the non-allDay slot that supports time-grid
-      alert('Dropping onto the time-grid area is not supported yet.');
+      if (draggedItemParam.tpallday === 'true') {
+
+        var msgArg = {
+          "displayname": draggedItemParam.displayname,
+          "tractionid": draggedItemParam.tractionid,
+        };
+
+        Traction.FullCalendar.displayStatusRevertMovementOnTimeGrid(msgArg);
+        info.revert();
+      }
     }
 
   },
@@ -231,7 +240,6 @@ Traction.FullCalendar = {
   // -------------------------------------------------------
   // Display status messages
   // -------------------------------------------------------
-
   // fcShowStatusMoveEventDate
   displayStatusMoveEventDate: function(msgArg) {
     console.log('---- displayStatusMoveEventDate ----');
@@ -256,6 +264,9 @@ Traction.FullCalendar = {
       Proteus.showStatusMessage(i18n_fullcalendar("proteus_status_message_reopen_task", "'You re-opened the ' + displayname + ' ' + id + '.'"), true);
     }
   },
+  displayStatusRevertMovementOnTimeGrid: function(msgArg) {
+    Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_moving_into_timegrid_not_supported", "'Moving ' + msgArg.displayname + ' ' + msgArg.tractionid + ' into the time-grid area is not supported.'"), true));
+  }
 
   // -------------------------------------------------------
   // Record the order of the external events by using jQuery UI Sortable.
