@@ -180,14 +180,15 @@ Traction.FullCalendar = {
   },
 
   // Drag'n'Drop of Event Entry from External or Another Callendar
-  onDropEvent: function(info, draggedItemParam) {
+  onEventReceiveEvent: function(info, draggedItemParam) {
     console.log("Event external dropped. View = " + info.view.type);
-
+    Proteus.showStatusMessage("Sorry. Dropping an external event entry is not supported yet.", true);
   },
 
   // Drag'n'Drop of PM Entry from External or Another Callendar
-  onDropPm: function(info, draggedItemParam) {
+  onEventReceivePm: function(info, draggedItemParam) {
     console.log("PM external dropped. View = " + info.view.type);
+    console.dir(info);
     console.dir(draggedItemParam);
 
     if (info.allDay) {
@@ -211,19 +212,18 @@ Traction.FullCalendar = {
 
         var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
         Proteus.Calendar.moveEvent(draggedItemParam.fqid, startDateTimeGmtMidnightX, callbackFunc);
-
+        // Remove the element from the "Draggable Events" list
+        info.draggedEl.parentNode.removeChild(info.draggedEl);
       }
     } else {
       // Dropped on the non-allDay slot that supports time-grid
       if (draggedItemParam.tpallday === 'true') {
-
         var msgArg = {
           "displayname": draggedItemParam.displayname,
           "tractionid": draggedItemParam.tractionid,
         };
-
         Traction.FullCalendar.displayStatusRevertMovementOnTimeGrid(msgArg);
-        info.revert();
+        info.event.remove();
       }
     }
 
@@ -266,7 +266,7 @@ Traction.FullCalendar = {
   },
   displayStatusRevertMovementOnTimeGrid: function(msgArg) {
     Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_moving_into_timegrid_not_supported", "'Moving ' + msgArg.displayname + ' ' + msgArg.tractionid + ' into the time-grid area is not supported.'"), true));
-  }
+  },
 
   // -------------------------------------------------------
   // Record the order of the external events by using jQuery UI Sortable.
@@ -430,8 +430,8 @@ function fcRenderCalendar(data) {
 
     // Called when an external draggable element or
     // an event from another calendar has been dropped onto the calendar.
-    drop: function(info) {
-      console.dir('---- drop: external drag\'n\'drop or another calendar ----');
+    eventReceive: function(info) {
+      console.dir('---- eventReceive: external drag\'n\'drop or another calendar ----');
       console.dir(info);
 
       // Entry's custom entry type (event, task, goal, milestone)
@@ -451,14 +451,12 @@ function fcRenderCalendar(data) {
         "color": info.draggedEl.dataset.color
       };
 
-      if ( customEntryType === 'event' ) {
-        Traction.FullCalendar.onDropEvent(info, draggedItemParam);
-      } else {
-        Traction.FullCalendar.onDropPm(info, draggedItemParam);
-      }
 
-      // Remove the element from the "Draggable Events" list
-      info.draggedEl.parentNode.removeChild(info.draggedEl);
+      if ( customEntryType === 'event' ) {
+        Traction.FullCalendar.onEventReceiveEvent(info, draggedItemParam);
+      } else {
+        Traction.FullCalendar.onEventReceivePm(info, draggedItemParam);
+      }
 
     },
 
