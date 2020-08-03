@@ -594,4 +594,9 @@ Proteus.addHandler("load", function() {
 
     }
   });
+
+  $('#external-events .entries .fc-event').on('click', function(){
+    Proteus.Calendar.showEventDetails($(this).data('fqid'));
+  });
+
 });
