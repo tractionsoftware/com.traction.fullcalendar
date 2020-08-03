@@ -334,7 +334,7 @@ function fcShowStatusPMTaskChkBox(displayname, id, action) {
 
 function fcRenderCalendar(data) {
 
-  console.log('---- tpDraggableId -----')
+  console.log('---- fcRenderCalendar: Render FullCalendar -----')
   console.dir(data);
 
   var calendarEl = document.getElementById(data.fcCanvasId);
@@ -342,7 +342,6 @@ function fcRenderCalendar(data) {
   var Draggable = FullCalendar.Draggable;
 
   var containerEl = document.getElementById(data.tpDraggableId);
-  var checkbox = document.getElementById('drop-remove');
 
   new Draggable(containerEl, {
     itemSelector: '.fc-event',

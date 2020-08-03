@@ -88,13 +88,13 @@
 </sdl.function>
 
 <sdl.function name="body-main">
-  <gwt.rpc.view name="HTML">
+  <gwt.rpc.view name="HTML" region="entries">
     <!--- #calendar-loading-status / -->
     <shared#search-expression />
     <div class="calendar-container">
-      <#calendar-external-dragbase />
       <!--- To execlude specific types of entries, the journalrequest tag with the search= parameter was required. JPBO18017 -->
       <journalrequest search="<#calendar-search-expression />">
+        <#calendar-external-dragbase targetUserId="" />
         <#calendar-entries targetUserId="" />
       </journalrequest>
     </div>
@@ -803,7 +803,7 @@
     <div class="fc-dragbase-canvas">
       <div class="hd">
         <h2>#{@fullcalendar#No_Due_Date}</h2>
-        <a class="button" rg="<htmlattributevalue.encode>a#form&form=taskdialog</htmlattributevalue.encode>">#{Add}</a>
+        <a class="button" rg="<htmlattributevalue.encode>a#form&form=taskdialog<compare.equals '<shared#current-project-id />' '*' not>&project=<shared#current-project-id /></compare.equals><var.empty name='targetUserId' not>&default_property_assigned=${targetUserId}</var.empty></htmlattributevalue.encode>">#{Add}</a>
       </div>
       <div class="bd">
         <div class="entries">
@@ -834,6 +834,20 @@
 </sdl.function>
 
 <sdl.function name="external-entries">
+  <var.defined name="targetUserId">
+    <var.empty name="targetUserId">
+      <#external-entries-impl />
+    <else>
+      <journalrequest conjunctionSearch="f(assigned:${targetUserId})">
+        <#external-entries-impl />
+      </journalrequest>
+    </var.empty>
+  <else>
+    <#external-entries-impl />
+  </var.defined>
+</sdl.function>
+
+<sdl.function name="external-entries-impl">
   <db.connect>
     <db.entries supportschunking="false"
                 coltype="fqid"

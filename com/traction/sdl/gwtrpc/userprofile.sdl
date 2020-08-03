@@ -1,0 +1,102 @@
+<!---
+
+      Copyright 1996-2020 Traction Software, Inc.
+
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+
+-->
+
+<!--- PLEASE DO NOT DELETE THIS LINE - make copyright depends on it. -->
+
+<sdl.function name="bodycolumn">
+  <compare.equals "<config.view.value name='viewtype' />" "userprofile_cal">
+    <#bodycolumn-fullcalendar />
+  <else>
+    <##bodycolumn />
+  </compare.equals>
+</sdl.function>
+
+<sdl.function name="bodycolumn-fullcalendar">
+    <gwt.rpc.view name="BodyColumn" mainclass="<shared#main-class-user className='<#body-class />' />" contentclass="gutter">
+      <setupassistant#>
+      <fullcalendar#body-heading />
+      <#bodymain-fullcalendar />
+      <com.traction.metrics.sdl.metrics#update />
+    </gwt.rpc.view><!--- BodyColumn -->
+</sdl.function>
+
+<sdl.function name="bodymain-fullcalendar">
+  <url.urlgen type="normal" keep="tm,tp,ts" drop="tu">
+    <gwt.rpc.view name="HTML" region="entries">
+      <shared#search-expression />
+      <!--- To execlude specific types of entries, the journalrequest tag with the search= parameter was required. JPBO18017 -->
+      <div class="calendar-container">
+        <journalrequest search="<fullcalendar#calendar-search-expression />">
+          <fullcalendar#calendar-external-dragbase targetUserId="__journalrequest.targetuser.id__" />
+          <fullcalendar#calendar-entries targetUserId="__journalrequest.targetuser.id__" tpSourceId="teampage-user-__journalrequest.targetuser.id__" />
+        </journalrequest>
+      </div>
+      <fullcalendar#calendar-linkcolor-placeholder />
+    </gwt.rpc.view>
+  </url.urlgen>
+</sdl.function>
+
+<sdl.function name="sidecolumn">
+  <compare.equals "<config.view.value name='viewtype' />" "userprofile_cal">
+    <#sidecolumn-fullcalendar />
+  <else>
+    <##sidecolumn />
+  </compare.equals>
+</sdl.function>
+
+<sdl.function name="sidecolumn-fullcalendar">
+    <gwt.rpc.view name="SideColumn">
+
+      <shared#addmenu firstOption="<#first-addmenu-option />" />
+      <and "<journalrequest.user.visitor not />"
+           "<journalrequest.targetuser.visitor not />"
+           "<user.requestinguser not />">
+        <gwt.rpc.view name="FollowButton" userid="__user.id__" following="<journalrequest.user.following>true<else>false</journalrequest.user.following>"></gwt.rpc.view>
+      </and>
+
+      <gwt.rpc.view name="Uploads"></gwt.rpc.view>
+      <security.server name="visibility">
+        <gwt.rpc.view name="UserSearchBox"></gwt.rpc.view>
+      </security.server>
+
+      <!--- fullcalendar#sidebox-tasklist-controls />
+      <fullcalendar#sidebox-calendar-controls / -->
+      <tasks#tasklist-controls-box />
+      <shared#calendar-controls />
+
+      <calendar#calendar-rss-box calendar-url="<#calendar-url />" windows-calendar-url="<#windows-calendar-url />" />
+
+       <#sidebox-following />
+       <#sidebox-followers />
+
+      <watchbox#user />
+      <shared#date-selector />
+
+      <compare.equals "__journalrequest.targetuser.id__" "__journalrequest.user.id__">
+        <compare.equals "<config.view.value name='tab' default='dashboard' />" "workinprogress" not>
+          <shared#view-workinprogress-sidebox-deferred setupTemplate="userprofile#workinprogress-setup_" />
+        </compare.equals>
+      <else>
+        <shared#view-workinprogress-sidebox-deferred setupTemplate="userprofile#workinprogress-setup_" />
+      </compare.equals>
+
+      <shared#inactive-user />
+      <shared#mailto />
+
+    </gwt.rpc.view><!--- SideColumn -->
+</sdl.function>
