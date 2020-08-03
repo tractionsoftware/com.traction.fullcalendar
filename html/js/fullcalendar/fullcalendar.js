@@ -2,8 +2,6 @@ Traction.FullCalendar = { };
 
 Traction.FullCalendar = {
 
-
-
   onEventDropEvent: function(info) {
 
     console.log("Event entry was dropped. View = " + info.view.type);
@@ -179,6 +177,35 @@ Traction.FullCalendar = {
     }
   },
 
+  onEventResize: function(info) {
+    if (info.event.extendedProps.customentrytype === 'event') {
+      if (info.event.extendedProps.tpAllDay) {
+        // The midnight of the day in GMT
+        var endDateTimeLocal = moment(info.event.end).format('YYYY-MM-DDT00:00:00+00:00');
+        var endDateTimeEpoch = moment(endDateTimeLocal).add(-1,'days').format('x');
+      } else {
+        var endDateTimeLocal = moment(info.event.end).format('YYYY-MM-DDTHH:mm:ssZ');
+        var endDateTimeEpoch = moment(endDateTimeLocal).format('x');
+      }
+      
+      var msgArg = {
+        "displayname": info.event.extendedProps.displayname,
+        "tractionid": info.event.extendedProps.tractionid,
+        "start": moment(info.event.start).format('YYYY-MM-DD HH:mm:ss'),
+        "end": moment(info.event.end).format('YYYY-MM-DD HH:mm:ss')
+      };
+      console.log(msgArg);
+      var callbackFunc = Traction.FullCalendar.displayStatusResizeEventStartEnd(msgArg);
+      console.log('endDateTimeLocal = ' + endDateTimeLocal);
+      console.log('endDateTimeEpoch = ' + endDateTimeEpoch);
+      Proteus.Calendar.changeEventEnd(info.event.id, endDateTimeEpoch, callbackFunc);
+    } else {
+      var msg = 'Sorry. Resizing a ' + info.event.extendedProps.displayname + ' is not supported.'
+      Proteus.showStatusMessage(msg, true);
+      revertFunc();
+    }
+  },
+
   // Drag'n'Drop of Event Entry from External or Another Callendar
   onEventReceiveEvent: function(info, draggedItemParam) {
     console.log("Event external dropped. View = " + info.view.type);
@@ -254,8 +281,9 @@ Traction.FullCalendar = {
   displayStatusMovePMDue: function(msgArg) {
     Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_move_pm_due", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Due: ' + msgArg.start + ')'"), true));
   },
-  fcShowStatusResizeEventStartEnd: function(msgArg) {
-    Proteus.showStatusMessage(i18n_fullcalendar("proteus_status_message_resize_event_start_end", "displayname + ' ' + id + ' was modified. (Start: ' + start + ', End: ' + end + ')'"), true);
+  // fcShowStatusResizeEventStartEnd
+  displayStatusResizeEventStartEnd: function(msgArg) {
+    Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_resize_event_start_end", "msgArg.displayname + ' ' + msgArg.tractionid + ' was modified. (Start: ' + msgArg.start + ', End: ' + msgArg.end + ')'"), true));
   },
   fcShowStatusPMTaskChkBox: function(displayname, id, action) {
     if ( action === 'close' ) {
@@ -425,6 +453,12 @@ function fcRenderCalendar(data) {
         Traction.FullCalendar.onEventDropPm(info);
       }
 
+    },
+
+    eventResize: function(info) {
+      console.dir('---- eventResize ----');
+      console.dir(info);
+      Traction.FullCalendar.onEventResize(info);
     },
 
     // Called when an external draggable element or
