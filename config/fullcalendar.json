@@ -424,7 +424,7 @@
       "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
       "usedefault": "true",
       "default": "#{@fullcalendar#setting_fullcalendar_external_events_section_title_default}"
-    },
+    }
   },
   "config/settings/props/project": {
     "fullcalendar_pagedesc_project_cal": {
