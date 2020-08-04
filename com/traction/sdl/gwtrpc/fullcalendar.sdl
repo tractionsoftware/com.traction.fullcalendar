@@ -802,7 +802,7 @@
   <div id="external-events" class="fc-dragbase-wrapper" data-proj="${projId}" data-user="${userId}" data-goal="${goalId}" data-ms="${msId}" data-caltype="${calType}">
     <div class="fc-dragbase-canvas">
       <div class="hd">
-        <h2>#{@fullcalendar#No_Due_Date}</h2>
+        <h2><config.db.value name="fullcalendar_external_events_section_title" /></h2>
         <a class="button" rg="<htmlattributevalue.encode>a#form&form=taskdialog<compare.equals '<shared#current-project-id />' '*' not>&project=<shared#current-project-id /></compare.equals><var.empty name='targetUserId' not>&default_property_assigned=${targetUserId}</var.empty></htmlattributevalue.encode>">#{Add}</a>
       </div>
       <div class="bd">

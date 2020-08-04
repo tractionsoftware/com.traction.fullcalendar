@@ -415,7 +415,16 @@
       "size": "10",
       "usedefault": "true",
       "default": "crimson"
-    }
+    },
+    "fullcalendar_external_events_section_title": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_external_events_section_title_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_external_events_section_title_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_external_events_section_title_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "usedefault": "true",
+      "default": "#{@fullcalendar#setting_fullcalendar_external_events_section_title_default}"
+    },
   },
   "config/settings/props/project": {
     "fullcalendar_pagedesc_project_cal": {
