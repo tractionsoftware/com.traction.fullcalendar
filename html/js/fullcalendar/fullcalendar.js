@@ -533,21 +533,21 @@ function fcRenderCalendar(data) {
         // console.log('endDateTime = ' + endDateTime);
 
         if (data.showAddTask === 'true') {
-          var tsRg = "a#form&form=" + data.rgParamTaskFormName + data.rgParamTaskPostProj + data.rgParamTaskTags + "&onsave=rv" + "&html=" + data.rgParamTaskFormTitle + data.rgParamNewPmEntryDefaults + "&default_property_due=" + startDateTime;
+          var tsRg = "a#form&form=" + data.rgParamTaskFormName + data.rgParamTaskPostProj + data.rgParamTaskTags + "&onsave=rv" + "&html=" + data.rgParamTaskFormTitle + data.rgParamNewPmEntryDefaults  + data.rgParamAssignedId + "&default_property_due=" + startDateTime;
           var tsHtml = '<a class="task" rg="' + tsRg + '" href="javascript:void(0);" title="' + data.rgParamTaskFormTitle + '"><i class="icon"></i><span class="text">' + data.rgParamTaskFormTitle + '</span></a>';
         } else {
           var tsHtml = '';
         }
 
         if (data.showAddEvent === 'true') {
-          var evRg = "a#form&form=" + data.rgParamEventFormName + data.rgParamEventPostProj + data.rgParamEventTags + "&onsave=rv" + "&html=" + data.rgParamEventFormTitle + data.rgParamNewPmEntryDefaults + "&default_property_due=" + startDateTime + "&default_property_enddate=" + endDateTime;
+          var evRg = "a#form&form=" + data.rgParamEventFormName + data.rgParamEventPostProj + data.rgParamEventTags + "&onsave=rv" + "&html=" + data.rgParamEventFormTitle + data.rgParamNewPmEntryDefaults + data.rgParamAssignedId + "&default_property_due=" + startDateTime + "&default_property_enddate=" + endDateTime;
           var evHtml = '<a class="event" rg="' + evRg + '" href="javascript:void(0);" title="' + data.rgParamEventFormTitle + '"><i class="icon"></i><span class="text">' + data.rgParamEventFormTitle + '</span></a>';
         } else {
           var evHtml = '';
         }
 
         if (data.showAddPhoneNotes === 'true') {
-          var pnRg = "a#form&form=" + data.rgParamPhoneNotesFormName + data.rgParamPhoneNotesPostProj + data.rgParamPhoneNotesTags + "&onsave=rv" + "&html=" + data.rgParamPhoneNotesFormTitle + data.rgParamNewPmDefaults + "&default_property_due=" + startDateTime;
+          var pnRg = "a#form&form=" + data.rgParamPhoneNotesFormName + data.rgParamPhoneNotesPostProj + data.rgParamPhoneNotesTags + "&onsave=rv" + "&html=" + data.rgParamPhoneNotesFormTitle + data.rgParamNewPmDefaults + data.rgParamAssignedId + "&default_property_due=" + startDateTime;
           var pnHtml = '<a class="phonenotes" rg="' + pnRg + '" href="javascript:void(0);" title="' + data.rgParamPhoneNotesFormTitle + '"><i class="icon"></i><span class="text">' + data.rgParamPhoneNotesFormTitle + '</span></a>';
         } else {
           var pnHtml = '';

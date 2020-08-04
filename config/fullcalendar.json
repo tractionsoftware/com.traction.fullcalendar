@@ -1,4 +1,7 @@
 {
+  "config/data/forms" : {
+
+  },
   "config/gwt/views": {
     "cal": {
       "sdl": "com.traction.sdl.gwtrpc.fullcalendar",
@@ -424,6 +427,45 @@
       "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
       "usedefault": "true",
       "default": "#{@fullcalendar#setting_fullcalendar_external_events_section_title_default}"
+    },
+    "fullcalendar_always_assign_me": {
+      "class": "com.traction.settings.YesNo",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_always_assign_me_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_always_assign_me_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_always_assign_me_tip}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "false",
+      "usedefault": "true"
+    },
+    "fullcalendar_add_form_external": {
+      "__inherits": "fullcalendar_add_form_task",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_add_form_external_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_add_form_external_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_add_form_external_tip}"
+    },
+    "fullcalendar_add_form_task": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_add_form_task_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_add_form_task_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_add_form_task_tip}",
+      "default": "taskdialog",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
+    },
+    "fullcalendar_add_form_event": {
+      "__inherits": "fullcalendar_add_form_task",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_add_form_event_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_add_form_event_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_add_form_event_tip}",
+      "default": "eventdialog"
+    },
+    "fullcalendar_add_form_phonenotes": {
+      "__inherits": "fullcalendar_add_form_task",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_add_form_phonenotes_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_add_form_phonenotes_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_add_form_phonenotes_tip}",
+      "default": "phonenotes"
     }
   },
   "config/settings/props/project": {

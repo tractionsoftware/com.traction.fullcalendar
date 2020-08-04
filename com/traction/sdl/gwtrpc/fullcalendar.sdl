@@ -228,17 +228,17 @@
       "rgParamTaskPostProj": "<#newtask-target-space />",
       "rgParamEventPostProj": "<#newevent-target-space />",
       "rgParamPhoneNotesPostProj": "<#newphonenotes-target-space />",
-      "rgParamTaskFormName": "<var.value name='add_task_form_name' default='taskdialog' />",
-      "rgParamEventFormName": "<var.value name='add_event_form_name' default='eventdialog' />",
-      "rgParamPhoneNotesFormName": "<var.value name='add_phonenotes_form_name' default='phonenotes' />",
-      "rgParamTaskFormTitle": "<var.value name='add_task_form_title' default='#{gwtrpc_new_task}' />",
-      "rgParamEventFormTitle": "<var.value name='add_event_form_title' default='#{gwtrpc_new_event}' />",
-      "rgParamPhoneNotesFormTitle": "<var.value name='add_phonenotes_form_title' default='#{@phonenotes#addmenu_text}' />",
+      "rgParamTaskFormName": "<config.db.value name='fullcalendar_add_form_task' />",
+      "rgParamEventFormName": "<config.db.value name='fullcalendar_add_form_event' />",
+      "rgParamPhoneNotesFormName": "<config.db.value name='fullcalendar_add_form_phonenotes' />",
+      "rgParamTaskFormTitle": "<var.value name='taskFormTitle' default='#{gwtrpc_new_task}' />",
+      "rgParamEventFormTitle": "<var.value name='eventFormTitle' default='#{gwtrpc_new_event}' />",
+      "rgParamPhoneNotesFormTitle": "<var.value name='phonenotesFormTItle' default='#{@phonenotes#addmenu_text}' />",
       "rgParamTaskTags": "<#newevent-add-tags />",
       "rgParamEventTags": "<#newtask-add-tags />",
       "rgParamPhoneNotesTags": "<#newphonenotes-add-tags />",
-      "rgParamNewPmEntryDefaults": "<#form-rg-newentry-pm-defaults />"
-
+      "rgParamNewPmEntryDefaults": "<#form-rg-newentry-pm-defaults />",
+      "rgParamAssignedId": "&default_property_assigned=<config.db.boolean name='fullcalendar_always_assign_me'><journalrequest.user>__journalrequest.user.id__</journalrequest.user></config.db.boolean>"
     };
 
     fcRenderCalendar(arg);
@@ -803,7 +803,7 @@
     <div class="fc-dragbase-canvas">
       <div class="hd">
         <h2><config.db.value name="fullcalendar_external_events_section_title" /></h2>
-        <a class="button" rg="<htmlattributevalue.encode>a#form&form=taskdialog<compare.equals '<shared#current-project-id />' '*' not>&project=<shared#current-project-id /></compare.equals><var.empty name='targetUserId' not>&default_property_assigned=${targetUserId}</var.empty></htmlattributevalue.encode>">#{Add}</a>
+        <a class="button" rg="<#external-events-add-rg />">#{Add}</a>
       </div>
       <div class="bd">
         <div class="entries">
@@ -813,6 +813,25 @@
       </div>
     </div>
   </div>
+
+</sdl.function>
+
+<sdl.function name="external-events-add-rg">
+
+  <var.set name="requestUserId"><journalrequest.user>__journalrequest.user.id__</journalrequest.user></var.set>
+  <var.set name="assignedId">
+    <compare.equals "${targetUserId}" "${requestUserId}">
+      ${targetUserId}
+    <else>
+      <join separator=",">
+        ${targetUserId}
+        __join.separator__
+        <config.db.boolean name='fullcalendar_always_assign_me'>${requestUserId}</config.db.boolean>
+      </join>
+    </compare.equals>
+  </var.set>
+
+  <htmlattributevalue.encode>a#form&form=<config.db.value name='fullcalendar_add_form_external' /><compare.equals '<shared#current-project-id />' '*' not>&project=<shared#current-project-id /></compare.equals><var.empty name='targetUserId' not>&default_property_assigned=${assignedId}</var.empty></htmlattributevalue.encode>
 
 </sdl.function>
 
