@@ -795,9 +795,9 @@
   <var.set name="msId"><compare.equals "__entry.customentrytype__" "milestones">__entry.tractionid.fqid__<else>-1</compare.equals></var.set>
   <var.set name="calType">normal</var.set>
 
-  <foreach list="projId,userId,goalId,msId,calType">
+  <!--- foreach list="projId,userId,goalId,msId,calType">
     <console>__foreach.current__ = <var.value name="__foreach.current__" /></console>
-  </foreach>
+  </foreach -->
 
   <div id="external-events" class="fc-dragbase-wrapper" data-proj="${projId}" data-user="${userId}" data-goal="${goalId}" data-ms="${msId}" data-caltype="${calType}">
     <div class="fc-dragbase-canvas">
@@ -831,7 +831,7 @@
     </compare.equals>
   </var.set>
 
-  <htmlattributevalue.encode>a#form&form=<config.db.value name='fullcalendar_add_form_external' /><compare.equals '<shared#current-project-id />' '*' not>&project=<shared#current-project-id /></compare.equals><var.empty name='targetUserId' not>&default_property_assigned=${assignedId}</var.empty></htmlattributevalue.encode>
+  <htmlattributevalue.encode>a#form&form=<config.db.value name='fullcalendar_add_form_external' /><compare.equals '<shared#current-project-id />' '*' not>&project=<shared#current-project-id /></compare.equals>&default_property_assigned=${assignedId}</htmlattributevalue.encode>
 
 </sdl.function>
 
