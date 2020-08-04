@@ -77,10 +77,10 @@ Traction.FullCalendar = {
           Proteus.Calendar.setEventProperties(event.id, startDateTimeEpoch, endDateTimeEpoch, false, callbackFunc);
         } else {
           console.log("If it is a non-allDay event, set the new start and end date/time.");
-          var startDateTimeHumanZone = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ssZ');
-          var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
-          var endDateTimeHumanZone = moment(info.event.end).format('YYYY-MM-DDTHH:mm:ssZ');
-          var endDateTimeEpoch = moment(endDateTimeHumanZone).format('x');
+          var startDateTimeLocal = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ssZ');
+          var startDateTimeEpoch = moment(startDateTimeLocal).format('x');
+          var endDateTimeLocal = moment(info.event.end).format('YYYY-MM-DDTHH:mm:ssZ');
+          var endDateTimeEpoch = moment(endDateTimeLocal).format('x');
 
           var msgArg = {
             "fqid": info.event.id,
@@ -89,6 +89,12 @@ Traction.FullCalendar = {
             "start": moment(info.event.start).format('YYYY/MM/DD HH:mm'),
             "end": moment(info.event.end).format('YYYY/MM/DD HH:mm')
           };
+
+          console.log('startDateTimeLocal = ' + startDateTimeLocal);
+          console.log('startDateTimeEpoch = ' + startDateTimeEpoch);
+          console.log('endDateTimeLocal = ' + endDateTimeLocal);
+          console.log('endDateTimeEpoch = ' + endDateTimeEpoch);
+          console.dir(msgArg);
 
           var callbackFunc = Traction.FullCalendar.displayStatusMoveEventStartEnd(msgArg);
 
@@ -180,14 +186,13 @@ Traction.FullCalendar = {
   onEventResize: function(info) {
     if (info.event.extendedProps.customentrytype === 'event') {
       if (info.event.extendedProps.tpAllDay) {
-        // The midnight of the day in GMT
         var endDateTimeLocal = moment(info.event.end).format('YYYY-MM-DDT00:00:00+00:00');
         var endDateTimeEpoch = moment(endDateTimeLocal).add(-1,'days').format('x');
       } else {
         var endDateTimeLocal = moment(info.event.end).format('YYYY-MM-DDTHH:mm:ssZ');
         var endDateTimeEpoch = moment(endDateTimeLocal).format('x');
       }
-      
+
       var msgArg = {
         "displayname": info.event.extendedProps.displayname,
         "tractionid": info.event.extendedProps.tractionid,
@@ -506,7 +511,7 @@ function fcRenderCalendar(data) {
 
     // After the view is renderred
     viewDidMount: function(arg) {
-      console.log('---- viewDidMount ----');
+      console.log('---- viewDidMount (After the view is renderred) ----');
       console.dir(arg);
 
       // Draw add-task, add-event, and add-phonenotes icons
