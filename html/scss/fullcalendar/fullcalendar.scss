@@ -42,9 +42,31 @@ $p4color: #ddd;
 $bgsun: #fff8f8;
 $bgsat: #f8ffff;
 
+// --------------------------------------------------------------------
+// Priority Colors
+// --------------------------------------------------------------------
+.fc-event {
+  border-style: none;
+  &.calitem-p1 {
+    border-right: 6px $p1color solid !important;
+  }
+  &.calitem-p2 {
+    border-right: 6px $p2color solid !important;
+  }
+  &.calitem-p3 {
+    border-right: 6px $p3color solid !important;
+  }
+  &.calitem-p4, &.calitem-p5, &.calitem-p6 {
+    border-right: 6px $p4color solid !important;
+  }
+}
+
+// --------------------------------------------------------------------
+// Add Icons
+// --------------------------------------------------------------------
 .fc-daygrid-day {
   .fc-daygrid-day-top {
-    justify-content:space-between;
+    justify-content: space-between;
     .fc-day-add-links {
       padding: 4px;
       a {
@@ -81,8 +103,9 @@ $bgsat: #f8ffff;
   }
 }
 
-
+// --------------------------------------------------------------------
 // External Drag and Drop (prototype)
+// --------------------------------------------------------------------
 .calendar-container {
   display: flex;
   flex-wrap: wrap;

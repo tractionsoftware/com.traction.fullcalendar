@@ -358,35 +358,36 @@ Traction.FullCalendar = {
     // if the event is not from Google Calendar.
     // Please refer to JPBO16042, JPBO16137, and JPBO16290 for details.
     var linkColor = $('#fc-linkcolor-placeholder a').css('color');
+    console.log('customentrytype = ' + info.event.extendedProps.customentrytype + ' linkColor = ' + linkColor);
 
     if ( info.event.extendedProps.customentrytype === 'event' ) {
       if (info.event.extendedProps.colorname === '') {
         $(info.el).css('color', linkColor);
         $(info.el).css('background-color', 'transparent');
-        $(info.el).css('border-color', 'transparent');
+        //$(info.el).css('border-color', 'transparent');
         if ( $(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays') ) {
           $(info.el).css('color', '#fff');
           $(info.el).css('background-color', linkColor);
-          $(info.el).css('border-color', linkColor);
+          //$(info.el).css('border-color', linkColor);
         } else {
           $(info.el).css('color', linkColor);
           $(info.el).css('background-color', 'transparent');
-          $(info.el).css('border-color', 'transparent');
+          //$(info.el).css('border-color', 'transparent');
         }
       } else {
         $(info.el).css('color', '#fff');
         $(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
-        $(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        //$(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
       }
     } else {
       if (info.event.extendedProps.colorname === '') {
         $(info.el).find('.text').css('color', linkColor);
         $(info.el).css('background-color', 'transparent');
-        $(info.el).css('border-color', 'transparent');
+        //$(info.el).css('border-color', 'transparent');
       } else {
         $(info.el).css('color', '#fff');
         $(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
-        $(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        //$(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
       }
     }
   },
@@ -419,8 +420,27 @@ Traction.FullCalendar = {
         break;
     }
     return colorCode;
-  }
+  },
 
+  addPriorityBadge: function(info) {
+    if (view.name == 'listDay' || view.name == 'listWeek' || view.name == 'listMonth' || view.name == 'listYear') {
+    $('.fc-list-item-title').each(function(){
+      var entryClasses = $(this).parent('.fc-list-event').attr('class');
+
+      if (entryClasses.match(/calitem-task/)) {
+        var classArray = entryClasses.split(' ');
+        for (i = 0; i < classArray.length; i++) {
+          var priority = entryClasses.match(/calitem-p([0-9])/);
+          if (priority) {
+            if ($(this).children('span.priority').length == 0) {
+              $(this).append('<span class="priority p' + priority[1] + '">' + priority[1] + '</span>');
+            }
+          }
+        }
+      }
+    });
+  }
+  }
 
 }
 
@@ -577,20 +597,21 @@ function fcRenderCalendar(data) {
       return { domNodes: returnHtml };
     },
 
-    // After an event is renderred######
+    // After an event is renderred
     eventDidMount: function(info) {
       console.log('---- eventDidMount ----');
       console.dir(info);
       Traction.FullCalendar.colorEvent(info);
+
     },
 
     // After the view is renderred
-    viewDidMount: function(arg) {
+    viewDidMount: function(info) {
       console.log('---- viewDidMount (After the view is renderred) ----');
-      console.dir(arg);
+      console.dir(info);
 
       // Draw add-task, add-event, and add-phonenotes icons
-      $(arg.el).find('.fc-daygrid-day').each(function() {
+      $(info.el).find('.fc-daygrid-day').each(function() {
 
         var targetDate = $(this).data('date');
         var curHour = moment().format('H');
@@ -634,7 +655,8 @@ function fcRenderCalendar(data) {
 
         $(this).find('.fc-daygrid-day-top').append('<div class="fc-day-add-links">' + evHtml + tsHtml + pnHtml + '</div>');
 
-      });
+      }); // Draw add-task, add-event, and add-phonenotes icons
+
     },
 
     dayCellContent: function(arg) {

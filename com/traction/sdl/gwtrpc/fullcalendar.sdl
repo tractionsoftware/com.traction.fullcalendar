@@ -157,7 +157,7 @@
 
 <sdl.function name="display-calendar">
   <plugin name="com.traction.jsonapi" requireenabled="true" not>
-    <div class="warning">FullCalenar requires the JSON API plug-in (com.traction.jsonapi) to be installed and enabled. Please check the plug-in in Server Settings &gt; Plugins page.</div>
+    <div class="warning">FullCalendar requires the JSON API plug-in (com.traction.jsonapi) to be installed and enabled. Please check the plug-in in Server Settings &gt; Plugins page.</div>
   </plugin>
   <#draw-fullcalendar />
 </sdl.function>
