@@ -347,10 +347,78 @@ Traction.FullCalendar = {
     xmlpost_async(FORM_ACTION_READ_WRITE, poststring, null, true, Traction.FullCalendar.extEvOrderDefaultResponse, state);
   },
 
-
   extEvOrderDefaultResponse: function(responseText, state) {
     console.dir(state);
     console.log("extEvOrderDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
+  },
+
+  colorEvent: function(info) {
+
+    // Set the background color of each event with the color picked up from a standard link,
+    // if the event is not from Google Calendar.
+    // Please refer to JPBO16042, JPBO16137, and JPBO16290 for details.
+    var linkColor = $('#fc-linkcolor-placeholder a').css('color');
+
+    if ( info.event.extendedProps.customentrytype === 'event' ) {
+      if (info.event.extendedProps.colorname === '') {
+        $(info.el).css('color', linkColor);
+        $(info.el).css('background-color', 'transparent');
+        $(info.el).css('border-color', 'transparent');
+        if ( $(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays') ) {
+          $(info.el).css('color', '#fff');
+          $(info.el).css('background-color', linkColor);
+          $(info.el).css('border-color', linkColor);
+        } else {
+          $(info.el).css('color', linkColor);
+          $(info.el).css('background-color', 'transparent');
+          $(info.el).css('border-color', 'transparent');
+        }
+      } else {
+        $(info.el).css('color', '#fff');
+        $(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        $(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+      }
+    } else {
+      if (info.event.extendedProps.colorname === '') {
+        $(info.el).find('.text').css('color', linkColor);
+        $(info.el).css('background-color', 'transparent');
+        $(info.el).css('border-color', 'transparent');
+      } else {
+        $(info.el).css('color', '#fff');
+        $(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        $(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+      }
+    }
+  },
+
+  convertColorNameToCode: function(colorName) {
+    switch (colorName) {
+      case 'red':
+        var colorCode = '#e53935';
+        break
+      case 'orange':
+        var colorCode = '#fb8c00';
+        break;
+      case 'yellow':
+        var colorCode = '#fdd835';
+        break;
+      case 'green':
+        var colorCode = '#43a047';
+        break;
+      case 'blue':
+        var colorCode = '#1e88e5';
+        break;
+      case 'purple':
+        var colorCode = '#8e24aa';
+        break;
+      case 'gray':
+        var colorCode = '#757575';
+        break;
+      default:
+        var colorCode = '#757575';
+        break;
+    }
+    return colorCode;
   }
 
 
@@ -507,6 +575,13 @@ function fcRenderCalendar(data) {
         var returnHtml = Traction.FullCalendar.htmlToElements( "<div class='fc-event-inner'>" + "<div class='fc-event-title'>" + event.event.title + "</div></div>" );
       }
       return { domNodes: returnHtml };
+    },
+
+    // After an event is renderred######
+    eventDidMount: function(info) {
+      console.log('---- eventDidMount ----');
+      console.dir(info);
+      Traction.FullCalendar.colorEvent(info);
     },
 
     // After the view is renderred
