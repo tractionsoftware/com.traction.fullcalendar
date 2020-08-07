@@ -32,6 +32,16 @@ $types: "task", "event", "goal", "milestone";
   content: "\f095";
 }
 
+// Entry background colors
+$colorRed: #e53935;
+$colorOrange: #fb8c00;
+$colorYellow: #fdd835;
+$colorGreen: #43a047;
+$colorBlue: #1e88e5;
+$colorPurple: #8e24aa;
+$colorGray: #757575;
+$colorDefault: transparent;
+
 // Task priority colors
 $p1color: #dea29e;
 $p2color: #f0c7a0;
@@ -59,7 +69,38 @@ $bgsat: #f8ffff;
   &.calitem-p4, &.calitem-p5, &.calitem-p6 {
     border-right: 6px $p4color solid !important;
   }
+
+  &.red {
+    background-color: $colorRed;
+  }
+  &.orange {
+    background-color: $colorOrange;
+  }
+  &.yellow {
+    background-color: $colorYellow;
+  }
+  &.green {
+    background-color: $colorGreen;
+  }
+  &.blue {
+    background-color: $colorBlue;
+  }
+  &.purple {
+    background-color: $colorPurple;
+  }
+  &.gray {
+    background-color: $colorGray;
+  }
+
+  // Default color
+  background-color: $colorDefault;
+  &.fc-h-event .fc-event-main {
+    color: inherit;
+  }
 }
+
+
+
 
 // --------------------------------------------------------------------
 // Add Icons

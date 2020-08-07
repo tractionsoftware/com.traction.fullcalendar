@@ -223,10 +223,10 @@ Traction.FullCalendar = {
     console.dir(info);
     console.dir(draggedItemParam);
 
-    if (info.allDay) {
+    if (info.event.allDay) {
       // Dropped on the allDay slot
       if (draggedItemParam.tpallday === 'true') {
-        var startDateLocal = info.dateStr; // YYYY-MM-DD
+        var startDateLocal = info.event.startStr; // YYYY-MM-DD
         var startDateTimeGmtMidnight = startDateLocal + 'T00:00:00+0000';
         var startDateTimeGmtMidnightX = moment(startDateTimeGmtMidnight).format('x');
 
@@ -264,7 +264,6 @@ Traction.FullCalendar = {
   // Convert an HTML string into the "real" HTML code.
   // https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
   htmlToElements: function(html) {
-    console.log(html);
     var template = document.createElement('template');
     template.innerHTML = html.trim();
     return template.content.childNodes;
@@ -364,20 +363,20 @@ Traction.FullCalendar = {
     if ( info.event.extendedProps.customentrytype === 'event' ) {
       if (info.event.extendedProps.colorname === '') {
         $(info.el).css('color', linkColor);
-        $(info.el).css('background-color', 'transparent');
+        //$(info.el).css('background-color', 'transparent');
         //$(info.el).css('border-color', 'transparent');
         if ( $(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays') ) {
           $(info.el).css('color', '#fff');
-          $(info.el).css('background-color', linkColor);
+          //$(info.el).css('background-color', linkColor);
           //$(info.el).css('border-color', linkColor);
         } else {
           $(info.el).css('color', linkColor);
-          $(info.el).css('background-color', 'transparent');
+          //$(info.el).css('background-color', 'transparent');
           //$(info.el).css('border-color', 'transparent');
         }
       } else {
         $(info.el).css('color', '#fff');
-        $(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        //$(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
         //$(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
       }
     } else {
@@ -387,7 +386,7 @@ Traction.FullCalendar = {
         //$(info.el).css('border-color', 'transparent');
       } else {
         $(info.el).css('color', '#fff');
-        $(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        //$(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
         //$(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
       }
     }
@@ -468,8 +467,10 @@ function fcRenderCalendar(data) {
   new Draggable(containerEl, {
     itemSelector: '.fc-event',
     eventData: function(eventEl) {
+      console.log('---- Dragged Draggable ----');
       return {
-        title: eventEl.innerText
+        // Remove the "fc-event-main" div element and get its inner HTML data.
+        title: $(eventEl.innerHTML)[0].innerHTML
       };
     }
   });
@@ -713,7 +714,7 @@ Proteus.addHandler("load", function() {
     var titleHtml = $(this).data('title').replace(/\\\"/g,'"').replace(/\\\//g,'/');
     $(this).html('<div class="fc-event-main">' + titleHtml + '</div>');
     // Coloring
-    $(this).css('background-color', Traction.FullCalendar.convertColorNameToCode($(this).data('color')));
+    //$(this).css('background-color', Traction.FullCalendar.convertColorNameToCode($(this).data('color')));
     if ($(this).data('color')) {
       $(this).find('.text').css('color', '#fff');
     } else {

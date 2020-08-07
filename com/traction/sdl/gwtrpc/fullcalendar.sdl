@@ -900,7 +900,6 @@
       data-tpdue="<com.traction.sdl.json.fullcalendar_json#calitem-tp-due />"
       data-tpallday="<entry.property.boolean name='allday' default='true'>true<else>false</entry.property.boolean>"
       data-color="<com.traction.sdl.json.fullcalendar_json#color-name />"
-      style="background-color: transparent"
       >
     <div class="fc-event-main">__entry.titletext__</div>
   </div>
