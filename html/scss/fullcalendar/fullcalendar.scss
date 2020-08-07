@@ -116,7 +116,8 @@ $bgsat: #f8ffff;
     .fc-dragbase-canvas {
       margin-right: 1em;
       padding: 1em;
-      background: #f0f0f0 url(/images/proteus/bg/ticks/ticks.png) top left repeat;
+      border: 1px #ddd solid;
+      //background: #f0f0f0 url(/images/proteus/bg/ticks/ticks.png) top left repeat;
       .hd {
         display: flex;
         justify-content: space-between;

@@ -417,7 +417,7 @@ Traction.FullCalendar = {
         var colorCode = '#757575';
         break;
       default:
-        var colorCode = '#757575';
+        var colorCode = 'transparent';
         break;
     }
     return colorCode;
@@ -709,8 +709,17 @@ function fcRenderCalendar(data) {
 Proteus.addHandler("load", function() {
 
   $('#external-events .entries .fc-event').each(function(){
+    // Render task checkbox
     var titleHtml = $(this).data('title').replace(/\\\"/g,'"').replace(/\\\//g,'/');
     $(this).html('<div class="fc-event-main">' + titleHtml + '</div>');
+    // Coloring
+    $(this).css('background-color', Traction.FullCalendar.convertColorNameToCode($(this).data('color')));
+    if ($(this).data('color')) {
+      $(this).find('.text').css('color', '#fff');
+    } else {
+      $(this).find('.text').css('color', $('#fc-linkcolor-placeholder a').css('color'));
+    }
+
   });
 
 
