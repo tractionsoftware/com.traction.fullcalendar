@@ -263,9 +263,10 @@ Traction.FullCalendar = {
 
   // Convert an HTML string into the "real" HTML code.
   // https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
-  htmlToElements: function htmlToElements(html) {
+  htmlToElements: function(html) {
+    console.log(html);
     var template = document.createElement('template');
-    template.innerHTML = html;
+    template.innerHTML = html.trim();
     return template.content.childNodes;
   },
 
@@ -358,7 +359,7 @@ Traction.FullCalendar = {
     // if the event is not from Google Calendar.
     // Please refer to JPBO16042, JPBO16137, and JPBO16290 for details.
     var linkColor = $('#fc-linkcolor-placeholder a').css('color');
-    console.log('customentrytype = ' + info.event.extendedProps.customentrytype + ' linkColor = ' + linkColor);
+    //console.log('customentrytype = ' + info.event.extendedProps.customentrytype + ' linkColor = ' + linkColor);
 
     if ( info.event.extendedProps.customentrytype === 'event' ) {
       if (info.event.extendedProps.colorname === '') {
@@ -599,8 +600,8 @@ function fcRenderCalendar(data) {
 
     // After an event is renderred
     eventDidMount: function(info) {
-      console.log('---- eventDidMount ----');
-      console.dir(info);
+      //console.log('---- eventDidMount ----');
+      //console.dir(info);
       Traction.FullCalendar.colorEvent(info);
 
     },
@@ -706,6 +707,13 @@ function fcRenderCalendar(data) {
 
 
 Proteus.addHandler("load", function() {
+
+  $('#external-events .entries .fc-event').each(function(){
+    var titleHtml = $(this).data('title').replace(/\\\"/g,'"').replace(/\\\//g,'/');
+    $(this).html('<div class="fc-event-main">' + titleHtml + '</div>');
+  });
+
+
   $('#external-events .entries').sortable({
     // When sorting is over and the order was changed
     "update": function(ev,ui){
@@ -728,6 +736,26 @@ Proteus.addHandler("load", function() {
 
       Traction.FullCalendar.updateExtEvOrder(arrayFqid, calParam)
 
+    }
+  });
+
+  $('#external-events .entries .fc-event .ptags-chk').on('change, click', function(event){
+    var tractionId = $(this).closest('div.fc-event').data('tractionid');
+    var displayName = $(this).closest('div.fc-event').data('entryclassdisplayname');
+    if( $(this).hasClass('todo') ) {
+      // The checkbox was unchecked and the status of the task is "todo".
+      var callbackFunc = fcShowStatusPMTaskChkBox(displayName, tractionId, 'close');
+      Proteus.processCustomLabelAction('2', tractionId, callbackFunc);
+      // Change the class of the checkbox from todo to done.
+      $(this).removeClass('todo').addClass('done');
+      // Change the class of the ancestor "a" from todo to done.
+      $(this).closest('div.fc-event').removeClass('todo').addClass('done');
+    } else if ( $(this).hasClass('done') ) {
+      // The checkbox was checked and the status of the task is "done".
+      var callbackFunc = fcShowStatusPMTaskChkBox(displayName, tractionId, 'open');
+      Proteus.processCustomLabelAction('1', tractionId, callbackFunc);
+      $(this).removeClass('done').addClass('todo');
+      $(this).closest('div.fc-event').removeClass('done').addClass('todo');
     }
   });
 

@@ -466,6 +466,18 @@
       "description": "#{@fullcalendar#setting_fullcalendar_add_form_phonenotes_description}",
       "tip": "#{@fullcalendar#setting_fullcalendar_add_form_phonenotes_tip}",
       "default": "phonenotes"
+    },
+    "fullcalendar_event_icon": {
+      "class": "com.traction.settings.Select",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_event_icon_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_event_icon_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_event_icon_tip}",
+      "options": "image,font",
+      "option_image_label": "#{@fullcalendar#setting_fullcalendar_event_icon_option_image}",
+      "option_font_label": "#{@fullcalendar#setting_fullcalendar_event_icon_option_font}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "usedefault": "true",
+      "default": "image"
     }
   },
   "config/settings/props/project": {
