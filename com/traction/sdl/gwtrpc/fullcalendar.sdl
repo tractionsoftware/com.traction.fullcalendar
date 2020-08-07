@@ -885,7 +885,7 @@
         when the drag is over and the order was changed.
         See the Proteus.addHander('load') section in fullcalendar.js. -->
   <div id="entry-<entry.tractionid.fqid />"
-      class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event <com.traction.sdl.json.fullcalendar_json#color-name />"
+      class="fc-event <com.traction.sdl.json.fullcalendar_json#calitem-class />"
       data-extev-type="${extevType}"
       data-tractionid="__entry.tractionid__"
       data-fqid="__entry.tractionid.fqid__"

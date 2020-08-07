@@ -136,6 +136,9 @@ $bgsat: #f8ffff;
           &> div.fc-event:not(:last-child) {
             margin-bottom: 0.5em;
           }
+          .fc-event {
+            cursor: pointer;
+          }
         }
       }
     }
