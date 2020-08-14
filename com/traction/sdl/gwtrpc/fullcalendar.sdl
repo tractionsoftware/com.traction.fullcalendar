@@ -901,6 +901,8 @@
       data-tpallday="<entry.property.boolean name='allday' default='true'>true<else>false</entry.property.boolean>"
       data-color="<com.traction.sdl.json.fullcalendar_json#color-name />"
       >
-    <div class="fc-event-main">__entry.titletext__</div>
+    <div class="fc-event-main">
+      <div class="fc-event-inner">__entry.titletext__</div>
+    </div>
   </div>
 </sdl.function>

@@ -352,7 +352,7 @@ Traction.FullCalendar = {
     console.log("extEvOrderDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
   },
 
-  colorEvent: function(info) {
+  colorCalItem: function(info) {
 
     // Set the background color of each event with the color picked up from a standard link,
     // if the event is not from Google Calendar.
@@ -367,7 +367,7 @@ Traction.FullCalendar = {
         //$(info.el).css('border-color', 'transparent');
         if ( $(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays') ) {
           $(info.el).css('color', '#fff');
-          //$(info.el).css('background-color', linkColor);
+          $(info.el).css('background-color', linkColor);
           //$(info.el).css('border-color', linkColor);
         } else {
           $(info.el).css('color', linkColor);
@@ -603,7 +603,7 @@ function fcRenderCalendar(data) {
     eventDidMount: function(info) {
       //console.log('---- eventDidMount ----');
       //console.dir(info);
-      Traction.FullCalendar.colorEvent(info);
+      Traction.FullCalendar.colorCalItem(info);
 
     },
 
@@ -714,11 +714,11 @@ Proteus.addHandler("load", function() {
     var titleHtml = $(this).data('title').replace(/\\\"/g,'"').replace(/\\\//g,'/');
     $(this).html('<div class="fc-event-main">' + titleHtml + '</div>');
     // Coloring
-    //$(this).css('background-color', Traction.FullCalendar.convertColorNameToCode($(this).data('color')));
+    $(this).css('background-color', Traction.FullCalendar.convertColorNameToCode($(this).data('color')));
     if ($(this).data('color')) {
-      $(this).find('.text').css('color', '#fff');
+      $(this).css('color', '#fff');
     } else {
-      $(this).find('.text').css('color', $('#fc-linkcolor-placeholder a').css('color'));
+      $(this).css('color', $('#fc-linkcolor-placeholder a').css('color'));
     }
 
   });

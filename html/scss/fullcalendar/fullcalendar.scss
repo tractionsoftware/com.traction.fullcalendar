@@ -99,6 +99,56 @@ $bgsat: #f8ffff;
   }
 }
 
+// --------------------------------------------------------------------
+// Cal Item Icons
+// --------------------------------------------------------------------
+.calitem {
+  &.icon-image {
+    .fc-event-inner {
+      padding-left: 14px;
+      line-height: 14px;
+      .c {
+        position: absolute;
+        left: 2px;
+        top: 2px;
+      }
+    }
+  }
+  .fc-event-time {
+    color: #666;
+  }
+  &.icon-font {
+    .c {
+      position: relative;
+      background-image: none;
+      padding-left: 2px;
+      padding-right: 2px;
+      input {
+        display: none;
+      }
+      &:before {
+        @include fontawesome_basic;
+        speak: none;
+        width: 1.3em;
+      }
+    }
+    &.calitem-task.todo .c:before {
+      content: "\f096";
+    }
+    &.calitem-task.done .c:before {
+      content: "\f046";
+    }
+    &.calitem-goal .c:before {
+      content: "\f0ae";
+    }
+    &.calitem-milestone .c:before {
+      content: "\f133";
+    }
+    &.calitem-event .c:before {
+      content: "\f073";
+    }
+  }
+}
 
 
 

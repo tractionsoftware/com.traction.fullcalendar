@@ -467,14 +467,14 @@
       "tip": "#{@fullcalendar#setting_fullcalendar_add_form_phonenotes_tip}",
       "default": "phonenotes"
     },
-    "fullcalendar_event_icon": {
+    "fullcalendar_icon_type": {
       "class": "com.traction.settings.Select",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_event_icon_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_event_icon_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_event_icon_tip}",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_icon_type_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_icon_type_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_icon_type_tip}",
       "options": "image,font",
-      "option_image_label": "#{@fullcalendar#setting_fullcalendar_event_icon_option_image}",
-      "option_font_label": "#{@fullcalendar#setting_fullcalendar_event_icon_option_font}",
+      "option_image_label": "#{@fullcalendar#setting_fullcalendar_icon_type_option_image_label}",
+      "option_font_label": "#{@fullcalendar#setting_fullcalendar_icon_type_option_font_label}",
       "sdleditor": "com.traction.sdl.admin.settings#singleselect",
       "usedefault": "true",
       "default": "image"
