@@ -381,9 +381,13 @@ Traction.FullCalendar = {
       }
     } else {
       if (info.event.extendedProps.colorname === '') {
-        $(info.el).find('.text').css('color', linkColor);
-        $(info.el).css('background-color', 'transparent');
-        //$(info.el).css('border-color', 'transparent');
+        if ( $(info.el).hasClass('calitem-allday') ) {
+          $(info.el).css('color', '#fff');
+          $(info.el).css('background-color', linkColor);
+        } else {
+          $(info.el).find('.text').css('color', linkColor);
+          $(info.el).css('background-color', 'transparent');
+        }
       } else {
         $(info.el).css('color', '#fff');
         //$(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));

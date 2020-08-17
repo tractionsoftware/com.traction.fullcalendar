@@ -902,7 +902,7 @@
       data-color="<com.traction.sdl.json.fullcalendar_json#color-name />"
       >
     <div class="fc-event-main">
-      <div class="fc-event-inner">__entry.titletext__</div>
+      <div class="fc-event-inner">1111</div>
     </div>
   </div>
 </sdl.function>
