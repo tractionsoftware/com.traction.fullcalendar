@@ -39,6 +39,7 @@
   <switch value="${method}">
     <case value="read"><#read /></case>
     <case value="update"><#update /></case>
+    <case value="remove"><#remove /></case>
     <case.default>Unknows op parameter (${op})</case.default>
   </switch>
 
@@ -59,6 +60,21 @@
           <entry fqid="__foreach.current__">
             <schema#erase-extev-order entryFqid="__foreach.current__" projId="${projId}" userId="${userId}" goalId="${goalId}" msId="${msId}" />
             <schema#record-extev-order entryFqid="__foreach.current__" projId="${projId}" userId="${userId}" goalId="${goalId}" msId="${msId}" calType="${calType}" idx="__loop.index__" />
+          </entry>
+        </foreach>
+      </db.connect>
+    </var.whitespace>
+  </journalrequest.user.namedaccount>
+</sdl.function>
+
+<sdl.function name="remove">
+  <!--- #showparams / -->
+  <journalrequest.user.namedaccount>
+    <var.whitespace name="fqid" not>
+      <db.connect>
+        <foreach list="${fqid}">
+          <entry fqid="__foreach.current__">
+            <schema#erase-extev-order entryFqid="__foreach.current__" projId="${projId}" userId="${userId}" goalId="${goalId}" msId="${msId}" />
           </entry>
         </foreach>
       </db.connect>

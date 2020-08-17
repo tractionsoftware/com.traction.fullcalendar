@@ -223,6 +223,11 @@ Traction.FullCalendar = {
     console.dir(info);
     console.dir(draggedItemParam);
 
+    var arrayClassNames = info.draggedEl.classList;
+    info.event.setProp('className', arrayClassNames);
+
+// #######
+
     if (info.event.allDay) {
       // Dropped on the allDay slot
       if (draggedItemParam.tpallday === 'true') {
@@ -242,10 +247,10 @@ Traction.FullCalendar = {
         console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
         console.log(msgArg);
 
-        var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
+        var callbackFunc = Traction.FullCalendar.afterReceiveEvPm(info,msgArg);
+        //var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
         Proteus.Calendar.moveEvent(draggedItemParam.fqid, startDateTimeGmtMidnightX, callbackFunc);
-        // Remove the element from the "Draggable Events" list
-        info.draggedEl.parentNode.removeChild(info.draggedEl);
+
       }
     } else {
       // Dropped on the non-allDay slot that supports time-grid
@@ -259,6 +264,17 @@ Traction.FullCalendar = {
       }
     }
 
+    if (info.draggedEl.dataset.tpallday) {
+      var fillBackground = true;
+    } else {
+      var fillBackground = false;
+    }
+
+    console.log('info.draggedEl');
+    console.log(info.draggedEl);
+
+    Traction.FullCalendar.colorCalItem(info.draggedEl, info.draggedEl.dataset.customentrytype, info.draggedEl.dataset.color, fillBackground);
+
   },
 
   // Convert an HTML string into the "real" HTML code.
@@ -267,6 +283,33 @@ Traction.FullCalendar = {
     var template = document.createElement('template');
     template.innerHTML = html.trim();
     return template.content.childNodes;
+  },
+
+  // -------------------------------------------------------
+  // Callbacks on events
+  // -------------------------------------------------------
+  afterReceiveEvPm: function(info, msgArg) {
+    console.log('---- afterReceiveEvPm ----');
+    console.dir(info);
+    console.dir(msgArg);
+
+    // Remove the element from the "Draggable Events" list
+    info.draggedEl.parentNode.removeChild(info.draggedEl);
+
+    var arrayFqid = [ msgArg.fqid ];
+
+    // These parameters represent where the target calendar is.
+    // For example, userId = 5 means "this calendar is in the user profile page whose user id is 5."
+    var calParam = {
+      "projId": $('#external-events').attr('data-proj'),
+      "userId": $('#external-events').attr('data-user'),
+      "goalId": $('#external-events').attr('data-goal'),
+      "msId": $('#external-events').attr('data-ms'),
+      // Calendar type name, default = "normal"
+      "calType": $('#external-events').attr('data-caltype')
+    };
+
+    Traction.FullCalendar.removeExtEv(arrayFqid, calParam)
   },
 
   // -------------------------------------------------------
@@ -352,7 +395,60 @@ Traction.FullCalendar = {
     console.log("extEvOrderDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
   },
 
-  colorCalItem: function(info) {
+  // -------------------------------------------------------
+  // Remove the entry from the JavaDB database that stores the order of the items.
+  // -------------------------------------------------------
+  removeExtEv: function(arrayFqid, calParam) {
+
+    console.log('---- removeExtEv ----');
+    console.log(arrayFqid);
+    console.dir(calParam);
+
+    // This will be the payload encoded for a POST request to the
+    // server.
+    var poststring = "";
+    // The type of the view is "ajaxrpc"
+    poststring = fm_append(poststring, "type=fcextevorder");
+    poststring = fm_append(poststring, "method=remove");
+    // _get_url_param is exported by GWT to the global JS namespace,
+    // to allow getting the current value of the proj= param.
+    poststring = fm_append(poststring, "projid="+calParam.projId);
+    poststring = fm_append(poststring, "goalid="+calParam.goalId);
+    poststring = fm_append(poststring, "msid="+calParam.msId);
+    poststring = fm_append(poststring, "userid="+calParam.userId);
+    poststring = fm_append(poststring, "caltype="+calParam.calType);
+    poststring = fm_append(poststring, "entryid="+encode_url_parameter(arrayFqid.join(',')));
+
+    // Browser ID is required by the server as a CSRF attack
+    // countermeasure
+    poststring = fm_append(poststring, "browserid="+Traction.ContextMenu.getBrowserId());
+
+    console.log('removeExtEv poststring = ' + poststring);
+
+    // you can put anything in here your callback needs to know
+    // when handling the response
+    const state = {
+      "method": "remove",
+      "projId": calParam.projId,
+      "goalId": calParam.goalId,
+      "msId": calParam.msId,
+      "userId": calParam.userId,
+      "calType": calParam.calType
+    };
+
+    // Call back to the kanbanDefaultResponse function when response received
+    xmlpost_async(FORM_ACTION_READ_WRITE, poststring, null, true, Traction.FullCalendar.removeExtEvDefaultResponse, state);
+  },
+
+  removeExtEvDefaultResponse: function(responseText, state) {
+    console.dir(state);
+    console.log("removeExtEvDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
+  },
+
+  colorCalItem: function(el, customEntryType, colorName, fillBackground) {
+    //console.log('---- colorCalItem ----');
+    //console.dir(el);
+    //console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
 
     // Set the background color of each event with the color picked up from a standard link,
     // if the event is not from Google Calendar.
@@ -360,38 +456,36 @@ Traction.FullCalendar = {
     var linkColor = $('#fc-linkcolor-placeholder a').css('color');
     //console.log('customentrytype = ' + info.event.extendedProps.customentrytype + ' linkColor = ' + linkColor);
 
-    if ( info.event.extendedProps.customentrytype === 'event' ) {
-      if (info.event.extendedProps.colorname === '') {
-        $(info.el).css('color', linkColor);
-        //$(info.el).css('background-color', 'transparent');
-        //$(info.el).css('border-color', 'transparent');
-        if ( $(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays') ) {
-          $(info.el).css('color', '#fff');
-          $(info.el).css('background-color', linkColor);
-          //$(info.el).css('border-color', linkColor);
+    if ( customEntryType === 'event' ) {
+      if (colorName === '') {
+        $(el).css('color', linkColor);
+        //$(el).css('background-color', 'transparent');
+        //$(el).css('border-color', 'transparent');
+        if ( fillBackground ) {
+          $(el).css('color', '#fff');
+          $(el).css('background-color', linkColor);
+          //$(el).css('border-color', linkColor);
         } else {
-          $(info.el).css('color', linkColor);
-          //$(info.el).css('background-color', 'transparent');
-          //$(info.el).css('border-color', 'transparent');
+          $(el).css('color', linkColor);
+          //$(el).css('background-color', 'transparent');
+          //$(el).css('border-color', 'transparent');
         }
       } else {
-        $(info.el).css('color', '#fff');
-        //$(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
-        //$(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        $(el).css('color', '#fff');
+        //$(el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        //$(el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
       }
     } else {
-      if (info.event.extendedProps.colorname === '') {
-        if ( $(info.el).hasClass('calitem-allday') ) {
-          $(info.el).css('color', '#fff');
-          $(info.el).css('background-color', linkColor);
+      if (colorName === '') {
+        if ( $(el).hasClass('calitem-allday') ) {
+          $(el).css('color', '#fff');
+          $(el).css('background-color', linkColor);
         } else {
-          $(info.el).find('.text').css('color', linkColor);
-          $(info.el).css('background-color', 'transparent');
+          $(el).find('.text').css('color', linkColor);
+          $(el).css('background-color', 'transparent');
         }
       } else {
-        $(info.el).css('color', '#fff');
-        //$(info.el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
-        //$(info.el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
+        $(el).css('color', '#fff');
       }
     }
   },
@@ -586,7 +680,6 @@ function fcRenderCalendar(data) {
         "color": info.draggedEl.dataset.color
       };
 
-
       if ( customEntryType === 'event' ) {
         Traction.FullCalendar.onEventReceiveEvent(info, draggedItemParam);
       } else {
@@ -608,9 +701,18 @@ function fcRenderCalendar(data) {
 
     // After an event is renderred
     eventDidMount: function(info) {
-      //console.log('---- eventDidMount ----');
-      //console.dir(info);
-      Traction.FullCalendar.colorCalItem(info);
+      console.log('---- eventDidMount ----');
+      console.dir(info);
+
+      var customEntryType = info.event.extendedProps.customentrytype;
+      var colorName = info.event.extendedProps.colorname;
+      if ($(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays')) {
+        var fillBackground = true;
+      } else {
+        var fillBackground = false;
+      }
+
+      Traction.FullCalendar.colorCalItem(info.el, customEntryType, colorName, fillBackground);
 
     },
 
@@ -719,7 +821,7 @@ Proteus.addHandler("load", function() {
   $('#external-events .entries .fc-event').each(function(){
     // Render task checkbox
     var titleHtml = $(this).data('title').replace(/\\\"/g,'"').replace(/\\\//g,'/');
-    $(this).html('<div class="fc-event-main"><div class="fc-event-inner">' + titleHtml + '</div></div>');
+    $(this).html('<div class="fc-event-main">' + titleHtml + '</div>');
     // Check the edit permission
     if ($(this).data('editable')) {
       $(this).addClass('fc-event-draggable');
