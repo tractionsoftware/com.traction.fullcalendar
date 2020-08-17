@@ -803,7 +803,7 @@ function fcRenderCalendar(data) {
       } else {
         var str = eventClickInfo.el.className;
         if ( str.indexOf('tpcal') != -1 ) {
-          Proteus.Calendar.showEventDetails(eventClickInfo.event._def.publicId , eventClickInfo.event.extendedProps.tpurl);
+          Proteus.Calendar.showEventDetails(eventClickInfo.event._def.publicId, eventClickInfo.event.extendedProps.tpurl);
         } else {
           // This is a Google Calendar item.
         }
@@ -883,7 +883,11 @@ Proteus.addHandler("load", function() {
   });
 
   $('#external-events .entries .fc-event').on('click', function(){
-    Proteus.Calendar.showEventDetails($(this).data('fqid'));
+
+    console.log('fqid = ' + $(this).data('fqid'));
+    console.log('tpurl = ' + $(this).data('tpurl'));
+
+    Proteus.Calendar.showEventDetails($(this).data('fqid'), $(this).data('tpurl'));
   });
 
 });

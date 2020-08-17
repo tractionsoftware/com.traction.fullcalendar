@@ -894,6 +894,7 @@
       data-entrydisplaytype="__entry.displaytype__"
       data-customentrytype="__entry.customentrytype__"
       data-editable="<entry.permissions.edit>true<else>false</entry.permissions.edit>"
+      data-tpurl="<url.urlgen drop='find'>__entry.url__</url.urlgen>"
       data-classname="<com.traction.sdl.json.fullcalendar_json#calitem-class />"
       data-title="<htmlattributevalue.encode><com.traction.sdl.json.fullcalendar_json#calitem-title /></htmlattributevalue.encode>"
       data-titletext="__entry.titletext__"
