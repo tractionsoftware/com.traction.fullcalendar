@@ -588,9 +588,9 @@ function fcRenderCalendar(data) {
     initialView: 'dayGridMonth',
     initialDate: data.initialDate,
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'dayGridMonth,timeGridWeek,dayGridTwoWeek,timeGridSevenDay,timeGridDay,listMonth',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,dayGridTwoWeek,timeGridSevenDay,timeGridDay,listMonth'
+      right: 'prev,next today'
     },
     views: {
       timeGridSevenDay: {
@@ -628,10 +628,64 @@ function fcRenderCalendar(data) {
       meridiem: false
     },
 
+
+    loading: function(isLoading) {
+      console.log('---- fullcalendar loading ----');
+
+      $('.fc .fc-header-toolbar .fc-toolbar-chunk').eq(0).addClass('fc-header-toolbar-left');
+      $('.fc .fc-header-toolbar .fc-toolbar-chunk').eq(1).addClass('fc-header-toolbar-center');
+      $('.fc .fc-header-toolbar .fc-toolbar-chunk').eq(2).addClass('fc-header-toolbar-right');
+
+      $('.fc .fc-button-group').each(function(){
+        $(this).addClass('button-group');
+      });
+
+
+
+
+
+      if(isLoading) {
+        Traction.Loading.show();
+        //$('#fc-loading-status').removeClass('off').addClass('on');
+      } else {
+        Traction.Loading.hide();
+        //$('#fc-loading-status').removeClass('on').addClass('off');
+      }
+
+    },
+
+    // Called after the calendar’s date range has been initially set
+    // or changed in some way and the DOM has been updated.
+    datesSet: function(dateInfo) {
+
+      // Get fullCallendar's title and insert it into TeamPage's view title.
+      var pageTitle = $('.fc-canvas:first .fc-header-toolbar h2').text().replace(/_/g, ' ');
+      $('.view-calendar #title-info h2 .calendar-title, .view-profile #title-info h2 .calendar-title').html(pageTitle);
+
+      // The "Today" button is newly rendered on every datasSet.
+      // The button is wrapped by the "button-group-today" classified div as follows,
+      // but the div gets empty on every dataSet because the button disappears and is re-rendered.
+      // So, to prevent the empty "button-group-today" div wrapper from being created and increased,
+      // I had to check the div wrapper and its inner element (by the length method)
+      // and make the empty wrapper be removed.
+      if ($('.fc .button-group-today').length > 0 && $('.fc .button-group-today').children().length === 0) {
+        $('.fc .button-group-today').remove();
+      }
+      $('.fc .fc-today-button').wrap('<div class="fc-button-group button-group button-group-today"></div>');
+
+      $('.fc .fc-button').each(function(){
+        if ($(this).hasClass('fc-button-active')) {
+          $(this).removeClass('fc-button-active').addClass("selected");
+        }
+      });
+
+
+    },
+
     // Triggered when dragging stops and the event has moved to a different day/time.
     // https://fullcalendar.io/docs/eventDrop
     eventDrop: function(info) {
-      console.dir('---- eventDrop ----');
+      console.log('---- eventDrop ----');
       console.dir(info);
 
       var startDateTimeHumanZone = info.event.startStr;
