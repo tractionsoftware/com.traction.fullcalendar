@@ -716,7 +716,7 @@ Proteus.addHandler("load", function() {
   $('#external-events .entries .fc-event').each(function(){
     // Render task checkbox
     var titleHtml = $(this).data('title').replace(/\\\"/g,'"').replace(/\\\//g,'/');
-    $(this).html('<div class="fc-event-main">' + titleHtml + '</div>');
+    $(this).html('<div class="fc-event-main"><div class="fc-event-inner">' + titleHtml + '</div></div>');
     // Coloring
     $(this).css('background-color', Traction.FullCalendar.convertColorNameToCode($(this).data('color')));
     if ($(this).data('color')) {

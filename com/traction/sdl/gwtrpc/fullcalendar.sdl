@@ -901,8 +901,8 @@
       data-tpallday="<entry.property.boolean name='allday' default='true'>true<else>false</entry.property.boolean>"
       data-color="<com.traction.sdl.json.fullcalendar_json#color-name />"
       >
-    <div class="fc-event-main">
-      <div class="fc-event-inner">1111</div>
-    </div>
+    <!--- The inner HTML is replaced with the value of the data-title= property on load.
+          See Proteus' load event handler in the fullcalendar.js file. -->
+      __entry.titletext__
   </div>
 </sdl.function>
