@@ -468,8 +468,11 @@ function fcRenderCalendar(data) {
 
   var containerEl = document.getElementById(data.tpDraggableId);
 
+  // If the user doesn't have the edit permission for the entry,
+  // the "fc-event-draggable" class will not be given to the entry,
+  // and the entry can not be dragged on to the calendar.
   new Draggable(containerEl, {
-    itemSelector: '.fc-event',
+    itemSelector: '.fc-event.fc-event-draggable',
     eventData: function(eventEl) {
       console.log('---- Dragged Draggable ----');
       return {
@@ -717,6 +720,10 @@ Proteus.addHandler("load", function() {
     // Render task checkbox
     var titleHtml = $(this).data('title').replace(/\\\"/g,'"').replace(/\\\//g,'/');
     $(this).html('<div class="fc-event-main"><div class="fc-event-inner">' + titleHtml + '</div></div>');
+    // Check the edit permission
+    if ($(this).data('editable')) {
+      $(this).addClass('fc-event-draggable');
+    }
     // Coloring
     $(this).css('background-color', Traction.FullCalendar.convertColorNameToCode($(this).data('color')));
     if ($(this).data('color')) {
