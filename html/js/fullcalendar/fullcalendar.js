@@ -273,7 +273,8 @@ Traction.FullCalendar = {
     console.log('info.draggedEl');
     console.log(info.draggedEl);
 
-    Traction.FullCalendar.colorCalItem(info.draggedEl, info.draggedEl.dataset.customentrytype, info.draggedEl.dataset.color, fillBackground);
+    //el, customEntryType, colorName, fillBackground
+    Traction.FullCalendar.colorCalItem(info.event, info.draggedEl.dataset.customentrytype, info.draggedEl.dataset.color, fillBackground);
 
   },
 
@@ -401,8 +402,8 @@ Traction.FullCalendar = {
   removeExtEv: function(arrayFqid, calParam) {
 
     console.log('---- removeExtEv ----');
-    console.log(arrayFqid);
-    console.dir(calParam);
+    //console.log(arrayFqid);
+    //console.dir(calParam);
 
     // This will be the payload encoded for a POST request to the
     // server.
@@ -423,7 +424,7 @@ Traction.FullCalendar = {
     // countermeasure
     poststring = fm_append(poststring, "browserid="+Traction.ContextMenu.getBrowserId());
 
-    console.log('removeExtEv poststring = ' + poststring);
+    //console.log('removeExtEv poststring = ' + poststring);
 
     // you can put anything in here your callback needs to know
     // when handling the response
@@ -441,14 +442,14 @@ Traction.FullCalendar = {
   },
 
   removeExtEvDefaultResponse: function(responseText, state) {
-    console.dir(state);
-    console.log("removeExtEvDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
+    //console.dir(state);
+    //console.log("removeExtEvDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
   },
 
   colorCalItem: function(el, customEntryType, colorName, fillBackground) {
-    //console.log('---- colorCalItem ----');
-    //console.dir(el);
-    //console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
+    console.log('---- colorCalItem ----');
+    console.dir(el);
+    console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
 
     // Set the background color of each event with the color picked up from a standard link,
     // if the event is not from Google Calendar.
@@ -522,23 +523,111 @@ Traction.FullCalendar = {
 
   addPriorityBadge: function(info) {
     if (view.name == 'listDay' || view.name == 'listWeek' || view.name == 'listMonth' || view.name == 'listYear') {
-    $('.fc-list-item-title').each(function(){
-      var entryClasses = $(this).parent('.fc-list-event').attr('class');
+      $('.fc-list-item-title').each(function(){
+        var entryClasses = $(this).parent('.fc-list-event').attr('class');
 
-      if (entryClasses.match(/calitem-task/)) {
-        var classArray = entryClasses.split(' ');
-        for (i = 0; i < classArray.length; i++) {
-          var priority = entryClasses.match(/calitem-p([0-9])/);
-          if (priority) {
-            if ($(this).children('span.priority').length == 0) {
-              $(this).append('<span class="priority p' + priority[1] + '">' + priority[1] + '</span>');
+        if (entryClasses.match(/calitem-task/)) {
+          var classArray = entryClasses.split(' ');
+          for (i = 0; i < classArray.length; i++) {
+            var priority = entryClasses.match(/calitem-p([0-9])/);
+            if (priority) {
+              if ($(this).children('span.priority').length == 0) {
+                $(this).append('<span class="priority p' + priority[1] + '">' + priority[1] + '</span>');
+              }
             }
           }
         }
-      }
-    });
-  }
-  }
+      });
+    }
+  },
+
+  // -------------------------------------------------------
+  // The following data will be passed to the event that is
+  // dragged from the external-event section and dropped onto the calendar.
+  // See the "new Draggable" section below.
+  // -------------------------------------------------------
+  externalEventData: function(eventEl) {
+    if (eventEl.dataset.customentrytype === 'event') {
+      return Traction.FullCalendar.externalEventDataEv(eventEl);
+    } else if (eventEl.dataset.customentrytype === 'task') {
+      return Traction.FullCalendar.externalEventDataTask(eventEl);
+    } else if (eventEl.dataset.customentrytype === 'goal') {
+      return Traction.FullCalendar.externalEventDataGoal(eventEl);
+    } else if (eventEl.dataset.customentrytype === 'milestone') {
+      return Traction.FullCalendar.externalEventDataMs(eventEl);
+    } else {
+      return Traction.FullCalendar.externalEventDataShared(eventEl);
+    }
+
+    return {
+     id: eventEl.dataset.fqid,
+     title: $(eventEl.innerHTML)[0].innerHTML,
+     tpallday: eventEl.dataset.tpallday,
+     className: eventEl.dataset.classname,
+     //color: eventEl.dataset.color,
+     customentrytype: eventEl.dataset.customentrytype,
+     displayname: eventEl.dataset.displayname,
+     editable: eventEl.dataset.editable,
+     entryclassdisplayname: eventEl.dataset.entryclassdisplayname,
+     entrydisplaytype: eventEl.dataset.entrydisplaytype,
+     tpurl: eventEl.dataset.tpurl,
+     tpdue: eventEl.dataset.tpdue,
+     tractionid: eventEl.dataset.tractionid
+   };
+ },
+ externalEventDataEv: function(eventEl) {
+   var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
+   var dataEv = {
+     tpAllDay: eventEl.dataset.tpallday,
+     tpFullSingleDay: eventEl.dataset.tpfullsingleday,
+     invitees: eventEl.dataset.invitees
+   };
+   return Object.assign(dataShared, dataEv);
+ },
+ externalEventDataTask: function(eventEl) {
+   var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
+   var dataTask = {
+     tpAllDay: eventEl.dataset.tpallday,
+     assigned: eventEl.dataset.assigned
+   };
+   return Object.assign(dataShared, dataTask);
+ },
+ externalEventDataGoal: function(eventEl) {
+   var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
+   var dataGoal = {
+     tpAllDay: eventEl.dataset.tpallday,
+     owners: eventEl.dataset.owners,
+     members: eventEl.dataset.members
+   };
+   return Object.assign(dataShared, dataGoal);
+ },
+ externalEventDataMs: function(eventEl) {
+   var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
+   var dataMs = {
+     tpAllDay: eventEl.dataset.tpallday,
+   };
+   return Object.assign(dataShared, dataMs);
+ },
+ externalEventDataShared: function(eventEl) {
+   var data = {
+     id: eventEl.dataset.fqid,
+     tractionid: eventEl.dataset.tractionid,
+     displayname: eventEl.dataset.displayname,
+     displaytype: eventEl.dataset.displaytype,
+     customentrytype: eventEl.dataset.customentrytype,
+     editable: eventEl.dataset.editable,
+     durationEditable: eventEl.dataset.durationeditable,
+     className: eventEl.dataset.classname,
+     title: $(eventEl.innerHTML)[0].innerHTML,
+     titleText: eventEl.dataset.titletext,
+     tpDue: eventEl.dataset.tpdue,
+     colorname: eventEl.dataset.colorname,
+     rg: eventEl.dataset.rg,
+     tpurl: eventEl.dataset.tpurl,
+     titleTipDesc: eventEl.dataset.titletipdesc
+   };
+   return data;
+ }
 
 }
 
@@ -569,14 +658,10 @@ function fcRenderCalendar(data) {
     itemSelector: '.fc-event.fc-event-draggable',
     eventData: function(eventEl) {
       console.log('---- Dragged Draggable ----');
-      return {
-        // Remove the "fc-event-main" div element and get its inner HTML data.
-        title: $(eventEl.innerHTML)[0].innerHTML
-      };
+      console.dir(eventEl);
+      return Traction.FullCalendar.externalEventData(eventEl);
     }
   });
-
-
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
 
@@ -709,6 +794,22 @@ function fcRenderCalendar(data) {
       console.dir('---- eventResize ----');
       console.dir(info);
       Traction.FullCalendar.onEventResize(info);
+    },
+
+    // Called after an event has been added to the calendar.
+    // This fires after Calendar::addEvent is called or
+    // when an external event is dropped from outside the calendar or
+    // from a different calendar.
+    // If being called as a result of the latter two, eventAdd will be fired after eventReceive.
+    eventAdd: function(addInfo) {
+      console.log('---- eventAdd ----');
+      console.dir(addInfo);
+    },
+
+    eventClassNames: function(arg) {
+      console.log('---- eventClassNames ----');
+      console.dir(arg);
+      return ["hote hoge"];
     },
 
     // Called when an external draggable element or
