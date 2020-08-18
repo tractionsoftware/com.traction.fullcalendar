@@ -126,10 +126,10 @@ Traction.FullCalendar = {
           "start": moment(info.event.start).format('YYYY/MM/DD')
         };
 
-        console.log('startDateTimeLocal = ' + startDateTimeLocal);
-        console.log('startDateTimeGmtMidnight = ' + startDateTimeGmtMidnight);
-        console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
-        console.log(msgArg);
+        //console.log('startDateTimeLocal = ' + startDateTimeLocal);
+        //console.log('startDateTimeGmtMidnight = ' + startDateTimeGmtMidnight);
+        //console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
+        //console.log(msgArg);
 
         var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
         Proteus.Calendar.moveEvent(info.event.id, startDateTimeGmtMidnightX, callbackFunc);
@@ -242,10 +242,10 @@ Traction.FullCalendar = {
           "start": startDateLocal
         };
 
-        console.log('startDateLocal = ' + startDateLocal);
-        console.log('startDateTimeGmtMidnight = ' + startDateTimeGmtMidnight);
-        console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
-        console.log(msgArg);
+        //console.log('startDateLocal = ' + startDateLocal);
+        //console.log('startDateTimeGmtMidnight = ' + startDateTimeGmtMidnight);
+        //console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
+        //console.log(msgArg);
 
         var callbackFunc = Traction.FullCalendar.afterReceiveEvPm(info,msgArg);
         //var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
@@ -274,7 +274,7 @@ Traction.FullCalendar = {
     console.log(info.draggedEl);
 
     //el, customEntryType, colorName, fillBackground
-    Traction.FullCalendar.colorCalItem(info.event, info.draggedEl.dataset.customentrytype, info.draggedEl.dataset.color, fillBackground);
+    //Traction.FullCalendar.colorCalItem(info.event, info.draggedEl.dataset.customentrytype, info.draggedEl.dataset.color, fillBackground);
 
   },
 
@@ -458,7 +458,7 @@ Traction.FullCalendar = {
     //console.log('customentrytype = ' + info.event.extendedProps.customentrytype + ' linkColor = ' + linkColor);
 
     if ( customEntryType === 'event' ) {
-      if (colorName === '') {
+      if (! colorName) {
         $(el).css('color', linkColor);
         //$(el).css('background-color', 'transparent');
         //$(el).css('border-color', 'transparent');
@@ -477,7 +477,7 @@ Traction.FullCalendar = {
         //$(el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
       }
     } else {
-      if (colorName === '') {
+      if (! colorName) {
         if ( $(el).hasClass('calitem-allday') ) {
           $(el).css('color', '#fff');
           $(el).css('background-color', linkColor);
@@ -558,22 +558,6 @@ Traction.FullCalendar = {
     } else {
       return Traction.FullCalendar.externalEventDataShared(eventEl);
     }
-
-    return {
-     id: eventEl.dataset.fqid,
-     title: $(eventEl.innerHTML)[0].innerHTML,
-     tpallday: eventEl.dataset.tpallday,
-     className: eventEl.dataset.classname,
-     //color: eventEl.dataset.color,
-     customentrytype: eventEl.dataset.customentrytype,
-     displayname: eventEl.dataset.displayname,
-     editable: eventEl.dataset.editable,
-     entryclassdisplayname: eventEl.dataset.entryclassdisplayname,
-     entrydisplaytype: eventEl.dataset.entrydisplaytype,
-     tpurl: eventEl.dataset.tpurl,
-     tpdue: eventEl.dataset.tpdue,
-     tractionid: eventEl.dataset.tractionid
-   };
  },
  externalEventDataEv: function(eventEl) {
    var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
@@ -621,7 +605,7 @@ Traction.FullCalendar = {
      title: $(eventEl.innerHTML)[0].innerHTML,
      titleText: eventEl.dataset.titletext,
      tpDue: eventEl.dataset.tpdue,
-     colorname: eventEl.dataset.colorname,
+     colorname: eventEl.dataset.color,
      rg: eventEl.dataset.rg,
      tpurl: eventEl.dataset.tpurl,
      titleTipDesc: eventEl.dataset.titletipdesc
@@ -715,7 +699,7 @@ function fcRenderCalendar(data) {
 
 
     loading: function(isLoading) {
-      console.log('---- fullcalendar loading ----');
+      //console.log('---- fullcalendar loading ----');
 
       $('.fc .fc-header-toolbar .fc-toolbar-chunk').eq(0).addClass('fc-header-toolbar-left');
       $('.fc .fc-header-toolbar .fc-toolbar-chunk').eq(1).addClass('fc-header-toolbar-center');
@@ -807,9 +791,8 @@ function fcRenderCalendar(data) {
     },
 
     eventClassNames: function(arg) {
-      console.log('---- eventClassNames ----');
-      console.dir(arg);
-      return ["hote hoge"];
+      //console.log('---- eventClassNames ----');
+      //console.dir(arg);
     },
 
     // Called when an external draggable element or
@@ -933,8 +916,10 @@ function fcRenderCalendar(data) {
     },
 
     eventClick: function(eventClickInfo) {
+      console.log('---- eventClickInfo ---- ' + 'Title: ' + eventClickInfo.event.title + ' ID: ' + eventClickInfo.event.id + ' Description: ' + eventClickInfo.event.tpurl + ' displayname: ' + eventClickInfo.event.extendedProps.displayname + ' tractionid: ' + eventClickInfo.event.extendedProps.tractionid );
+
       console.dir(eventClickInfo);
-      console.log('fullCalendar Click: ' + 'Title: ' + eventClickInfo.event.title + ' ID: ' + eventClickInfo.event.id + ' Description: ' + eventClickInfo.event.tpurl + ' displayname: ' + eventClickInfo.event.extendedProps.displayname + ' tractionid: ' + eventClickInfo.event.extendedProps.tractionid );
+
       var $element = $(eventClickInfo.jsEvent.target);
       // Check if the task "todo" checkbox was clicked or not.
       if( $element.hasClass('ptags-chk') ) {
