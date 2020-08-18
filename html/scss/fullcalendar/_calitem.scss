@@ -1,0 +1,85 @@
+.fc-event {
+  line-height: 1.5;
+}
+
+// --------------------------------------------------------------------
+// Image Icons and Checkbox
+// --------------------------------------------------------------------
+.calitem.icon-image {
+  .fc-event-inner {
+    background-repeat: no-repeat;
+    background-position: 1px center;
+    .c {
+      background: none;
+    }
+    .text {
+      vertical-align: middle;
+    }
+    .fc-event-time {
+      vertical-align: middle;
+    }
+  }
+  &.calitem-event {
+    .fc-event-inner {
+      padding-left: 14px;
+      background-image: url("/images/doctype/event-12.png");
+    }
+  }
+  &.calitem-goal {
+    .fc-event-inner {
+      padding-left: 14px;
+      background-image: url("/images/doctype/tasklist-12.png");
+    }
+  }
+  &.calitem-milestone {
+    .fc-event-inner {
+      padding-left: 14px;
+      background-image: url("/images/doctype/meeting-12.png");
+    }
+  }
+  &.calitem-task {
+    .c {
+      width: 14px;
+      display: inline-block;
+      position: static;
+      input {
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------------------------
+// FontAwesome
+// --------------------------------------------------------------------
+.calitem.icon-font {
+  .c {
+    position: relative;
+    background-image: none;
+    padding-left: 2px;
+    padding-right: 2px;
+    input {
+      display: none;
+    }
+    &:before {
+      @include fontawesome_basic;
+      speak: none;
+      width: 1.3em;
+    }
+  }
+  &.calitem-task.todo .c:before {
+    content: "\f096";
+  }
+  &.calitem-task.done .c:before {
+    content: "\f046";
+  }
+  &.calitem-goal .c:before {
+    content: "\f0ae";
+  }
+  &.calitem-milestone .c:before {
+    content: "\f133";
+  }
+  &.calitem-event .c:before {
+    content: "\f073";
+  }
+}

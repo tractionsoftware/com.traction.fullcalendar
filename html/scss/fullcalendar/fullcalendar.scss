@@ -52,6 +52,10 @@ $p4color: #ddd;
 $bgsun: #fff8f8;
 $bgsat: #f8ffff;
 
+
+@import "external-events";
+@import "calitem";
+
 // --------------------------------------------------------------------
 // Priority Colors
 // --------------------------------------------------------------------
@@ -106,58 +110,6 @@ $bgsat: #f8ffff;
   display: none;
 }
 
-// --------------------------------------------------------------------
-// Cal Item Icons
-// --------------------------------------------------------------------
-.calitem {
-  &.icon-image {
-    .fc-event-inner {
-      padding-left: 14px;
-      line-height: 14px;
-      .c {
-        position: absolute;
-        left: 2px;
-        top: 2px;
-      }
-    }
-  }
-  .fc-event-time {
-    color: #666;
-  }
-  &.icon-font {
-    .c {
-      position: relative;
-      background-image: none;
-      padding-left: 2px;
-      padding-right: 2px;
-      input {
-        display: none;
-      }
-      &:before {
-        @include fontawesome_basic;
-        speak: none;
-        width: 1.3em;
-      }
-    }
-    &.calitem-task.todo .c:before {
-      content: "\f096";
-    }
-    &.calitem-task.done .c:before {
-      content: "\f046";
-    }
-    &.calitem-goal .c:before {
-      content: "\f0ae";
-    }
-    &.calitem-milestone .c:before {
-      content: "\f133";
-    }
-    &.calitem-event .c:before {
-      content: "\f073";
-    }
-  }
-}
-
-
 
 // --------------------------------------------------------------------
 // Add Icons
@@ -198,60 +150,5 @@ $bgsat: #f8ffff;
   }
   &:hover .fc-day-add-links a i.icon {
     display: inline;
-  }
-}
-
-// --------------------------------------------------------------------
-// External Drag and Drop (prototype)
-// --------------------------------------------------------------------
-.calendar-container {
-  display: flex;
-  flex-wrap: wrap;
-  .fc-dragbase-wrapper {
-    position: relative;
-    flex: 0 1 25%;
-    max-width: 25%;
-    .fc-dragbase-canvas {
-      margin-right: 1em;
-      padding: 1em;
-      border: 1px #ddd solid;
-      //background: #f0f0f0 url(/images/proteus/bg/ticks/ticks.png) top left repeat;
-      .hd {
-        display: flex;
-        justify-content: space-between;
-        h2 {
-          margin-top: 0 !important;
-          margin-bottom: 1em;
-          padding: 0.25em 0;
-        }
-        .add {
-
-        }
-      }
-      .bd {
-        .entries {
-          margin-top: 1em;
-          &> div.fc-event:not(:last-child) {
-            margin-bottom: 0.5em;
-          }
-          .fc-event {
-            cursor: pointer;
-            .c {
-              left: 2px;
-              top: 2px;
-            }
-            .text {
-              padding-left: 14px;
-              line-height: 14px;
-            }
-          }
-        }
-      }
-    }
-  }
-  .fc-canvas-wrapper {
-    position: relative;
-    flex: 0 1 75%;
-    max-width: 75%;
   }
 }

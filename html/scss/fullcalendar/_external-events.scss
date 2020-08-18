@@ -1,0 +1,46 @@
+// --------------------------------------------------------------------
+// External Drag and Drop (prototype)
+// --------------------------------------------------------------------
+.calendar-container {
+  display: flex;
+  flex-wrap: wrap;
+  .fc-dragbase-wrapper {
+    position: relative;
+    flex: 0 1 25%;
+    max-width: 25%;
+    .fc-dragbase-canvas {
+      margin-right: 1em;
+      padding: 1em;
+      border: 1px #ddd solid;
+      //background: #f0f0f0 url(/images/proteus/bg/ticks/ticks.png) top left repeat;
+      .hd {
+        display: flex;
+        justify-content: space-between;
+        h2 {
+          margin-top: 0 !important;
+          margin-bottom: 1em;
+          padding: 0.25em 0;
+        }
+        .add {
+
+        }
+      }
+      .bd {
+        .entries {
+          margin-top: 1em;
+          &> div.fc-event:not(:last-child) {
+            margin-bottom: 0.5em;
+          }
+          .fc-event {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+  .fc-canvas-wrapper {
+    position: relative;
+    flex: 0 1 75%;
+    max-width: 75%;
+  }
+}

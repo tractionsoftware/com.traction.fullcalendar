@@ -961,7 +961,7 @@ Proteus.addHandler("load", function() {
   $('#external-events .entries .fc-event').each(function(){
     // Render task checkbox
     var titleHtml = $(this).data('title').replace(/\\\"/g,'"').replace(/\\\//g,'/');
-    $(this).html('<div class="fc-event-main">' + titleHtml + '</div>');
+    $(this).html('<div class="fc-event-inner">' + titleHtml + '</div>');
     // Check the edit permission
     if ($(this).data('editable')) {
       $(this).addClass('fc-event-draggable');
