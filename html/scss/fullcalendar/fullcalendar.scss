@@ -236,6 +236,14 @@ $bgsat: #f8ffff;
           }
           .fc-event {
             cursor: pointer;
+            .c {
+              left: 2px;
+              top: 2px;
+            }
+            .text {
+              padding-left: 14px;
+              line-height: 14px;
+            }
           }
         }
       }
