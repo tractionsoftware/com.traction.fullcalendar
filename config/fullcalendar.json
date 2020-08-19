@@ -885,5 +885,35 @@
       "cols": "100",
       "wrap": "wrap"
     }
+  },
+  "config/settings/props/user": {
+    "fullcalendar_views": {
+      "class": "com.traction.settings.Select",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_views_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_views_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_views_tip}",
+
+      "options": "dayGridMonth,dayGridWeek,dayGridSevenDay,dayGridTwoWeek,timeGridDay,timeGridWeek,timeGridSevenDay,listWeek,listSevenDay,listMonth,listYear",
+
+"option_dayGridMonth_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridMonth_label}",
+"option_dayGridWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridWeek_label}",
+"option_dayGridSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridSevenDay_label}",
+"option_dayGridTwoWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridTwoWeek_label}",
+"option_timeGridDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridDay_label}",
+"option_timeGridWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridWeek_label}",
+"option_timeGridSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridSevenDay_label}",
+"option_listWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_listWeek_label}",
+"option_listSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_listSevenDay_label}",
+"option_listMonth_label": "#{@fullcalendar#setting_fullcalendar_views_option_listMonth_label}",
+"option_listYear_label": "#{@fullcalendar#setting_fullcalendar_views_option_listYear_label}",
+
+
+      "ordered": "true",
+      "sorted": "true",
+      "selecttype": "multi",
+      "sdleditor": "com.traction.sdl.admin.settings#groupselect",
+      "usedefault": "true",
+      "default": "dayGridMonth,dayGridTwoWeek,timeGridSevenDay,listMonth"
+    }
   }
 }

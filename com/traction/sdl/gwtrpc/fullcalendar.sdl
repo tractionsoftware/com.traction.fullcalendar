@@ -217,6 +217,7 @@
     var arg = {
       "fcCanvasId": "${fcCanvasId}",
       "locale": locale,
+      "fcViews": "<#fc-views />",
       "initialDate": "<datetime dateformat='yyyy-MM-dd' />",
       "firstDay": firstDay,
       "tpSourceURL": tpSourceURL,
@@ -244,6 +245,15 @@
     fcRenderCalendar(arg);
 
   </script>
+
+</sdl.function>
+
+<sdl.function name="fc-views">
+  <journalrequest.user.namedaccount>
+    <config.user.value name="fullcalendar_views" />
+  <else>
+    dayGridMonth,timeGridWeek,dayGridTwoWeek,timeGridSevenDay,timeGridDay,listMonth
+  </journalrequest.user.namedaccount>
 </sdl.function>
 
 <sdl.function name="newtask-show-icon">

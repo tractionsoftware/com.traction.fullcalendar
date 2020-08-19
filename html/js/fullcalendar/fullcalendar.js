@@ -657,17 +657,17 @@ function fcRenderCalendar(data) {
     initialView: 'dayGridMonth',
     initialDate: data.initialDate,
     headerToolbar: {
-      left: 'dayGridMonth,timeGridWeek,dayGridTwoWeek,timeGridSevenDay,timeGridDay,listMonth',
+      left: data.fcViews,
       center: 'title',
       right: 'prev,next today'
     },
     views: {
-      timeGridSevenDay: {
-        type: 'timeGrid',
-        duration: { days: 7 },
-        buttonText: '7 day'
+      dayGridMonth: {
+        type: 'dayGrid',
+        duration: { months: 1 },
+        buttonText: '1 m'
       },
-      dayGridOneWeek: {
+      dayGridWeek: {
         type: 'dayGrid',
         duration: { weeks: 1 },
         buttonText: '1 w'
@@ -681,6 +681,41 @@ function fcRenderCalendar(data) {
         type: 'dayGrid',
         duration: { weeks: 2 },
         buttonText: '2 w'
+      },
+      timeGridDay: {
+        type: 'timeGrid',
+        duration: { days: 1 },
+        buttonText: '1d'
+      },
+      timeGridWeek: {
+        type: 'timeGrid',
+        duration: { weeks: 1 },
+        buttonText: '1w'
+      },
+      timeGridSevenDay: {
+        type: 'timeGrid',
+        duration: { days: 7 },
+        buttonText: '7 day'
+      },
+      listWeek: {
+        type: 'list',
+        duration: { weeks: 1 },
+        buttonText: '1 w l'
+      },
+      listSevenDay: {
+        type: 'list',
+        duration: { days: 7 },
+        buttonText: '7d l'
+      },
+      listMonth: {
+        type: 'list',
+        duration: { months: 1 },
+        buttonText: '1 ml'
+      },
+      listYear: {
+        type: 'list',
+        duration: { years: 1 },
+        buttonText: '1 yl'
       }
     },
 
