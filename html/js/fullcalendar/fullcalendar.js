@@ -107,80 +107,59 @@ Traction.FullCalendar = {
 
   // When a PM entry (task, goal, milestone) is dropped
   onEventDropPm: function(info) {
-    console.log("PM entry was dropped. View = " + info.view.type);
-    if ( info.view.type === "dayGridMonth" ) {
-      // PM Entry: In the Basic view, the value of the event.allDay is always "true".
-      if (info.event.allDay) {
 
-        console.log("The state of allDay was true.");
+    if (info.event.allDay) {
 
-        var startDateTimeLocal = info.event.startStr; // YYYY-MM-DD
-        var startDateTimeGmtMidnight = moment(startDateTimeLocal).format('YYYY-MM-DD') + 'T00:00:00+0000';
-        var startDateTimeGmtMidnightX = moment(startDateTimeGmtMidnight).format('x');
+      console.log("PM entry was dropped onto the allDay area.");
 
-        var msgArg = {
-          "fqid": info.event.id,
-          "displayname": info.event.extendedProps.displayname,
-          "tractionid": info.event.extendedProps.tractionid,
-          // Date only for the "allDay" PM entry
-          "start": moment(info.event.start).format('YYYY/MM/DD')
-        };
+      var startDateTimeLocal = info.event.startStr; // YYYY-MM-DD
+      var startDateTimeGmtMidnight = moment(startDateTimeLocal).format('YYYY-MM-DD') + 'T00:00:00+0000';
+      var startDateTimeGmtMidnightX = moment(startDateTimeGmtMidnight).format('x');
 
-        //console.log('startDateTimeLocal = ' + startDateTimeLocal);
-        //console.log('startDateTimeGmtMidnight = ' + startDateTimeGmtMidnight);
-        //console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
-        //console.log(msgArg);
+      var msgArg = {
+        "fqid": info.event.id,
+        "displayname": info.event.extendedProps.displayname,
+        "tractionid": info.event.extendedProps.tractionid,
+        // Date only for the "allDay" PM entry
+        "start": moment(info.event.start).format('YYYY/MM/DD')
+      };
 
-        var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
-        Proteus.Calendar.moveEvent(info.event.id, startDateTimeGmtMidnightX, callbackFunc);
+      //console.log('startDateTimeLocal = ' + startDateTimeLocal);
+      //console.log('startDateTimeGmtMidnight = ' + startDateTimeGmtMidnight);
+      //console.log('startDateTimeGmtMidnightX = ' + startDateTimeGmtMidnightX);
+      //console.log(msgArg);
 
-      } else {
+      var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
+      Proteus.Calendar.moveEvent(info.event.id, startDateTimeGmtMidnightX, callbackFunc);
 
-        console.log("The state of allDay was false.");
-
-        var evTime = event.tpDue.match(/^.+T([0-9]+:[0-9]+:[0-9]+)[\+|-][0-9]+$/)[1];
-        var startDateTimeHumanZone = event.start.format('YYYY-MM-DD') + 'T' + evTime + '<datetime dateformat="Z" />';
-        var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
-
-        var msgArg = {
-          "fqid": info.event.id,
-          "displayname": info.event.extendedProps.displayname,
-          "tractionid": info.event.extendedProps.tractionid,
-          "start": moment(info.event.start).format('YYYY/MM/DD HH:mm')
-        };
-
-        console.log('startDateTimeHumanZone = ' + startDateTimeHumanZone);
-        console.log('startDateTimeEpoch = ' + startDateTimeEpoch);
-        console.log(msgArg);
-
-        var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
-        Proteus.Calendar.moveEvent(event.id, startDateTimeEpoch, callbackFunc);
-
-      }
     } else {
-      // Agenda or List view. (Can not drag and drop in the List views, though.)
-      if (info.event.extendedProps.allDay) {
-        // AllDay Slot / Agenda View / PM Entry
-        if (info.event.extendedProps.tpAllDay) {
-          var endDate = moment(event.end).add(-1,'days');
-          // The start date and time should be the midnight in the requesting user's timezone.
-          var startDateTimeHumanZone = event.start.format('YYYY-MM-DD') + 'T' + event.start.format('HH:mm:ss') + '+0000';
-          var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
-          var callbackFunc = displayStatusMoveEventDate(event.displayname, event.tractionid, startDate.format('#{@fullcalendar#datetimeformat_date}'));
-        } else {
-          var evTime = event.tpDue.match(/^.+T([0-9]+:[0-9]+:[0-9]+)[\+|-][0-9]+$/)[1];
-          var startDateTimeHumanZone = event.start.format('YYYY-MM-DD') + 'T' + evTime + '<datetime dateformat="Z" />';
-          var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
-          var callbackFunc = fcShowStatusMovePMDue(event.displayname, event.tractionid, moment(startDateTimeEpoch, 'x').format('#{@fullcalendar#datetimeformat_date_time}'));
-        }
-        Proteus.Calendar.moveEvent(event.id, startDateTimeEpoch, callbackFunc);
+
+      console.log("PM entry was dropped onto the non-allDay (time-grid) area.");
+
+      var startDateTimeHumanZone = info.event.startStr;
+      var startDateTimeEpoch = moment(startDateTimeHumanZone).format('x');
+
+      var msgArg = {
+        "fqid": info.event.id,
+        "displayname": info.event.extendedProps.displayname,
+        "tractionid": info.event.extendedProps.tractionid,
+        "start": moment(info.event.start).format('YYYY/MM/DD HH:mm')
+      };
+
+      //console.log('startDateTimeHumanZone = ' + startDateTimeHumanZone);
+      //console.log('startDateTimeEpoch = ' + startDateTimeEpoch);
+      //console.log(msgArg);
+
+      if (Traction.FullCalendar.pmTimeSupport) {
+        var callbackFunc = Traction.FullCalendar.displayStatusMovePMDue(msgArg);
+        Proteus.Calendar.moveEvent(info.event.id, startDateTimeEpoch, callbackFunc);
       } else {
-        // Normal Slot / Agenda View / PM Entry
-        var msg = 'Sorry. Moving a ' + info.event.extendedProps.displayname + ' into a normal slot is not supported.'
-        Proteus.showStatusMessage(msg, true);
-        revertFunc();
+        Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_moving_into_timegrid_not_supported", "'Moving ' + msgArg.displayname + ' ' + msgArg.tractionid + ' into the time-grid area is not supported.'"), true));
+        info.revert();
       }
+
     }
+
   },
 
   onEventResize: function(info) {
@@ -225,8 +204,6 @@ Traction.FullCalendar = {
 
     var arrayClassNames = info.draggedEl.classList;
     info.event.setProp('className', arrayClassNames);
-
-// #######
 
     if (info.event.allDay) {
       // Dropped on the allDay slot
@@ -318,8 +295,6 @@ Traction.FullCalendar = {
   // -------------------------------------------------------
   // fcShowStatusMoveEventDate
   displayStatusMoveEventDate: function(msgArg) {
-    console.log('---- displayStatusMoveEventDate ----');
-    console.log(msgArg);
     Proteus.showStatusMessage(eval(i18n_fullcalendar("proteus_status_message_move_event_date", "msgArg.displayname + ' ' + msgArg.tractionid + ' was moved. (Date: ' + msgArg.start + ')'"), true));
   },
   //fcShowStatusMoveEventStartEnd
@@ -447,9 +422,9 @@ Traction.FullCalendar = {
   },
 
   colorCalItem: function(el, customEntryType, colorName, fillBackground) {
-    console.log('---- colorCalItem ----');
-    console.dir(el);
-    console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
+    //console.log('---- colorCalItem ----');
+    //console.dir(el);
+    //console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
 
     // Set the background color of each event with the color picked up from a standard link,
     // if the event is not from Google Calendar.
@@ -628,6 +603,8 @@ function fcRenderCalendar(data) {
 
   console.log('---- fcRenderCalendar: Render FullCalendar -----')
   console.dir(data);
+
+  Traction.FullCalendar.pmTimeSupport = data.pmTimeSupport;
 
   var calendarEl = document.getElementById(data.fcCanvasId);
   var Calendar = FullCalendar.Calendar;
@@ -870,8 +847,8 @@ function fcRenderCalendar(data) {
 
     // After an event is renderred
     eventDidMount: function(info) {
-      console.log('---- eventDidMount ----');
-      console.dir(info);
+      //console.log('---- eventDidMount ----');
+      //console.dir(info);
 
       var customEntryType = info.event.extendedProps.customentrytype;
       var colorName = info.event.extendedProps.colorname;

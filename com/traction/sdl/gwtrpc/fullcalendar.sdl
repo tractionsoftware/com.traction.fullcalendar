@@ -226,6 +226,7 @@
       "showAddTask": "<#newtask-show-icon />",
       "showAddEvent": "<#newtask-show-icon />",
       "showAddPhoneNotes": "<#newphonenotes-show-icon />",
+      "pmTimeSupport": false,
       "rgParamTaskPostProj": "<#newtask-target-space />",
       "rgParamEventPostProj": "<#newevent-target-space />",
       "rgParamPhoneNotesPostProj": "<#newphonenotes-target-space />",
@@ -241,7 +242,6 @@
       "rgParamNewPmEntryDefaults": "<#form-rg-newentry-pm-defaults />",
       "rgParamAssignedId": "&default_property_assigned=<config.db.boolean name='fullcalendar_always_assign_me'><journalrequest.user>__journalrequest.user.id__</journalrequest.user></config.db.boolean>",
 
-
       "btnTextDayGridMonth": "<config.db.value name='fullcalendar_button_text_dayGridMonth' />",
       "btnTextDayGridWeek": "<config.db.value name='fullcalendar_button_text_dayGridWeek' />",
       "btnTextDayGridSevenDay": "<config.db.value name='fullcalendar_button_text_dayGridSevenDay' />",
@@ -254,7 +254,6 @@
       "btnTextListMonth": "<config.db.value name='fullcalendar_button_text_listMonth' />",
       "btnTextListYear": "<config.db.value name='fullcalendar_button_text_listYear' />"
 
-      
     };
 
     fcRenderCalendar(arg);
