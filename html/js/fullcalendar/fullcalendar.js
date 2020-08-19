@@ -665,57 +665,57 @@ function fcRenderCalendar(data) {
       dayGridMonth: {
         type: 'dayGrid',
         duration: { months: 1 },
-        buttonText: '1 m'
+        buttonText: data.btnTextDayGridMonth
       },
       dayGridWeek: {
         type: 'dayGrid',
         duration: { weeks: 1 },
-        buttonText: '1 w'
+        buttonText: data.btnTextDayGridWeek
       },
       dayGridSevenDay: {
         type: 'dayGrid',
         duration: { days: 7 },
-        buttonText: '7 d'
+        buttonText: data.btnTextDayGridSevenDay
       },
       dayGridTwoWeek: {
         type: 'dayGrid',
         duration: { weeks: 2 },
-        buttonText: '2 w'
+        buttonText: data.btnTextDayGridTwoWeek
       },
       timeGridDay: {
         type: 'timeGrid',
         duration: { days: 1 },
-        buttonText: '1d'
+        buttonText: data.btnTextTimeGridDay
       },
       timeGridWeek: {
         type: 'timeGrid',
         duration: { weeks: 1 },
-        buttonText: '1w'
+        buttonText: data.btnTextTimeGridWeek
       },
       timeGridSevenDay: {
         type: 'timeGrid',
         duration: { days: 7 },
-        buttonText: '7 day'
+        buttonText: data.btnTextTimeGridSevenDay
       },
       listWeek: {
         type: 'list',
         duration: { weeks: 1 },
-        buttonText: '1 w l'
+        buttonText: data.btnTextListWeek
       },
       listSevenDay: {
         type: 'list',
         duration: { days: 7 },
-        buttonText: '7d l'
+        buttonText: data.btnTextListSevenDay
       },
       listMonth: {
         type: 'list',
         duration: { months: 1 },
-        buttonText: '1 ml'
+        buttonText: data.btnTextListMonth
       },
       listYear: {
         type: 'list',
         duration: { years: 1 },
-        buttonText: '1 yl'
+        buttonText: data.btnTextListYear
       }
     },
 

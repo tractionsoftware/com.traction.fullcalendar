@@ -239,7 +239,22 @@
       "rgParamEventTags": "<#newtask-add-tags />",
       "rgParamPhoneNotesTags": "<#newphonenotes-add-tags />",
       "rgParamNewPmEntryDefaults": "<#form-rg-newentry-pm-defaults />",
-      "rgParamAssignedId": "&default_property_assigned=<config.db.boolean name='fullcalendar_always_assign_me'><journalrequest.user>__journalrequest.user.id__</journalrequest.user></config.db.boolean>"
+      "rgParamAssignedId": "&default_property_assigned=<config.db.boolean name='fullcalendar_always_assign_me'><journalrequest.user>__journalrequest.user.id__</journalrequest.user></config.db.boolean>",
+
+
+      "btnTextDayGridMonth": "<config.db.value name='fullcalendar_button_text_dayGridMonth' />",
+      "btnTextDayGridWeek": "<config.db.value name='fullcalendar_button_text_dayGridWeek' />",
+      "btnTextDayGridSevenDay": "<config.db.value name='fullcalendar_button_text_dayGridSevenDay' />",
+      "btnTextDayGridTwoWeek": "<config.db.value name='fullcalendar_button_text_dayGridTwoWeek' />",
+      "btnTextTimeGridDay": "<config.db.value name='fullcalendar_button_text_timeGridDay' />",
+      "btnTextTimeGridWeek": "<config.db.value name='fullcalendar_button_text_timeGridWeek' />",
+      "btnTextTimeGridSevenDay": "<config.db.value name='fullcalendar_button_text_timeGridSevenDay' />",
+      "btnTextListWeek": "<config.db.value name='fullcalendar_button_text_listWeek' />",
+      "btnTextListSevenDay": "<config.db.value name='fullcalendar_button_text_listSevenDay' />",
+      "btnTextListMonth": "<config.db.value name='fullcalendar_button_text_listMonth' />",
+      "btnTextListYear": "<config.db.value name='fullcalendar_button_text_listYear' />"
+
+      
     };
 
     fcRenderCalendar(arg);

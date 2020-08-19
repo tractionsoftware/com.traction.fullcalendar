@@ -95,6 +95,116 @@
     }
   },
   "config/settings/props/journal": {
+    "fullcalendar_button_text_dayGridMonth": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridMonth_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridMonth_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridMonth_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridMonth_default}"
+    },
+    "fullcalendar_button_text_dayGridWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridWeek_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridWeek_default}"
+    },
+    "fullcalendar_button_text_dayGridSevenDay": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridSevenDay_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridSevenDay_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridSevenDay_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridSevenDay_default}"
+    },
+    "fullcalendar_button_text_dayGridTwoWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridTwoWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridTwoWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridTwoWeek_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_dayGridTwoWeek_default}"
+    },
+    "fullcalendar_button_text_timeGridDay": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridDay_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridDay_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridDay_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridDay_default}"
+    },
+    "fullcalendar_button_text_timeGridWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridWeek_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridWeek_default}"
+    },
+    "fullcalendar_button_text_timeGridSevenDay": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridSevenDay_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridSevenDay_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridSevenDay_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_timeGridSevenDay_default}"
+    },
+    "fullcalendar_button_text_listWeek": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_default}"
+    },
+    "fullcalendar_button_text_listSevenDay": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listSevenDay_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listSevenDay_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listSevenDay_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listSevenDay_default}"
+    },
+    "fullcalendar_button_text_listMonth": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_default}"
+    },
+    "fullcalendar_button_text_listYear": {
+      "class": "com.traction.settings.TextInput",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_tip}",
+      "size": "20",
+      "usedefault": "true",
+      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2",
+      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_default}"
+    },
     "fullcalendar_add_tags_event": {
       "class": "com.traction.settings.TextInput",
       "display_name": "#{@fullcalendar#setting_fullcalendar_add_tags_event_display_name}",
@@ -125,126 +235,7 @@
       "usedefault": "false",
       "default": ""
     },
-    "fullcalendar_button_text_month": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_month_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_month_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_month_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_month_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_basicDay": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_basicDay_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_basicDay_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_basicDay_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_basicDay_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_basicSevenDays": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_basicSevenDays_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_basicSevenDays_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_basicSevenDays_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_basicSevenDays_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_basicWeek": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_basicWeek_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_basicWeek_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_basicWeek_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_basicWeek_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_basicTwoWeeks": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_basicTwoWeeks_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_basicTwoWeeks_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_basicTwoWeeks_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_basicTwoWeeks_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_agendaDay": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_agendaDay_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_agendaDay_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_agendaDay_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_agendaDay_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_agendaWeek": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_agendaWeek_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_agendaWeek_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_agendaWeek_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_agendaWeek_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_agendaSevenDays": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_agendaSevenDays_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_agendaSevenDays_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_agendaSevenDays_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_agendaSevenDays_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_listDay": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listDay_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listDay_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listDay_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listDay_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_listWeek": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listWeek_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_listMonth": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listMonth_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
-    "fullcalendar_button_text_listYear": {
-      "class": "com.traction.settings.TextInput",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_tip}",
-      "default": "#{@fullcalendar#setting_fullcalendar_button_text_listYear_default}",
-      "size": "20",
-      "usedefault": "true",
-      "sdleditor": "com.traction.sdl.admin.settings#textinput_afterlabel2"
-    },
+
     "calendaritemdetails_enable_displaying_project_display_name": {
       "class": "com.traction.settings.YesNo",
       "display_name": "#{@fullcalendar#setting_calendaritemdetails_enable_displaying_project_display_name_display_name}",
@@ -513,28 +504,27 @@
   "config/settings/props/user": {
     "fullcalendar_views": {
       "class": "com.traction.settings.Select",
-      "options": "month,basicDay,basicSevenDays,basicWeek,basicTwoWeeks,agendaDay,agendaWeek,agendaSevenDays,listDay,listWeek,listMonth,listYear",
-      "option_month_label": "#{@fullcalendar#setting_fullcalendar_views_option_month_label}",
-      "option_basicDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_basicDay_label}",
-      "option_basicSevenDays_label": "#{@fullcalendar#setting_fullcalendar_views_option_basicSevenDays_label}",
-      "option_basicWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_basicWeek_label}",
-      "option_basicTwoWeeks_label": "#{@fullcalendar#setting_fullcalendar_views_option_basicTwoWeeks_label}",
-      "option_agendaDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_agendaDay_label}",
-      "option_agendaWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_agendaWeek_label}",
-      "option_agendaSevenDays_label": "#{@fullcalendar#setting_fullcalendar_views_option_agendaSevenDays_label}",
-      "option_listDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_listDay_label}",
+      "display_name": "#{@fullcalendar#setting_fullcalendar_views_display_name}",
+      "description": "#{@fullcalendar#setting_fullcalendar_views_description}",
+      "tip": "#{@fullcalendar#setting_fullcalendar_views_tip}",
+      "options": "dayGridMonth,dayGridWeek,dayGridSevenDay,dayGridTwoWeek,timeGridDay,timeGridWeek,timeGridSevenDay,listWeek,listSevenDay,listMonth,listYear",
+      "option_dayGridMonth_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridMonth_label}",
+      "option_dayGridWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridWeek_label}",
+      "option_dayGridSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridSevenDay_label}",
+      "option_dayGridTwoWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridTwoWeek_label}",
+      "option_timeGridDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridDay_label}",
+      "option_timeGridWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridWeek_label}",
+      "option_timeGridSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridSevenDay_label}",
       "option_listWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_listWeek_label}",
+      "option_listSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_listSevenDay_label}",
       "option_listMonth_label": "#{@fullcalendar#setting_fullcalendar_views_option_listMonth_label}",
       "option_listYear_label": "#{@fullcalendar#setting_fullcalendar_views_option_listYear_label}",
       "ordered": "true",
       "sorted": "true",
       "selecttype": "multi",
       "sdleditor": "com.traction.sdl.admin.settings#groupselect",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_views_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_views_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_views_tip}",
       "usedefault": "true",
-      "default": "month,agendaWeek,agendaSevenDays,listMonth"
+      "default": "dayGridMonth,dayGridTwoWeek,timeGridSevenDay,listMonth"
     },
     "fullcalendar_gcal_apikey": {
       "class": "com.traction.settings.TextInput",
@@ -884,36 +874,6 @@
       "rows": "2",
       "cols": "100",
       "wrap": "wrap"
-    }
-  },
-  "config/settings/props/user": {
-    "fullcalendar_views": {
-      "class": "com.traction.settings.Select",
-      "display_name": "#{@fullcalendar#setting_fullcalendar_views_display_name}",
-      "description": "#{@fullcalendar#setting_fullcalendar_views_description}",
-      "tip": "#{@fullcalendar#setting_fullcalendar_views_tip}",
-
-      "options": "dayGridMonth,dayGridWeek,dayGridSevenDay,dayGridTwoWeek,timeGridDay,timeGridWeek,timeGridSevenDay,listWeek,listSevenDay,listMonth,listYear",
-
-"option_dayGridMonth_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridMonth_label}",
-"option_dayGridWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridWeek_label}",
-"option_dayGridSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridSevenDay_label}",
-"option_dayGridTwoWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_dayGridTwoWeek_label}",
-"option_timeGridDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridDay_label}",
-"option_timeGridWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridWeek_label}",
-"option_timeGridSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_timeGridSevenDay_label}",
-"option_listWeek_label": "#{@fullcalendar#setting_fullcalendar_views_option_listWeek_label}",
-"option_listSevenDay_label": "#{@fullcalendar#setting_fullcalendar_views_option_listSevenDay_label}",
-"option_listMonth_label": "#{@fullcalendar#setting_fullcalendar_views_option_listMonth_label}",
-"option_listYear_label": "#{@fullcalendar#setting_fullcalendar_views_option_listYear_label}",
-
-
-      "ordered": "true",
-      "sorted": "true",
-      "selecttype": "multi",
-      "sdleditor": "com.traction.sdl.admin.settings#groupselect",
-      "usedefault": "true",
-      "default": "dayGridMonth,dayGridTwoWeek,timeGridSevenDay,listMonth"
     }
   }
 }
