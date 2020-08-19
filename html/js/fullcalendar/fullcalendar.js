@@ -160,6 +160,13 @@ Traction.FullCalendar = {
 
     }
 
+    // The easiest way to move the tasks related to a milestone on move
+    // of the milestone should be refreshing the whole calendar.
+    // See Server93891.
+    if ( info.event.extendedProps.customentrytype === 'milestone' ) {
+      info.view.calendar.refetchEvents();
+    }
+
   },
 
   onEventResize: function(info) {
