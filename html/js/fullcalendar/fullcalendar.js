@@ -258,7 +258,7 @@ Traction.FullCalendar = {
     console.log(info.draggedEl);
 
     //el, customEntryType, colorName, fillBackground
-    //Traction.FullCalendar.colorCalItem(info.event, info.draggedEl.dataset.customentrytype, info.draggedEl.dataset.color, fillBackground);
+    //Traction.FullCalendar.colorCalItem(info.event, info.event.allDay, info.draggedEl.dataset.customentrytype, info.draggedEl.dataset.color, fillBackground);
 
   },
 
@@ -428,8 +428,16 @@ Traction.FullCalendar = {
     //console.log("removeExtEvDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
   },
 
-  colorCalItem: function(el, customEntryType, colorName, fillBackground) {
-    //console.log('---- colorCalItem ----');
+  colorCalItem: function(el, allDay, customEntryType, colorName, fillBackground) {
+    if (allDay) {
+      Traction.FullCalendar.colorCalItemAllDay(el, customEntryType, colorName, fillBackground);
+    } else {
+      Traction.FullCalendar.colorCalItemTimeGrid(el, customEntryType, colorName, fillBackground);
+    }
+  },
+
+  colorCalItemAllDay: function(el, customEntryType, colorName, fillBackground) {
+    //console.log('---- colorCalItemAllDay ----');
     //console.dir(el);
     //console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
 
@@ -470,6 +478,26 @@ Traction.FullCalendar = {
       } else {
         $(el).css('color', '#fff');
       }
+    }
+  },
+
+  colorCalItemTimeGrid: function(el, customEntryType, colorName, fillBackground) {
+    //console.log('---- colorCalItemTimeGrid ----');
+    //console.dir(el);
+    //console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
+
+    // Set the background color of each event with the color picked up from a standard link,
+    // if the event is not from Google Calendar.
+    // Please refer to JPBO16042, JPBO16137, and JPBO16290 for details.
+    var linkColor = $('#fc-linkcolor-placeholder a').css('color');
+
+    if (! colorName) {
+      $(el).css('color', '#fff');
+      $(el).css('background-color', linkColor);
+    } else {
+      $(el).css('color', '#fff');
+      $(el).css('background-color', Traction.FullCalendar.convertColorNameToCode(colorName));
+      //$(el).css('border-color', Traction.FullCalendar.convertColorNameToCode(colorName));
     }
   },
 
@@ -854,8 +882,8 @@ function fcRenderCalendar(data) {
 
     // After an event is renderred
     eventDidMount: function(info) {
-      //console.log('---- eventDidMount ----');
-      //console.dir(info);
+      console.log('---- eventDidMount ----');
+      console.dir(info);
 
       var customEntryType = info.event.extendedProps.customentrytype;
       var colorName = info.event.extendedProps.colorname;
@@ -865,7 +893,7 @@ function fcRenderCalendar(data) {
         var fillBackground = false;
       }
 
-      Traction.FullCalendar.colorCalItem(info.el, customEntryType, colorName, fillBackground);
+      Traction.FullCalendar.colorCalItem(info.el, info.event.allDay, customEntryType, colorName, fillBackground);
 
     },
 
