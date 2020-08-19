@@ -744,10 +744,6 @@ function fcRenderCalendar(data) {
         $(this).addClass('button-group');
       });
 
-
-
-
-
       if(isLoading) {
         Traction.Loading.show();
         //$('#fc-loading-status').removeClass('off').addClass('on');
@@ -1057,12 +1053,20 @@ Proteus.addHandler("load", function() {
     }
   });
 
-  $('#external-events .entries .fc-event').on('click', function(){
+  Traction.FullCalendar.isDragging = false;
 
-    console.log('fqid = ' + $(this).data('fqid'));
-    console.log('tpurl = ' + $(this).data('tpurl'));
-
-    Proteus.Calendar.showEventDetails($(this).data('fqid'), $(this).data('tpurl'));
+  $('#external-events .entries .fc-event').mousedown(function() {
+    Traction.FullCalendar.isDragging = false;
+  })
+  .mousemove(function() {
+    Traction.FullCalendar.isDragging = true;
+   })
+  .mouseup(function() {
+    var wasDragging = Traction.FullCalendar.isDragging;
+    Traction.FullCalendar.isDragging = false;
+    if (!wasDragging) {
+      Proteus.Calendar.showEventDetails($(this).data('fqid'), $(this).data('tpurl'));
+    }
   });
 
 });
