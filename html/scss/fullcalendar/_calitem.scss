@@ -1,3 +1,7 @@
+.fc .calitem {
+  font-size: 0.85em;
+}
+
 .fc-event {
   line-height: 1.5;
 }
@@ -116,5 +120,29 @@
   }
   &.calitem-event .c:before {
     content: "\f073";
+  }
+}
+
+
+// --------------------------------------------------------------------
+// Priority label-sticker (List View)
+// --------------------------------------------------------------------
+.fc-list-event {
+  .fc-event-title {
+    .label-sticker.priority {
+      margin-left: 0.5em;
+      &.p1 {
+        background-color: $p1color;
+      }
+      &.p2 {
+        background-color: $p2color;
+      }
+      &.p3 {
+        background-color: $p3color;
+      }
+      &.p4 {
+        background-color: $p4color;
+      }
+    }
   }
 }

@@ -428,12 +428,29 @@ Traction.FullCalendar = {
     //console.log("removeExtEvDefaultResponse: method=" + state.method + " projId="+ state.projId + " userId="+ state.userId + " goalId="+ state.goalId + " msId="+ state.msId + " entryId="+ state.entryId + " caltype="+ state.calType);
   },
 
-  colorCalItem: function(el, allDay, customEntryType, colorName, fillBackground) {
-    if (allDay) {
-      Traction.FullCalendar.colorCalItemAllDay(el, customEntryType, colorName, fillBackground);
+  colorCalItem: function(info) {
+
+    var customEntryType = info.event.extendedProps.customentrytype;
+    var colorName = info.event.extendedProps.colorname;
+    if ($(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays')) {
+      var fillBackground = true;
     } else {
-      Traction.FullCalendar.colorCalItemTimeGrid(el, customEntryType, colorName, fillBackground);
+      var fillBackground = false;
     }
+    var allDay = info.event.allDay;
+    var viewType = info.view.type;
+
+    if (viewType.indexOf('list')) {
+      if (allDay) {
+        Traction.FullCalendar.colorCalItemAllDay(info.el, customEntryType, colorName, fillBackground);
+      } else {
+        Traction.FullCalendar.colorCalItemTimeGrid(info.el, customEntryType, colorName, fillBackground);
+      }
+    } else {
+      // List View
+      Traction.FullCalendar.colorCalItemList(info.el, customEntryType, colorName, fillBackground);
+    }
+
   },
 
   colorCalItemAllDay: function(el, customEntryType, colorName, fillBackground) {
@@ -497,7 +514,17 @@ Traction.FullCalendar = {
     } else {
       $(el).css('color', '#fff');
       $(el).css('background-color', Traction.FullCalendar.convertColorNameToCode(colorName));
-      //$(el).css('border-color', Traction.FullCalendar.convertColorNameToCode(colorName));
+    }
+  },
+
+  colorCalItemList: function(el, customEntryType, colorName, fillBackground) {
+    var linkColor = $('#fc-linkcolor-placeholder a').css('color');
+    $(el).css('background-color', 'transparent');
+    $(el).css('color', linkColor);
+    if (colorName) {
+      $(el).find('.fc-list-event-dot').css('border-color', Traction.FullCalendar.convertColorNameToCode(colorName));
+    } else {
+      $(el).find('.fc-list-event-dot').css('border-color', linkColor);
     }
   },
 
@@ -531,24 +558,26 @@ Traction.FullCalendar = {
     return colorCode;
   },
 
-  addPriorityBadge: function(info) {
-    if (view.name == 'listDay' || view.name == 'listWeek' || view.name == 'listMonth' || view.name == 'listYear') {
-      $('.fc-list-item-title').each(function(){
-        var entryClasses = $(this).parent('.fc-list-event').attr('class');
+  addPriorityBadge: function(el) {
+    console.log('---- addPriorityBadge ----');
+    console.log(el);
 
-        if (entryClasses.match(/calitem-task/)) {
-          var classArray = entryClasses.split(' ');
-          for (i = 0; i < classArray.length; i++) {
-            var priority = entryClasses.match(/calitem-p([0-9])/);
-            if (priority) {
-              if ($(this).children('span.priority').length == 0) {
-                $(this).append('<span class="priority p' + priority[1] + '">' + priority[1] + '</span>');
-              }
-            }
-          }
+    var entryClasses = $(el).attr('class');
+    var classArray = entryClasses.split(' ');
+
+    console.dir(classArray);
+
+    for (i = 0; i < classArray.length; i++) {
+      var priority = classArray[i].match(/calitem-p([0-9])/);
+      console.log('loop = ' + priority);
+      if (priority) {
+        console.log('priority[1] = ' + priority[1]);
+        if ($(el).find('.fc-event-title').children('span.priority').length === 0) {
+          $(el).find('.fc-event-title').append('<span class="label-sticker priority p' + priority[1] + '">' + priority[1] + '</span>');
         }
-      });
+      }
     }
+
   },
 
   // -------------------------------------------------------
@@ -666,7 +695,7 @@ function fcRenderCalendar(data) {
 
     locale: data.locale,
     firstDay: data.firstDay,
-    initialView: 'dayGridMonth',
+    initialView: 'listMonth',
     initialDate: data.initialDate,
     headerToolbar: {
       left: data.fcViews,
@@ -885,15 +914,11 @@ function fcRenderCalendar(data) {
       console.log('---- eventDidMount ----');
       console.dir(info);
 
-      var customEntryType = info.event.extendedProps.customentrytype;
-      var colorName = info.event.extendedProps.colorname;
-      if ($(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays')) {
-        var fillBackground = true;
-      } else {
-        var fillBackground = false;
-      }
+      Traction.FullCalendar.colorCalItem(info);
 
-      Traction.FullCalendar.colorCalItem(info.el, info.event.allDay, customEntryType, colorName, fillBackground);
+      if (info.view.type.indexOf('list') !== -1 && info.event.extendedProps.customentrytype === 'task') {
+        Traction.FullCalendar.addPriorityBadge(info.el);
+      }
 
     },
 
