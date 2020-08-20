@@ -8,16 +8,6 @@
 .calitem.icon-image {
   .fc-event-inner {
     background-repeat: no-repeat;
-    background-position: 1px center;
-    .c {
-      background: none;
-    }
-    .text {
-      vertical-align: middle;
-    }
-    .fc-event-time {
-      vertical-align: middle;
-    }
   }
   &.calitem-event {
     .fc-event-inner {
@@ -44,6 +34,51 @@
       position: static;
       input {
         vertical-align: middle;
+      }
+    }
+  }
+}
+
+// In the day-grid area,
+// the icon should be centered vertically.
+.fc-daygrid, .fc-daygrid-body, .fc-list {
+  .calitem.icon-image {
+    .fc-event-inner {
+      // Icon vertically centered.
+      background-position: 1px center;
+      .c {
+        background: none;
+      }
+      .text {
+        vertical-align: middle;
+      }
+      .fc-event-time {
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+// In the time-grid area,
+// the icon should be located at the top-left.
+.fc-timegrid-body {
+  .calitem.icon-image {
+    .fc-event-inner {
+      // Icons in the top-left.
+      background-position: 1px 1px;
+      .c {
+        background: none;
+      }
+      .text {
+        vertical-align: middle;
+      }
+      .fc-event-time {
+        //vertical-align: middle;
+      }
+    }
+    &.calitem-event {
+      .c {
+        display: none;
       }
     }
   }
