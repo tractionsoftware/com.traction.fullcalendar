@@ -688,6 +688,8 @@ function fcRenderCalendar(data) {
     }
   });
 
+  var initialViewName = 'dayGridMonth';
+
   var calendar = new FullCalendar.Calendar(calendarEl, {
 
     // Enable external drag-n-drop
@@ -695,7 +697,7 @@ function fcRenderCalendar(data) {
 
     locale: data.locale,
     firstDay: data.firstDay,
-    initialView: 'listMonth',
+    initialView: initialViewName,
     initialDate: data.initialDate,
     headerToolbar: {
       left: data.fcViews,
