@@ -524,7 +524,7 @@
       "selecttype": "multi",
       "sdleditor": "com.traction.sdl.admin.settings#groupselect",
       "usedefault": "true",
-      "default": "dayGridMonth,dayGridTwoWeek,timeGridSevenDay,listMonth"
+      "default": "dayGridMonth,timeGridDay,dayGridTwoWeek,timeGridSevenDay,listMonth"
     },
     "fullcalendar_gcal_apikey": {
       "class": "com.traction.settings.TextInput",
