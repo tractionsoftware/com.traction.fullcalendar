@@ -6,103 +6,68 @@ Traction.FullCalendar = {
 
     console.log("Event entry was dropped. View = " + info.view.type);
 
-    if ( info.view.type === "dayGridMonth" ) {
+    if (info.event.allDay) {
+      console.log('Dropped into a day-grid area.');
 
-      var startDateTimeLocal = moment(info.event.start).format();
-      var startDateTimeLocalX = moment(startDateTimeLocal).format('x');
+      const startDateTime = info.event.startStr + 'T00:00:00+00:00'; // GMT Midnight
+      const startDateTimeX = moment(startDateTime).format('x'); // GMT Midnight
 
-      if ( info.event.allDay ) {
-        //var endDateTimeLocal = info.event.endStr; // YYYY-MM-DDTHH:mm:ssZ
-        var endDateTimeLocal = moment(info.event.end).add(-1,'days').format();
-        var endDateTimeLocalX = moment(endDateTimeLocal).format('x');
-        var msgArg = {
-          "start": moment(startDateTimeLocal).format('YYYY/MM/DD'),
-          "end": moment(endDateTimeLocal).format('YYYY/MM/DD')
-        }
-      } else {
-        var endDateTimeLocal = moment(info.event.end).format();
-        var endDateTimeLocalX = moment(endDateTimeLocal).format('x');
-        var msgArg = {
-          "start": moment(startDateTimeLocal).format('YYYY/MM/DD HH:mm'),
-          "end": moment(endDateTimeLocal).format('YYYY/MM/DD HH:mm')
-        }
+      console.log('startDateTime = ' + startDateTime);
+      console.log('startDateTimeX = ' + startDateTimeX);
+
+      const endDateTime   = info.event.end ? moment(info.event.end).add(-1,'days').format() : startDateTime;
+      const endDateTimeX  = info.event.end ? moment(endDateTime).format('x')                : startDateTimeX;
+
+      console.log('endDateTime = ' + endDateTime);
+      console.log('endDateTimeX = ' + endDateTimeX);
+
+      const msgArg = {
+        "start": moment(startDateTime).format('YYYY/MM/DD'),
+        "end": moment(endDateTime).format('YYYY/MM/DD'),
+        "fqid": info.event.id,
+        "allday": info.event.allDay,
+        "displayname": info.event.extendedProps.displayname,
+        "tractionid": info.event.extendedProps.tractionid
       }
 
-      msgArg.fqid = info.event.id;
-      msgArg.allday = info.event.allDay;
-      msgArg.displayname = info.event.extendedProps.displayname;
-      msgArg.tractionid = info.event.extendedProps.tractionid;
+      console.dir(msgArg);
 
-      console.log('startDateTimeLocal = ' + startDateTimeLocal);
-      console.log('startDateTimeLocalX = ' + startDateTimeLocalX);
-      console.log('endDateTimeLocal = ' + endDateTimeLocal);
-      console.log('endDateTimeLocalX = ' + endDateTimeLocalX);
+      const callbackFunc = startDateTime === endDateTime ? Traction.FullCalendar.displayStatusMoveEventDate(msgArg) : Traction.FullCalendar.displayStatusMoveEventStartEnd(msgArg);
+
+      Proteus.Calendar.setEventProperties(info.event.id, startDateTimeX, endDateTimeX, true, callbackFunc);
+
+    } else {
+      console.log('Dropped into a time-grid area.');
+
+      const startDateTime = moment(info.event.start).format(); // Local Time
+      const startDateTimeX = moment(startDateTime).format('x'); // Local Time
+
+      console.log('startDateTime = ' + startDateTime);
+      console.log('startDateTimeX = ' + startDateTimeX);
+
+      const endDateTime = moment(info.event.end).format(); // Local Time
+      const endDateTimeX = moment(endDateTime).format('x'); // Local Time
+
+      console.log('endDateTime = ' + endDateTime);
+      console.log('endDateTimeX = ' + endDateTimeX);
+
+
+      const msgArg = {
+        "start": moment(startDateTime).format('YYYY/MM/DD HH:mm'),
+        "end": moment(endDateTime).format('YYYY/MM/DD HH:mm'),
+        "fqid": info.event.id,
+        "allday": info.event.allDay,
+        "displayname": info.event.extendedProps.displayname,
+        "tractionid": info.event.extendedProps.tractionid
+      }
+
       console.log(msgArg);
 
-      if (startDateTimeLocal == endDateTimeLocal) {
-        console.log("Single allDay");
-        var callbackFunc = Traction.FullCalendar.displayStatusMoveEventDate(msgArg);
-      } else {
-        console.log("Multiple allDay");
-        var callbackFunc = Traction.FullCalendar.displayStatusMoveEventStartEnd(msgArg);
-      }
-      Proteus.Calendar.moveEvent(info.event.id, startDateTimeLocalX, callbackFunc);
-    } else {
-      // Other calendar types
-      if (info.event.allDay) {
-        // Droped on AllDay slot / Agenda view / Event entry
-        if (info.event.extendedProps.tpAllDay) {
-          // If it's an AllDay event, just move it.
-          var callbackFunc = displayStatusMoveEventDate(event.displayname, event.tractionid, startDate.format('#{@fullcalendar#datetimeformat_date}'));
-          Proteus.Calendar.moveEvent(event.id, startDateTimeEpoch, callbackFunc);
-        } else {
-          // If it isn't an AllDay event (if it is a normal event), set both of the start and the end date.
+      const callbackFunc = Traction.FullCalendar.displayStatusMoveEventStartEnd(msgArg);
+      Proteus.Calendar.setEventProperties(info.event.id, startDateTimeX, endDateTimeX, false, callbackFunc);
 
-          // Completed JPBO16371
-
-          var callbackFunc = displayStatusMoveEventDate(event.displayname, event.tractionid, startDate.format('#{@fullcalendar#datetimeformat_date}'));
-          Proteus.Calendar.setEventProperties(event.id, startDateTimeEpoch, endDateTimeEpoch, true, callbackFunc);
-        }
-      } else {
-        if (info.event.extendedProps.tpAllDay) {
-          console.log("Droped on Normal slot / Agenda view / Event entry");
-          console.log("If it is an AllDay event, set both of the start and the end date/time.");
-
-          // Completed JPBO16372
-
-          endDate = moment(startDate).add(2,'hours'); // The value "+2 hours" is defined as defaultTimedEventDuration.
-          endDateTimeHumanZone = moment(endDate).format('YYYY-MM-DD') + 'T' + moment(endDate).format('HH:mm:ss') + '<datetime dateformat="Z" />';
-          endDateTimeEpoch = moment(endDateTimeHumanZone).format('x');
-          var callbackFunc = displayStatusMoveEventStartEnd(event.displayname, event.tractionid, startDate.format('#{@fullcalendar#datetimeformat_date_time}'), endDate.format('#{@fullcalendar#datetimeformat_date_time}'));
-          Proteus.Calendar.setEventProperties(event.id, startDateTimeEpoch, endDateTimeEpoch, false, callbackFunc);
-        } else {
-          console.log("If it is a non-allDay event, set the new start and end date/time.");
-          var startDateTimeLocal = moment(info.event.start).format('YYYY-MM-DDTHH:mm:ssZ');
-          var startDateTimeEpoch = moment(startDateTimeLocal).format('x');
-          var endDateTimeLocal = moment(info.event.end).format('YYYY-MM-DDTHH:mm:ssZ');
-          var endDateTimeEpoch = moment(endDateTimeLocal).format('x');
-
-          var msgArg = {
-            "fqid": info.event.id,
-            "displayname": info.event.extendedProps.displayname,
-            "tractionid": info.event.extendedProps.tractionid,
-            "start": moment(info.event.start).format('YYYY/MM/DD HH:mm'),
-            "end": moment(info.event.end).format('YYYY/MM/DD HH:mm')
-          };
-
-          console.log('startDateTimeLocal = ' + startDateTimeLocal);
-          console.log('startDateTimeEpoch = ' + startDateTimeEpoch);
-          console.log('endDateTimeLocal = ' + endDateTimeLocal);
-          console.log('endDateTimeEpoch = ' + endDateTimeEpoch);
-          console.dir(msgArg);
-
-          var callbackFunc = Traction.FullCalendar.displayStatusMoveEventStartEnd(msgArg);
-
-          Proteus.Calendar.setEventProperties(info.event.id, startDateTimeEpoch, endDateTimeEpoch, false, callbackFunc);
-
-        }
-      }
     }
+
   },
 
   // When a PM entry (task, goal, milestone) is dropped
@@ -333,9 +298,9 @@ Traction.FullCalendar = {
   // -------------------------------------------------------
   updateExtEvOrder: function(arrayFqid, calParam) {
 
+    console.log('---- updateExtEvOrder ----');
     console.log(arrayFqid);
     console.dir(calParam);
-
 
     // This will be the payload encoded for a POST request to the
     // server.
@@ -430,15 +395,20 @@ Traction.FullCalendar = {
 
   colorCalItem: function(info) {
 
+    //console.log('---- colorCalItem ----');
+    //console.dir(info);
+
     var customEntryType = info.event.extendedProps.customentrytype;
     var colorName = info.event.extendedProps.colorname;
-    if ($(info.el).hasClass('calitem-allday') || $(info.el).hasClass('calitem-multidays')) {
+    if ($(info.el).hasClass('fc-daygrid-event')) {
       var fillBackground = true;
     } else {
       var fillBackground = false;
     }
     var allDay = info.event.allDay;
     var viewType = info.view.type;
+
+    console.log('Does the view name contain \"list\" ? ' + viewType.indexOf('list'));
 
     if (viewType.indexOf('list')) {
       if (allDay) {
@@ -913,8 +883,8 @@ function fcRenderCalendar(data) {
 
     // After an event is renderred
     eventDidMount: function(info) {
-      console.log('---- eventDidMount ----');
-      console.dir(info);
+      // console.log('---- eventDidMount ----');
+      // console.dir(info);
 
       Traction.FullCalendar.colorCalItem(info);
 
@@ -926,8 +896,8 @@ function fcRenderCalendar(data) {
 
     // After the view is renderred
     viewDidMount: function(info) {
-      console.log('---- viewDidMount (After the view is renderred) ----');
-      console.dir(info);
+      // console.log('---- viewDidMount (After the view is renderred) ----');
+      // console.dir(info);
 
       // Draw add-task, add-event, and add-phonenotes icons
       $(info.el).find('.fc-daygrid-day').each(function() {
@@ -938,10 +908,10 @@ function fcRenderCalendar(data) {
 
         // console.log('targetDate = ' + targetDate);
         // console.log('curHour = ' + curHour);
-        //console.log('curTZ = ' + curTZ);
+        // console.log('curTZ = ' + curTZ);
 
-        var startDateTime = moment(moment(targetDate + 'T00:00:00' + curTZ).add(curHour, 'hours').format('YYYY-MM-DDTH:mm:ssZ')).format('x');
-        var endDateTime = moment(moment(targetDate + 'T00:00:00' + curTZ).add(curHour, 'hours').add('1', 'hours').format('YYYY-MM-DDTH:mm:ssZ')).format('x');
+        var startDateTime = moment(targetDate + 'T00:00:00' + curTZ).add(curHour, 'hours').format('x');
+        var endDateTime = moment(targetDate + 'T00:00:00' + curTZ).add(curHour, 'hours').add('1', 'hours').format('x');
 
         // console.log('targetDate = ' + targetDate);
         // console.log('startDateTime = ' + startDateTime);

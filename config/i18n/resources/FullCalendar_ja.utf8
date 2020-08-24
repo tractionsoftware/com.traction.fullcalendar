@@ -24,6 +24,10 @@ proteus_status_message_moving_into_timegrid_not_supported=msgArg.displayname + '
 # Misc
 No_Due_Date=No Due Date
 
+# Date Format
+datetimeformat_date_time=YYYY/MM/DD HH:mm
+datetimeformat_date=YYYY/MM/DD
+
 # DB Settings
 setting_fullcalendar_always_assign_me_display_name=常に自分を担当者/参加者にする
 setting_fullcalendar_always_assign_me_description=

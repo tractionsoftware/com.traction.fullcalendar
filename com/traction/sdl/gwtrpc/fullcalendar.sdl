@@ -220,11 +220,16 @@
       "fcViews": "<#fc-views />",
       "initialDate": "<datetime dateformat='yyyy-MM-dd' />",
       "firstDay": firstDay,
+
+      nowIndicator: true,
+      defaultAllDayEventDuration: { days: 1 },
+      defaultTimedEventDuration: '01:00:00',
+
       "tpSourceURL": tpSourceURL,
       "tpSourceId": tpSourceId,
       "tpDraggableId": tpDraggableId,
       "showAddTask": "<#newtask-show-icon />",
-      "showAddEvent": "<#newtask-show-icon />",
+      "showAddEvent": "<#newevent-show-icon />",
       "showAddPhoneNotes": "<#newphonenotes-show-icon />",
       "pmTimeSupport": false,
       "rgParamTaskPostProj": "<#newtask-target-space />",
@@ -832,6 +837,7 @@
       <div class="bd">
         <div class="entries">
           <#external-entries-new />
+          <h3>----</h3>
           <#external-entries-ordered />
         </div>
       </div>
@@ -866,6 +872,7 @@
     ) order by TSI_PM_TASK.TASKID desc
     <!--- Order by TASKID (FQID) because there is no columns that store submission dates. -->
   </var.set>
+  <console>new sql = ${sql}</console>
   <#external-entries extevType="new" />
 </sdl.function>
 
