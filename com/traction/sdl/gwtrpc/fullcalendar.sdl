@@ -841,7 +841,6 @@
       <div class="bd">
         <div class="entries">
           <#external-entries-new />
-          <h3>----</h3>
           <#external-entries-ordered />
         </div>
       </div>
