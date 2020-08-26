@@ -698,7 +698,7 @@
 
 <sdl.function name="sidecolumn">
   <gwt.rpc.view name="SideColumn">
-    <shared#addmenu firstOption="event" />
+    <shared#addmenu firstOption="<#addmenu-firstoption />" />
     <gwt.rpc.view name="Uploads"></gwt.rpc.view>
     <variable.local.set name="changeTagsRg" index="pageAction" value="calendar" />
     <tasks#tasklist-controls-box />
@@ -706,6 +706,10 @@
     <calendar#calendar-rss-box />
     <shared#view-workinprogress-sidebox-deferred />
   </gwt.rpc.view><!--- SideColumn -->
+</sdl.function>
+
+<sdl.function name="addmenu-firstoption">
+  event
 </sdl.function>
 
 <sdl.function name="sidebox-tasklist-controls-old">
