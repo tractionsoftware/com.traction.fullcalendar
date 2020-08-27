@@ -896,6 +896,7 @@ function fcRenderCalendar(data) {
       var faIconHtml = '<div class="ic"><i></i></div>';
 
       // DayGrid Dot Event
+      // The background color should be transparent unless color is set.
       if ($(info.el).hasClass('fc-daygrid-dot-event')) {
         if ($(info.el).hasClass('icon-image')) {
           // icon-image or checkbox
@@ -930,6 +931,10 @@ function fcRenderCalendar(data) {
         } else {
           // icon-fontawesome
           $(info.el).find('.fc-event-main-frame').prepend(faIconHtml);
+        }
+        // Color the calender item
+        if (! $(info.el).hasClass('calitem-colored')) {
+          $(info.el).css('background-color', $('#fc-linkcolor-placeholder a').css('color'));
         }
       }
 

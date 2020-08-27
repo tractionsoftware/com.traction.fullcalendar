@@ -44,38 +44,42 @@
   }
 }
 
-
 // --------------------------------------------------------------------
 // FontAwesome
 // --------------------------------------------------------------------
 .calitem.icon-font {
-  .c {
-    position: relative;
-    background-image: none;
-    padding-left: 2px;
-    padding-right: 2px;
-    input {
+  &.fc-daygrid-dot-event {
+    .fc-daygrid-event-dot {
       display: none;
     }
-    &:before {
-      @include fontawesome_basic;
-      speak: none;
-      width: 1.3em;
+  }
+  &.fc-daygrid-block-event {
+  }
+  &.fc-daygrid-dot-event, &.fc-daygrid-block-event {
+    .ic {
+      display: inline-block;
+      flex-shrink: 0;
+      flex-grow: 0;
+      padding: 1px 4px;
+      text-align: center;
+      i {
+        @include fontawesome_basic;
+      }
     }
   }
-  &.calitem-task.todo .c:before {
+  &.calitem-task.todo .ic i:before {
     content: "\f096";
   }
-  &.calitem-task.done .c:before {
+  &.calitem-task.done .ic i:before {
     content: "\f046";
   }
-  &.calitem-goal .c:before {
+  &.calitem-goal .ic i:before {
     content: "\f0ae";
   }
-  &.calitem-milestone .c:before {
+  &.calitem-milestone .ic i:before {
     content: "\f133";
   }
-  &.calitem-event .c:before {
+  &.calitem-event .ic i:before {
     content: "\f073";
   }
 }
