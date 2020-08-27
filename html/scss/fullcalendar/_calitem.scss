@@ -1,92 +1,49 @@
-.fc .calitem {
-  font-size: 0.85em;
-}
+//.fc .calitem {
+//  font-size: 0.85em;
+//}
 
-.fc-event {
-  line-height: 1.5;
-}
+//.fc-event {
+//  line-height: 1.5;
+//}
 
 // --------------------------------------------------------------------
 // Image Icons and Checkbox
 // --------------------------------------------------------------------
 .calitem.icon-image {
-  .fc-event-inner {
-    background-repeat: no-repeat;
+  &.fc-daygrid-dot-event {
+    .fc-daygrid-event-dot {
+      display: none;
+    }
+  }
+  &.fc-daygrid-block-event {
+  }
+  &.fc-daygrid-dot-event, &.fc-daygrid-block-event {
+    .ic {
+      display: inline-block;
+      flex-shrink: 0;
+      flex-grow: 0;
+      width: 14px;
+      background-repeat: no-repeat;
+      background-position: center left;
+    }
   }
   &.calitem-event {
-    .fc-event-inner {
-      padding-left: 14px;
-      background-image: url("/images/doctype/event-12.png");
+    .ic {
+      background-image: url('/images/doctype/event-12.png');
     }
   }
   &.calitem-goal {
-    .fc-event-inner {
-      padding-left: 14px;
-      background-image: url("/images/doctype/tasklist-12.png");
+    .ic {
+      background-image: url('/images/doctype/tasklist-12.png');
     }
   }
   &.calitem-milestone {
-    .fc-event-inner {
-      padding-left: 14px;
-      background-image: url("/images/doctype/meeting-12.png");
-    }
-  }
-  &.calitem-task {
-    .c {
-      width: 14px;
-      display: inline-block;
-      position: static;
-      input {
-        vertical-align: middle;
-      }
+    .ic {
+      background-image: url('/images/doctype/meeting-12.png');
     }
   }
 }
 
-// In the day-grid area,
-// the icon should be centered vertically.
-.fc-daygrid, .fc-daygrid-body, .fc-list {
-  .calitem.icon-image {
-    .fc-event-inner {
-      // Icon vertically centered.
-      background-position: 1px center;
-      .c {
-        background: none;
-      }
-      .text {
-        vertical-align: middle;
-      }
-      .fc-event-time {
-        vertical-align: middle;
-      }
-    }
-  }
-}
-
-// In the time-grid area,
-// the icon should be located at the top-left.
-.fc-timegrid-body {
-  .calitem.icon-image {
-    .fc-event-inner {
-      // Icons in the top-left.
-      background-position: 1px 1px;
-      .c {
-        background: none;
-      }
-      .text {
-        vertical-align: middle;
-      }
-      .fc-event-time {
-        //vertical-align: middle;
-      }
-    }
-    &.calitem-event {
-      .c {
-        display: none;
-      }
-    }
-  }
-}
 
 // --------------------------------------------------------------------
 // FontAwesome

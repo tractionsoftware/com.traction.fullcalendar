@@ -12,14 +12,14 @@ Traction.FullCalendar = {
       const startDateTime = info.event.startStr + 'T00:00:00+00:00'; // GMT Midnight
       const startDateTimeX = moment(startDateTime).format('x'); // GMT Midnight
 
-      console.log('startDateTime = ' + startDateTime);
-      console.log('startDateTimeX = ' + startDateTimeX);
+      //console.log('startDateTime = ' + startDateTime);
+      //console.log('startDateTimeX = ' + startDateTimeX);
 
       const endDateTime   = info.event.end ? moment(info.event.end).add(-1,'days').format() : startDateTime;
       const endDateTimeX  = info.event.end ? moment(endDateTime).format('x')                : startDateTimeX;
 
-      console.log('endDateTime = ' + endDateTime);
-      console.log('endDateTimeX = ' + endDateTimeX);
+      //console.log('endDateTime = ' + endDateTime);
+      //console.log('endDateTimeX = ' + endDateTimeX);
 
       const msgArg = {
         "start": moment(startDateTime).format('YYYY/MM/DD'),
@@ -400,7 +400,7 @@ Traction.FullCalendar = {
 
     var customEntryType = info.event.extendedProps.customentrytype;
     var colorName = info.event.extendedProps.colorname;
-    if ($(info.el).hasClass('fc-daygrid-event')) {
+    if ($(info.el).hasClass('fc-daygrid-block-event')) {
       var fillBackground = true;
     } else {
       var fillBackground = false;
@@ -408,25 +408,28 @@ Traction.FullCalendar = {
     var allDay = info.event.allDay;
     var viewType = info.view.type;
 
-    console.log('Does the view name contain \"list\" ? ' + viewType.indexOf('list'));
+    //console.log('fillBackground = ' + fillBackground);
+    //console.log('allDay = ' + allDay);
+    //console.log('viewType = ' + viewType);
+    //console.log('Does the view name contain \"list\" ? ' + viewType.indexOf('list'));
 
-    if (viewType.indexOf('list')) {
+    if (viewType.indexOf('list') > 0) {
+      // List View
+      Traction.FullCalendar.colorCalItemList(info.el, customEntryType, colorName, fillBackground);
+    } else {
       if (allDay) {
-        Traction.FullCalendar.colorCalItemAllDay(info.el, customEntryType, colorName, fillBackground);
+        Traction.FullCalendar.colorCalItemDayGrid(info.el, customEntryType, colorName, fillBackground);
       } else {
         Traction.FullCalendar.colorCalItemTimeGrid(info.el, customEntryType, colorName, fillBackground);
       }
-    } else {
-      // List View
-      Traction.FullCalendar.colorCalItemList(info.el, customEntryType, colorName, fillBackground);
     }
 
   },
 
-  colorCalItemAllDay: function(el, customEntryType, colorName, fillBackground) {
-    //console.log('---- colorCalItemAllDay ----');
-    //console.dir(el);
-    //console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
+  colorCalItemDayGrid: function(el, customEntryType, colorName, fillBackground) {
+    console.log('---- colorCalItemDayGrid ----');
+    console.dir(el);
+    console.log('customEntryType = ' + customEntryType + ' colorName = ' + colorName + ' fillBackground = ' + fillBackground);
 
     // Set the background color of each event with the color picked up from a standard link,
     // if the event is not from Google Calendar.
@@ -435,23 +438,19 @@ Traction.FullCalendar = {
     //console.log('customentrytype = ' + info.event.extendedProps.customentrytype + ' linkColor = ' + linkColor);
 
     if ( customEntryType === 'event' ) {
-      if (! colorName) {
-        $(el).css('color', linkColor);
-        //$(el).css('background-color', 'transparent');
-        //$(el).css('border-color', 'transparent');
+      console.log('aaa');
+      if ( colorName ) {
+        console.log('bbb');
+        $(el).css('color', '#fff');
+        $(el).css('background-color', Traction.FullCalendar.convertColorNameToCode(colorName));
+      } else {
+        console.log('ccc');
         if ( fillBackground ) {
           $(el).css('color', '#fff');
           $(el).css('background-color', linkColor);
-          //$(el).css('border-color', linkColor);
         } else {
           $(el).css('color', linkColor);
-          //$(el).css('background-color', 'transparent');
-          //$(el).css('border-color', 'transparent');
         }
-      } else {
-        $(el).css('color', '#fff');
-        //$(el).css('background-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
-        //$(el).css('border-color', Traction.FullCalendar.convertColorNameToCode(info.event.extendedProps.colorname));
       }
     } else {
       if (! colorName) {
@@ -478,6 +477,7 @@ Traction.FullCalendar = {
     // Please refer to JPBO16042, JPBO16137, and JPBO16290 for details.
     var linkColor = $('#fc-linkcolor-placeholder a').css('color');
 
+
     if (! colorName) {
       $(el).css('color', '#fff');
       $(el).css('background-color', linkColor);
@@ -485,6 +485,7 @@ Traction.FullCalendar = {
       $(el).css('color', '#fff');
       $(el).css('background-color', Traction.FullCalendar.convertColorNameToCode(colorName));
     }
+
   },
 
   colorCalItemList: function(el, customEntryType, colorName, fillBackground) {
@@ -872,21 +873,65 @@ function fcRenderCalendar(data) {
 
     // After an event is renderred
     eventContent: function(event) {
-      // Convert the event inner HTML string, provided by the "title" parameter, into the "real" HTML code.
-      if (event.timeText) {
-        var returnHtml = Traction.FullCalendar.htmlToElements( "<div class='fc-event-inner'><div class='fc-event-time'>" + event.timeText + "</div>" + "<div class='fc-event-title'>" + event.event.title + "</div></div>" );
-      } else {
-        var returnHtml = Traction.FullCalendar.htmlToElements( "<div class='fc-event-inner'>" + "<div class='fc-event-title'>" + event.event.title + "</div></div>" );
-      }
-      return { domNodes: returnHtml };
+      // Convert the event inner HTML string, provided by the "title" parameter,
+      // into the "real" HTML code.
+//      if (event.timeText) {
+//        var returnHtml = Traction.FullCalendar.htmlToElements( "<div class='fc-event-inner'><div class='fc-event-time'>" + event.timeText + "</div>" + "<div class='fc-event-title'>" + event.event.title + "</div></div>" );
+//      } else {
+//        var returnHtml = Traction.FullCalendar.htmlToElements( "<div class='fc-event-inner'>" + "<div class='fc-event-title'>" + event.event.title + "</div></div>" );
+//      }
+//      return { domNodes: returnHtml };
     },
 
     // After an event is renderred
     eventDidMount: function(info) {
-      // console.log('---- eventDidMount ----');
-      // console.dir(info);
+      console.log('---- eventDidMount ----');
+      console.dir(info);
 
-      Traction.FullCalendar.colorCalItem(info);
+      //Traction.FullCalendar.colorCalItem(info);
+
+      var chkTodoHtml = '<div class="tododone"><input type="checkbox" class="ptags-chk todo" /></div>';
+      var chkDoneHtml = '<div class="tododone"><input type="checkbox" class="ptags-chk done" /></div>';
+      var imgIconHtml = '<div class="ic">&nbsp;</div>';
+      var faIconHtml = '<div class="ic"><i></i></div>';
+
+      // DayGrid Dot Event
+      if ($(info.el).hasClass('fc-daygrid-dot-event')) {
+        if ($(info.el).hasClass('icon-image')) {
+          // icon-image or checkbox
+          if ($(info.el).hasClass('calitem-task')) {
+            if ($(info.el).hasClass('todo')) {
+              $(info.el).children('.fc-daygrid-event-dot').after(chkTodoHtml);
+            } else if ($(info.el).hasClass('done')) {
+              $(info.el).children('.fc-daygrid-event-dot').after(chkDoneHtml);
+            }
+          } else {
+            $(info.el).children('.fc-daygrid-event-dot').after(imgIconHtml);
+          }
+        } else {
+          // icon-fontawesome
+          $(info.el).children('.fc-daygrid-event-dot').after(faIconHtml);
+        }
+      }
+
+      // DayGrig Block Event
+      if ($(info.el).hasClass('fc-daygrid-block-event')) {
+        if ($(info.el).hasClass('icon-image')) {
+          // icon-image or checkbox
+          if ($(info.el).hasClass('calitem-task')) {
+            if ($(info.el).hasClass('todo')) {
+              $(info.el).find('.fc-event-main-frame').prepend(chkTodoHtml);
+            } else if ($(info.el).hasClass('done')) {
+              $(info.el).find('.fc-event-main-frame').prepend(chkDoneHtml);
+            }
+          } else {
+            $(info.el).find('.fc-event-main-frame').prepend(imgIconHtml);
+          }
+        } else {
+          // icon-fontawesome
+          $(info.el).find('.fc-event-main-frame').prepend(faIconHtml);
+        }
+      }
 
       if (info.view.type.indexOf('list') !== -1 && info.event.extendedProps.customentrytype === 'task') {
         Traction.FullCalendar.addPriorityBadge(info.el);
