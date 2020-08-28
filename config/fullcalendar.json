@@ -526,6 +526,26 @@
       "usedefault": "true",
       "default": "dayGridMonth,timeGridDay,dayGridTwoWeek,timeGridSevenDay,listMonth"
     },
+    "calendar_firstdayofweek_sunmon": {
+      "class": "com.traction.settings.Select",
+      "display_name": "#{@fullcalendar#setting_calendar_firstdayofweek_sunmon_display_name}",
+      "description": "#{@fullcalendar#setting_calendar_firstdayofweek_sunmon_description}",
+      "tip": "#{@fullcalendar#setting_calendar_firstdayofweek_sunmon_tip}",
+      "options": "auto,1,2",
+      "option_auto_label": "#{tinymce_display_selector_option_auto}",
+      "option_1_label": "#{Sunday}",
+      "option_2_label": "#{Monday}",
+      "sdleditor": "com.traction.sdl.admin.settings#singleselect",
+      "default": "auto",
+      "usedefault": "true"
+    },
+
+
+
+
+
+
+
     "fullcalendar_gcal_apikey": {
       "class": "com.traction.settings.TextInput",
       //"display_name": "#{@fullcalendar#setting_fullcalendar_gcal_apikey_display_name}",

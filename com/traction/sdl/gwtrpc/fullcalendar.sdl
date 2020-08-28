@@ -199,17 +199,15 @@
 
     var locale = '<regex.replace regex="(^.+)_(.+$)" replace="$1-$2"><locales><locale.current>__locale.name__</locale.current></locales></regex.replace>';
 
-    var firstDay = <plugin name="com.traction.calendar1stdayofweek" requireenabled="true">
-      <journalrequest.user>
+    var firstDay = <journalrequest.user>
         <switch value="<config.user.value name='calendar_firstdayofweek_sunmon' default='auto'>">
           <case value="1"><!--- Sunday -->0</case>
           <case value="2"><!--- Monday -->1</case>
           <case.default>0</case.default>
         </switch>
-      </journalrequest.user>
-    <else>
-      0
-    </plugin>;
+      <else>
+        0
+      </journalrequest.user>;
 
     var tpSourceId = 'teampage';
     var tpDraggableId = 'external-events';

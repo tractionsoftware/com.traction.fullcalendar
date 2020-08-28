@@ -131,3 +131,7 @@ setting_fullcalendar_views_option_listWeek_label=週 (リスト)
 setting_fullcalendar_views_option_listSevenDay_label=7日 (リスト)
 setting_fullcalendar_views_option_listMonth_label=月 (リスト)
 setting_fullcalendar_views_option_listYear_label=年 (リスト)
+
+setting_calendar_firstdayofweek_sunmon_display_name=週の始まりの曜日
+setting_calendar_firstdayofweek_sunmon_description=ここで [自動] を選択すると、週の始まりはロケールの設定に従います。例えば、日本を選択すると週の始まりは日曜日になり、英国を選択すると月曜日になります。
+setting_calendar_firstdayofweek_sunmon_tip=
