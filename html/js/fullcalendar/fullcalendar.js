@@ -568,60 +568,81 @@ Traction.FullCalendar = {
     } else {
       return Traction.FullCalendar.externalEventDataShared(eventEl);
     }
- },
- externalEventDataEv: function(eventEl) {
-   var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
-   var dataEv = {
-     tpAllDay: eventEl.dataset.tpallday,
-     tpFullSingleDay: eventEl.dataset.tpfullsingleday,
-     invitees: eventEl.dataset.invitees
-   };
-   return Object.assign(dataShared, dataEv);
- },
- externalEventDataTask: function(eventEl) {
-   var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
-   var dataTask = {
-     tpAllDay: eventEl.dataset.tpallday,
-     assigned: eventEl.dataset.assigned
-   };
-   return Object.assign(dataShared, dataTask);
- },
- externalEventDataGoal: function(eventEl) {
-   var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
-   var dataGoal = {
-     tpAllDay: eventEl.dataset.tpallday,
-     owners: eventEl.dataset.owners,
-     members: eventEl.dataset.members
-   };
-   return Object.assign(dataShared, dataGoal);
- },
- externalEventDataMs: function(eventEl) {
-   var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
-   var dataMs = {
-     tpAllDay: eventEl.dataset.tpallday,
-   };
-   return Object.assign(dataShared, dataMs);
- },
- externalEventDataShared: function(eventEl) {
-   var data = {
-     id: eventEl.dataset.fqid,
-     tractionid: eventEl.dataset.tractionid,
-     displayname: eventEl.dataset.displayname,
-     displaytype: eventEl.dataset.displaytype,
-     customentrytype: eventEl.dataset.customentrytype,
-     editable: eventEl.dataset.editable,
-     durationEditable: eventEl.dataset.durationeditable,
-     className: eventEl.dataset.classname,
-     title: $(eventEl.innerHTML)[0].innerHTML,
-     titleText: eventEl.dataset.titletext,
-     tpDue: eventEl.dataset.tpdue,
-     colorname: eventEl.dataset.color,
-     rg: eventEl.dataset.rg,
-     tpurl: eventEl.dataset.tpurl,
-     titleTipDesc: eventEl.dataset.titletipdesc
-   };
-   return data;
- }
+  },
+  externalEventDataEv: function(eventEl) {
+    var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
+    var dataEv = {
+      tpAllDay: eventEl.dataset.tpallday,
+      tpFullSingleDay: eventEl.dataset.tpfullsingleday,
+      invitees: eventEl.dataset.invitees
+    };
+    return Object.assign(dataShared, dataEv);
+  },
+  externalEventDataTask: function(eventEl) {
+    var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
+    var dataTask = {
+      tpAllDay: eventEl.dataset.tpallday,
+      assigned: eventEl.dataset.assigned
+    };
+    return Object.assign(dataShared, dataTask);
+  },
+  externalEventDataGoal: function(eventEl) {
+    var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
+    var dataGoal = {
+      tpAllDay: eventEl.dataset.tpallday,
+      owners: eventEl.dataset.owners,
+      members: eventEl.dataset.members
+    };
+    return Object.assign(dataShared, dataGoal);
+  },
+  externalEventDataMs: function(eventEl) {
+    var dataShared = Traction.FullCalendar.externalEventDataShared(eventEl);
+    var dataMs = {
+      tpAllDay: eventEl.dataset.tpallday,
+    };
+    return Object.assign(dataShared, dataMs);
+  },
+  externalEventDataShared: function(eventEl) {
+    var data = {
+      id: eventEl.dataset.fqid,
+      tractionid: eventEl.dataset.tractionid,
+      displayname: eventEl.dataset.displayname,
+      displaytype: eventEl.dataset.displaytype,
+      customentrytype: eventEl.dataset.customentrytype,
+      editable: eventEl.dataset.editable,
+      durationEditable: eventEl.dataset.durationeditable,
+      className: eventEl.dataset.classname,
+      title: $(eventEl.innerHTML)[0].innerHTML,
+      titleText: eventEl.dataset.titletext,
+      tpDue: eventEl.dataset.tpdue,
+      colorname: eventEl.dataset.color,
+      rg: eventEl.dataset.rg,
+      tpurl: eventEl.dataset.tpurl,
+      titleTipDesc: eventEl.dataset.titletipdesc
+    };
+    return data;
+  },
+
+  isOverExternalEventsDiv: function(x, y) {
+
+    var externalEventsDiv = $( '#external-events .fc-dragbase-canvas .bd' );
+    var offset = externalEventsDiv.offset();
+    offset.right = externalEventsDiv.width() + offset.left;
+    offset.bottom = externalEventsDiv.height() + offset.top;
+
+    //console.log('offset left = ' + offset.left + ' right = ' + offset.right);
+    //console.log('offset top = ' + offset.top + ' bottom = ' + offset.bottom);
+
+    if (x >= offset.left && y >= offset.top
+      && x <= offset.right && y <= offset.bottom) {
+        console.log('TRUE');
+      return true;
+    } else {
+      console.log('FALSE');
+      return false;
+    }
+
+  }
 
 }
 
@@ -670,6 +691,7 @@ function fcRenderCalendar(data) {
     firstDay: data.firstDay,
     initialView: initialViewName,
     initialDate: data.initialDate,
+    dragRevertDuration: data.dragRevertDuration,
     headerToolbar: {
       left: data.fcViews,
       center: 'title',
@@ -768,7 +790,7 @@ function fcRenderCalendar(data) {
 
     },
 
-    // Called after the calendar’s date range has been initially set
+    // Called after the calendar's date range has been initially set
     // or changed in some way and the DOM has been updated.
     datesSet: function(dateInfo) {
 
@@ -792,6 +814,33 @@ function fcRenderCalendar(data) {
           $(this).removeClass('fc-button-active').addClass("selected");
         }
       });
+
+
+    },
+
+    // Triggered when event dragging stops
+    eventDragStop: function(info) {
+      console.log('---- eventDragStop ----');
+      console.dir(info);
+
+      if(Traction.FullCalendar.isOverExternalEventsDiv(info.jsEvent.pageX, info.jsEvent.pageY)) {
+
+        var callbackFunc = "";
+        Proteus.Calendar.moveEvent(info.event.id, "", callbackFunc);
+
+        //info.event.remove();
+        //var el = info.elfc-event-draggable;
+        //$('#external-events .fc-dragbase-canvas .bd').prepend(el);
+
+
+        //var el = $( "<div class='fc-event'>" ).appendTo( '#external-events .fc-dragbase-canvas .bd' ).text( event.title );
+//        el.draggable({
+//          zIndex: 999,
+//          revert: true,
+//          revertDuration: 0
+//        });
+//        el.data('event', { title: info.event.title, id :info.event.id, stick: true });
+      }
 
 
     },

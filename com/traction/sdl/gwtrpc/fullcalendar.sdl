@@ -220,6 +220,7 @@
       "fcViews": "<#fc-views />",
       "initialDate": "<datetime dateformat='yyyy-MM-dd' />",
       "firstDay": firstDay,
+      "dragRevertDuration": "0",
 
       nowIndicator: true,
       defaultAllDayEventDuration: { days: 1 },
